@@ -1,7 +1,7 @@
 <template lang="pug">
-  div
-    div {{ msg }}
-    router-view
+div
+  div {{ msg }}
+  router-view
 </template>
 
 <script>

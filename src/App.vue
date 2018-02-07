@@ -1,12 +1,15 @@
 <template lang="pug">
-  #app
-    img(src="./assets/logo.png")
-    router-view
+#app
+  img(src="./assets/logo.png")
+  router-view
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    this.$store.dispatch('auth/whoami')
+  }
 }
 </script>
 

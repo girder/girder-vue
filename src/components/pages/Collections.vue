@@ -1,13 +1,11 @@
 <template lang="pug">
-  h2 This is the collections page
+h2 This is the collections page
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-
-    }
+  created () {
+    this.$store.dispatch('collections/fetchList')
   }
 }
 </script>
