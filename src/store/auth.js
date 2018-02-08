@@ -7,41 +7,47 @@ export default {
     token: null
   },
 
-  mutations: {
-    SET_USER (state, data) {
-      state.user = data
-    },
-
-    SET_TOKEN (state, data) {
-      state.token = data
-      setToken(data)
-    },
-
-    LOGOUT (state) {
-      state.user = null
-      state.token = null
-    }
-  },
-
   getters: {
     isLoggedIn: (state) => !!state.user,
     isAdmin: (state) => state.user && !!state.user.admin === true
   },
 
+  mutations: {
+    setUser (state, data) {
+      state.user = data
+    },
+
+    setToken (state, data) {
+      state.token = data
+      setToken(data)
+    }
+  },
+
   actions: {
     whoami ({commit}) {
-      rest.get('/user/me').then(({data}) => {
-        commit('SET_USER', data)
+      return rest.get('/user/me').then((resp) => {
+        commit('setUser', resp.data)
+        return resp
       })
     },
 
-    login ({commit}) {
-
+    login ({commit}, {username, password}) {
+      return rest.get('/user/authentication', {
+        headers: {
+          'Girder-Authorization': 'Basic ' + window.btoa(`${username}:${password}`)
+        },
+        withCredentials: true
+      }).then((resp) => {
+        commit('setUser', resp.data.user)
+        commit('setToken', resp.data.authToken.token)
+        return resp
+      })
     },
 
     logout ({commit}) {
-      rest.delete('/user/authentication').then(() => {
-        commit('LOGOUT')
+      return rest.delete('/user/authentication').then(() => {
+        commit('setUser', null)
+        commit('setToken', null)
       })
     }
   }

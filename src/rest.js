@@ -3,6 +3,9 @@ import cookies from 'js-cookie';
 
 export default axios
 
+
+export const getApiUrl = () => axios.defaults.baseURL
+
 /**
  * This should be called prior to making any REST API calls to Girder. It
  * configures this module such that all API calls are made relative to the

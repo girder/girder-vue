@@ -7,7 +7,7 @@ import store from './store'
 import { setApiUrl, getTokenFromCookie } from './rest'
 
 setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
-store.commit('auth/SET_TOKEN', getTokenFromCookie())
+store.commit('auth/setToken', getTokenFromCookie())
 sync(store, router)
 
 /* eslint-disable no-new */
@@ -18,4 +18,3 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-
