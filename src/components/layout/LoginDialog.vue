@@ -1,5 +1,5 @@
 <template lang="pug">
-modal
+modal(which-dialog="login")
   div(slot="header") Log in
   div(slot="body")
     form(@submit.prevent="doLogin")
@@ -8,7 +8,6 @@ modal
       input(type="submit", style="display: none;")
       .err-msg(v-if="loginFailedMessage") {{ loginFailedMessage }}
   div(slot="footer")
-    button(@click="hideDialog") Close
     button(@click="doLogin") Login
 </template>
 

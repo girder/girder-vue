@@ -18,8 +18,8 @@
   .g-page-body #[router-view]
   .g-footer
     a(:href="getApiUrl") Web API
-  login-dialog(v-if="dialog === 'login'")
-  register-dialog(v-if="dialog === 'register'")
+  login-dialog
+  register-dialog
 </template>
 
 <script>
@@ -36,7 +36,6 @@ export default {
   computed: {
     getApiUrl,
     ...mapState('auth', ['user']),
-    ...mapState('dialog', ['dialog']),
     ...mapGetters('auth', ['isLoggedIn', 'isAdmin'])
   },
   methods: {

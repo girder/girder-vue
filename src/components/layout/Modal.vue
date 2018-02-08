@@ -1,15 +1,34 @@
 <template lang="pug">
 transition(name="modal")
-  .modal-mask
-    .modal-wrapper
-      .modal-container
+  .modal-mask(v-if="whichDialog === null || whichDialog === dialog")
+    .modal-wrapper(@click="hideDialog")
+      .modal-container(@click.stop="")
         .modal-header
+          a.close-button(v-if="closeButton", @click="hideDialog") &times;
           slot(name="header")
         .modal-body
           slot(name="body")
         .modal-footer
           slot(name="footer")
 </template>
+
+<script>
+import { mapMutations, mapState } from 'vuex'
+export default {
+  props: {
+    whichDialog: {
+      default: null,
+      type: String
+    },
+    closeButton: {
+      default: true,
+      type: Boolean
+    }
+  },
+  computed: mapState('dialog', ['dialog']),
+  methods: mapMutations('dialog', ['hideDialog'])
+}
+</script>
 
 <style lang="stylus" scoped>
 /* TODO(zach) This should go away once we have a legitimate UI framework that provides its own dialog styling */
@@ -29,7 +48,7 @@ transition(name="modal")
   vertical-align middle
 
 .modal-container
-  width 300px
+  max-width 400px
   margin 0px auto
   padding 20px 30px
   background-color #fff
@@ -50,4 +69,15 @@ transition(name="modal")
 .modal-enter .modal-container, .modal-leave-active .modal-container
   -webkit-transform scale(1.1)
   transform scale(1.1)
+
+.close-button
+  float right
+  color #000
+  opacity 0.3
+  font-weight 700
+  font-size 21px
+  margin -3px -3px 0 0
+
+  &:hover
+    opacity 0.6
 </style>
