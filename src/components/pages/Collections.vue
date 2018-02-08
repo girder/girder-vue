@@ -1,16 +1,24 @@
 <template lang="pug">
-h2 This is the collections page
+div
+  h2 Collections
+  ul
+    li(v-for="collection in collections")
+      router-link(:to="`collection/${collection._id}`") {{ collection.name }}
 </template>
 
 <script>
+import rest from '@/rest'
+
 export default {
+  data () {
+    return {
+      collections: []
+    }
+  },
   created () {
-    this.$store.dispatch('collections/fetchList')
+    rest.get('/collection').then(({data}) => {
+      this.collections = data
+    })
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-h2
-  color red
-</style>

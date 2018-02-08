@@ -28,7 +28,6 @@ import { getApiUrl } from '@/rest'
 import LoginDialog from './LoginDialog'
 import RegisterDialog from './RegisterDialog'
 
-
 export default {
   components: {
     LoginDialog,
