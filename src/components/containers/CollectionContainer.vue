@@ -4,11 +4,11 @@
 
 <script>
 import rest from '@/rest'
-import { reusableRoute } from '@/utils/mixins'
+import { fetchingContainer } from '@/utils/mixins'
 import Collection from '../views/Collection'
 
 export default {
-  mixins: [reusableRoute],
+  mixins: [fetchingContainer],
   components: {
     Collection
   },
