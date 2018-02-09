@@ -35,6 +35,8 @@ export default {
         password: this.password
       }).then(() => {
         this.hideDialog()
+        this.username = ''
+        this.password = ''
       }).catch(({response}) => {
         this.loginFailedMessage = response.data.message
       })

@@ -4,19 +4,23 @@ import { sync } from 'vuex-router-sync'
 import App from './App'
 import router from './router'
 import store from './store'
-import { setApiUrl, getTokenFromCookie } from './rest'
+import { setApiUrl, getTokenFromCookie, onError } from './rest'
 
-setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
 sync(store, router)
+setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
+onError((error) => {
+  if (401 === error.response.status && !store.getters.isLoggedIn) {
+    // TODO dispatch something that will show a toast message "you must log in first"
+    store.commit('dialog/showDialog', 'login')
+  }
+  return Promise.reject(error)
+})
 
 store.commit('auth/setToken', getTokenFromCookie())
-store.dispatch('auth/whoami').then(() => {
-  /* eslint-disable no-new */
-  new Vue({
-    el: '#app',
-    router,
-    store,
-    components: {App},
-    template: '<App/>'
-  })
-})
+store.dispatch('auth/whoami').then(() => new Vue({
+  el: '#app',
+  router,
+  store,
+  components: {App},
+  template: '<App/>'
+}))

@@ -28,3 +28,12 @@ export const setToken = (token) => {
  * Read the Girder REST authentication token from the cookie.
  */
 export const getTokenFromCookie = () => cookies.get('girderToken')
+
+/**
+ * Register a function that will be called on responses to API requests.
+ * Will receive
+ * @param fn The function to call
+ */
+export const onError = (fn) => {
+  axios.interceptors.response.use(undefined, fn)
+}
