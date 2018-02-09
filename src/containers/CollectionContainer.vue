@@ -1,5 +1,5 @@
 <template lang="pug">
-  collection(:collection="collection")
+collection(:collection="collection")
 </template>
 
 <script>
@@ -14,12 +14,16 @@ export default {
     collection: {}
   }),
   methods: {
+    destroy () {
+      rest.delete(`/collection/${this.id}`)
+    },
     fetch () {
-      rest.get(`/collection/${this.$route.params.id}`).then(({data}) => {
+      rest.get(`/collection/${this.id}`).then(({data}) => {
         this.collection = data
       })
     }
-  }
+  },
+  props: ['id']
 }
 </script>
 

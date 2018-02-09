@@ -8,11 +8,12 @@ import CollectionsContainer from '@/containers/CollectionsContainer'
 Vue.use(Router)
 
 const routes = [{
-  path: 'collections',
-  component: CollectionsContainer
+  component: CollectionsContainer,
+  path: 'collections'
 }, {
+  component: CollectionContainer,
   path: 'collection/:id',
-  component: CollectionContainer
+  props: true
 }]
 
 export default new Router({

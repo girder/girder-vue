@@ -1,6 +1,7 @@
 <template lang="pug">
 div
   h2 {{ collection.name }}
+  .description(v-if="collection.description") {{ description }}
 </template>
 
 <script>
