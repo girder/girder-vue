@@ -1,10 +1,10 @@
 <template lang="pug">
 transition(name="modal")
-  .modal-mask(v-if="whichDialog === null || whichDialog === dialog")
-    .modal-wrapper(@click="hideDialog")
+  .modal-mask
+    .modal-wrapper(@click="$emit('close')")
       .modal-container(@click.stop="")
         .modal-header
-          a.close-button(v-if="closeButton", @click="hideDialog") &times;
+          a.close-button(v-if="closeButton", @click="$emit('close')") &times;
           slot(name="header")
         .modal-body
           slot(name="body")
@@ -13,20 +13,17 @@ transition(name="modal")
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
 export default {
   props: {
-    whichDialog: {
-      default: null,
-      type: String
+    show: {
+      default: true,
+      type: Boolean
     },
     closeButton: {
       default: true,
       type: Boolean
     }
-  },
-  computed: mapState('dialog', ['dialog']),
-  methods: mapMutations('dialog', ['hideDialog'])
+  }
 }
 </script>
 

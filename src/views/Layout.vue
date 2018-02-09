@@ -18,24 +18,25 @@
   .g-page-body #[router-view]
   .g-footer
     a(:href="getApiUrl") Web API
-  login-dialog
-  register-dialog
+  login-container(v-if="dialog === 'login'")
+  register-container(v-if="dialog === 'register'")
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import { getApiUrl } from '@/rest'
-import LoginDialog from './LoginDialog'
-import RegisterDialog from './RegisterDialog'
+import LoginContainer from '../containers/LoginContainer'
+import RegisterContainer from '../containers/RegisterContainer'
 
 export default {
   components: {
-    LoginDialog,
-    RegisterDialog
+    LoginContainer,
+    RegisterContainer
   },
   computed: {
     getApiUrl,
     ...mapState('auth', ['user']),
+    ...mapState('dialog', ['dialog']),
     ...mapGetters('auth', ['isLoggedIn', 'isAdmin'])
   },
   methods: {

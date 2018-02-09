@@ -1,16 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layout from '@/components/views/Layout'
-import * as containers from '@/components/containers'
+import Layout from '@/views/Layout'
+import CollectionContainer from '@/containers/CollectionContainer'
+import CollectionsContainer from '@/containers/CollectionsContainer'
+
 
 Vue.use(Router)
 
 const routes = [{
   path: 'collections',
-  component: containers.CollectionsContainer
+  component: CollectionsContainer
 }, {
   path: 'collection/:id',
-  component: containers.CollectionContainer
+  component: CollectionContainer
 }]
 
 export default new Router({

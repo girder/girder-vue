@@ -1,10 +1,10 @@
-import axios from 'axios';
-import cookies from 'js-cookie';
+import axios from 'axios'
+import cookies from 'js-cookie'
+import { stringify } from 'qs'
 
-export default axios
+const instance = axios.create()
 
-
-export const getApiUrl = () => axios.defaults.baseURL
+export const getApiUrl = () => instance.defaults.baseURL
 
 /**
  * This should be called prior to making any REST API calls to Girder. It
@@ -13,7 +13,7 @@ export const getApiUrl = () => axios.defaults.baseURL
  * @param {string} url Girder's REST API URL root, e.g. "/api/v1"
  */
 export const setApiUrl = (url) => {
-  axios.defaults.baseURL = url
+  instance.defaults.baseURL = url
 }
 
 /**
@@ -21,7 +21,7 @@ export const setApiUrl = (url) => {
  * @param {string} token the token value
  */
 export const setToken = (token) => {
-  axios.defaults.headers.common['Girder-Token'] = token
+  instance.defaults.headers.common['Girder-Token'] = token
 }
 
 /**
@@ -35,5 +35,13 @@ export const getTokenFromCookie = () => cookies.get('girderToken')
  * @param fn The function to call
  */
 export const onError = (fn) => {
-  axios.interceptors.response.use(undefined, fn)
+  instance.interceptors.response.use(undefined, fn)
 }
+
+/**
+ * Convert an Object into an x-www-form-urlencoded string.
+ * @param obj {Object} The object to encode
+ */
+export const formEncode = stringify
+
+export default instance

@@ -9,14 +9,10 @@ import Collection from '../views/Collection'
 
 export default {
   mixins: [fetchingContainer],
-  components: {
-    Collection
-  },
-  data() {
-    return {
-      collection: {}
-    }
-  },
+  components: { Collection },
+  data: () => ({
+    collection: {}
+  }),
   methods: {
     fetch () {
       rest.get(`/collection/${this.$route.params.id}`).then(({data}) => {
