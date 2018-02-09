@@ -24,7 +24,3 @@ export const fetchingContainer = {
     }
   }
 }
-
-// TODO(zach) on app startup, using this mixin causes fetch() to be called twice
-// because created() happens immediately but isLoggedIn() happens asynchronously when
-// the /user/me call returns.
