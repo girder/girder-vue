@@ -12,7 +12,7 @@ export const fetchingContainer = {
   },
   methods: {
     fetch () {
-      throw 'Your component should have a fetch() method when using reusableRoute mixin.'
+      throw 'Your component should have a fetch() method when using fetchingContainer mixin.'
     }
   },
   watch: {
@@ -24,3 +24,7 @@ export const fetchingContainer = {
     }
   }
 }
+
+// TODO(zach) on app startup, using this mixin causes fetch() to be called twice
+// because created() happens immediately but isLoggedIn() happens asynchronously when
+// the /user/me call returns.

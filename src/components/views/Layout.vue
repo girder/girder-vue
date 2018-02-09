@@ -3,7 +3,7 @@
   .g-header
     div(v-if="isLoggedIn")
       div Logged in as {{ user.login }}
-      a(@click="logout") Log out
+      a(@click="doLogout") Log out
     div(v-else)
       a(@click="showDialog('register')") Register
       |  or
@@ -39,6 +39,10 @@ export default {
     ...mapGetters('auth', ['isLoggedIn', 'isAdmin'])
   },
   methods: {
+    doLogout () {
+      this.logout()
+      this.$router.push({path: '/'})
+    },
     ...mapActions('auth', ['logout']),
     ...mapMutations('dialog', ['showDialog', 'hideDialog'])
   }
