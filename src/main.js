@@ -7,14 +7,16 @@ import store from './store'
 import { setApiUrl, getTokenFromCookie } from './rest'
 
 setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
-store.commit('auth/setToken', getTokenFromCookie())
 sync(store, router)
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
+store.commit('auth/setToken', getTokenFromCookie())
+store.dispatch('auth/whoami').then(() => {
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    components: {App},
+    template: '<App/>'
+  })
 })
