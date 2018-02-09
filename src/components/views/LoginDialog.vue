@@ -3,7 +3,7 @@ modal(which-dialog="login")
   div(slot="header") Log in
   div(slot="body")
     form(@submit.prevent="doLogin")
-      input(v-model="username", placeholder="Enter login or email")
+      input(v-model="username", placeholder="Enter login or email", autofocus)
       input(type="password", v-model="password", placeholder="Enter password")
       input(type="submit", style="display: none;")
       .err-msg(v-if="loginFailedMessage") {{ loginFailedMessage }}

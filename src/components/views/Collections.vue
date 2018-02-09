@@ -7,18 +7,12 @@ div
 </template>
 
 <script>
-import rest from '@/rest'
-
 export default {
-  data () {
-    return {
-      collections: []
+  props: {
+    collections: {
+      default: () => [],
+      type: Array
     }
-  },
-  created () {
-    rest.get('/collection').then(({data}) => {
-      this.collections = data
-    })
   }
 }
 </script>

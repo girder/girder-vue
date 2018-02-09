@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layout from '@/components/layout/Layout'
-import * as pages from '@/components/pages'
+import Layout from '@/components/views/Layout'
+import * as containers from '@/components/containers'
 
 Vue.use(Router)
 
 const routes = [{
   path: 'collections',
-  component: pages.Collections
+  component: containers.CollectionsContainer
 }]
 
 export default new Router({
