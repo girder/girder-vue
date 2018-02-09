@@ -10,11 +10,11 @@
       a(@click="showDialog('login')")  Login
   .g-nav
     ul
-      router-link(tag="li", to="collections") #[a Collections]
+      router-link(tag="li", to="/collections") #[a Collections]
       router-link(v-if="isLoggedIn", tag="li", :to="`/user/${user._id}`") #[a My data]
-      router-link(tag="li", to="users") #[a Users]
-      router-link(tag="li", to="groups") #[a Groups]
-      router-link(v-if="isAdmin", tag="li", to="admin") #[a Admin console]
+      router-link(tag="li", to="/users") #[a Users]
+      router-link(tag="li", to="/groups") #[a Groups]
+      router-link(v-if="isAdmin", tag="li", to="/admin") #[a Admin console]
   .g-page-body #[router-view]
   .g-footer
     a(:href="getApiUrl") Web API

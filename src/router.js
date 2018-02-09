@@ -8,6 +8,9 @@ Vue.use(Router)
 const routes = [{
   path: 'collections',
   component: containers.CollectionsContainer
+}, {
+  path: 'collection/:id',
+  component: containers.CollectionContainer
 }]
 
 export default new Router({
