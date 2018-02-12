@@ -15,13 +15,13 @@ yarn start
 yarn build
 
 # build for production and view the bundle analyzer report
-yarn build --report
-
-# run unit tests
-yarn run unit
+yarn build:report
 
 # run all tests
 yarn test
+
+# run linter
+yarn lint
 ```
 
 ## Component pattern
@@ -53,12 +53,12 @@ so that they can be easily replaced or mocked by callers.
 
 ### Locally
 
-When you run `yarn test` or `yarn run unit`, Karma uses Chrome Headless as the runtime environment,
+When you run `yarn test` or `yarn unit`, Karma uses Chrome Headless as the runtime environment,
 and also will kill the browser as soon as the test suite is finished. For debugging, we want to
 use a different browser, and keep it alive after the tests are done. The following command achieves
 these goals:
 
-    KARMA_BROWSER=Chrome yarn run unit --single-run=false
+    KARMA_BROWSER=Chrome yarn unit --single-run=false
 
 Since unit tests of components do not render into the DOM by default, you won't see what you are
 interested in. To get your component to render into the DOM, pass `attachToDocument: true` when using
