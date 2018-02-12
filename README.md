@@ -6,22 +6,22 @@
 
 ``` bash
 # install dependencies
-npm install
+yarn
 
 # serve with hot reload
-npm start
+yarn start
 
 # build for production with minification
-npm run build
+yarn run build
 
 # build for production and view the bundle analyzer report
-npm run build --report
+yarn run build --report
 
 # run unit tests
-npm run unit
+yarn run unit
 
 # run all tests
-npm test
+yarn test
 ```
 
 ## Component pattern
@@ -53,12 +53,12 @@ so that they can be easily replaced or mocked by callers.
 
 ### Locally
 
-When you run `npm test` or `npm run unit`, Karma uses Chrome Headless as the runtime environment,
+When you run `yarn test` or `yarn run unit`, Karma uses Chrome Headless as the runtime environment,
 and also will kill the browser as soon as the test suite is finished. For debugging, we want to
 use a different browser, and keep it alive after the tests are done. The following command achieves
 these goals:
 
-    KARMA_BROWSER=Chrome npm run unit -- --single-run=false
+    KARMA_BROWSER=Chrome yarn run unit -- --single-run=false
 
 Since unit tests of components do not render into the DOM by default, you won't see what you are
 interested in. To get your component to render into the DOM, pass `attachToDocument: true` when using
