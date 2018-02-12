@@ -4,6 +4,7 @@
 //   https://github.com/webpack/karma-webpack
 
 var webpackConfig = require('../../build/webpack.test.conf')
+var browser = process.env.KARMA_BROWSER || 'ChromeHeadless'
 
 module.exports = function karmaConfig (config) {
   config.set({
@@ -11,7 +12,7 @@ module.exports = function karmaConfig (config) {
     // 1. install corresponding karma launcher
     //    http://karma-runner.github.io/0.13/config/browsers.html
     // 2. add it to the `browsers` array below.
-    browsers: ['ChromeHeadless'],
+    browsers: [browser],
     frameworks: ['mocha', 'sinon-chai'],
     reporters: ['spec', 'coverage'],
     files: ['./index.js'],

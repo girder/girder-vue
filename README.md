@@ -48,3 +48,37 @@ mode can also be used to pass router query params as props.
 should simply trigger events that should be handled by an ancestor container component.
 * View components that contain container components inside them should put them into a named slot
 so that they can be easily replaced or mocked by callers.
+
+## Debugging test failures
+
+### Locally
+
+When you run `npm test` or `npm run unit`, Karma uses Chrome Headless as the runtime environment,
+and also will kill the browser as soon as the test suite is finished. For debugging, we want to
+use a different browser, and keep it alive after the tests are done. The following command achieves
+these goals:
+
+    KARMA_BROWSER=Chrome npm run unit -- --single-run=false
+
+Since unit tests of components do not render into the DOM by default, you won't see what you are
+interested in. To get your component to render into the DOM, pass `attachToDocument: true` when using
+the `mount` function for the component you want to visually inspect:
+
+```
+import { mount } from '@vue/test-utils'
+import SomeComponent from '@/views/SomeComponent'
+
+...
+
+mount(SomeComponent, {
+  attachedToDocument: true,
+  ...
+})
+```
+
+### For failures that only appear in CI
+
+TODO -- the puppeteer library claims to work for taking screenshots in headless Chrome, but I ran into strange
+errors with it. If we can get it working, we can easily make a custom karma reporter to dump
+screenshots on test failure that we can use for debugging failures that only appear in CI, though I hope
+those are much more of a rarity.
