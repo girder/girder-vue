@@ -17,10 +17,13 @@ export default {
   methods: {
     destroy () {
       rest.delete(`/collection/${this.id}`).then(() => {
-        this.$router.push('/collections')
+        if (this.$router) {
+          this.$router.push('/collections')
+        }
         this.showToast({
           text: 'Collection deleted'
         })
+        this.$emit('destroyed')
       })
     },
     fetch () {
