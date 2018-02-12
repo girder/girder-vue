@@ -12,10 +12,10 @@ yarn
 yarn start
 
 # build for production with minification
-yarn run build
+yarn build
 
 # build for production and view the bundle analyzer report
-yarn run build --report
+yarn build --report
 
 # run unit tests
 yarn run unit
@@ -58,7 +58,7 @@ and also will kill the browser as soon as the test suite is finished. For debugg
 use a different browser, and keep it alive after the tests are done. The following command achieves
 these goals:
 
-    KARMA_BROWSER=Chrome yarn run unit -- --single-run=false
+    KARMA_BROWSER=Chrome yarn run unit --single-run=false
 
 Since unit tests of components do not render into the DOM by default, you won't see what you are
 interested in. To get your component to render into the DOM, pass `attachToDocument: true` when using
