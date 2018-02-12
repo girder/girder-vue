@@ -4,7 +4,6 @@ import Layout from '@/views/Layout'
 import CollectionContainer from '@/containers/CollectionContainer'
 import CollectionsContainer from '@/containers/CollectionsContainer'
 
-
 Vue.use(Router)
 
 const routes = [{

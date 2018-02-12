@@ -23,6 +23,16 @@ import Modal from './Modal'
 
 export default {
   components: { Modal },
+  props: {
+    collections: {
+      default: () => [],
+      type: Array
+    },
+    createDialog: {
+      default: false,
+      type: Boolean
+    }
+  },
   data () {
     return {
       newCollection: {
@@ -36,16 +46,6 @@ export default {
   methods: {
     create () {
       this.$emit('create', this.newCollection)
-    }
-  },
-  props: {
-    collections: {
-      default: () => [],
-      type: Array
-    },
-    createDialog: {
-      default: false,
-      type: Boolean
     }
   }
 }

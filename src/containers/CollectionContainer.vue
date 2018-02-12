@@ -9,8 +9,14 @@ import { fetchingContainer } from '@/utils/mixins'
 import Collection from '../views/Collection'
 
 export default {
-  mixins: [fetchingContainer],
   components: { Collection },
+  mixins: [fetchingContainer],
+  props: {
+    id: {
+      default: null,
+      type: String
+    }
+  },
   data: () => ({
     collection: {}
   }),
@@ -33,7 +39,6 @@ export default {
     },
     ...mapActions('toast', ['showToast'])
   },
-  props: ['id']
 }
 </script>
 

@@ -16,6 +16,12 @@ import Modal from './Modal'
 
 export default {
   components: { Modal },
+  props: {
+    errorMessage: {
+      default: '',
+      type: String
+    }
+  },
   data () {
     return {
       username: '',
@@ -28,12 +34,6 @@ export default {
         username: this.username,
         password: this.password
       })
-    }
-  },
-  props: {
-    errorMessage: {
-      default: '',
-      type: String
     }
   }
 }

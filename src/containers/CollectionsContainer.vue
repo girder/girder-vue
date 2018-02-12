@@ -8,8 +8,8 @@ import { fetchingContainer } from '@/utils/mixins'
 import Collections from '../views/Collections'
 
 export default {
-  mixins: [fetchingContainer],
   components: { Collections },
+  mixins: [fetchingContainer],
   data: () => ({
     collections: []
   }),
