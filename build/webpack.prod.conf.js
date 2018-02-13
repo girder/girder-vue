@@ -119,12 +119,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ]),
-
-    new webpack.DllPlugin({
-      path: path.join(config.build.assetsRoot, 'girder-manifest.json'),
-      name: 'girder'
-    })
+    ])
   ]
 })
 
