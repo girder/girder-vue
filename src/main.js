@@ -11,11 +11,11 @@ sync(store, router)
 setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
 onError((error) => {
   if (401 === error.response.status && !store.getters.isLoggedIn) {
+    store.commit('dialog/showDialog', 'login')
     store.dispatch('toast/showToast', {
       text: 'You must log in first.',
       type: 'info'
     })
-    store.commit('dialog/showDialog', 'login')
   }
   return Promise.reject(error)
 })

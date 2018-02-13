@@ -9,7 +9,7 @@ export default {
 
   getters: {
     isLoggedIn: (state) => !!state.user,
-    isAdmin: (state) => state.user && !!state.user.admin
+    isAdmin: (state) => !!state.user && !!state.user.admin
   },
 
   mutations: {
