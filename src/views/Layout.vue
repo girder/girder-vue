@@ -2,27 +2,34 @@
 v-app
   v-navigation-drawer(fixed, :clipped="$vuetify.breakpoint.mdAndUp", app, v-model="drawer")
     v-list(dense)
-      v-list-tile(v-for="item in navItems", :key="item.id", v-if="isNavItemVisible(item)", @click="", :to="item.route")
+      v-list-tile(v-for="item in navItems", :key="item.id", v-if="isNavItemVisible(item)", :to="item.route")
         v-list-tile-action(v-if="item.icon")
           v-icon {{ item.icon }}
         v-list-tile-content
           v-list-tile-title {{ item.text }}
   v-toolbar(:color="toolbarColor", dark, app, :clipped-left="$vuetify.breakpoint.mdAndUp", fixed)
-    v-toolbar-title.pr-4.ml-1
+    v-toolbar-title.mr-4.ml-1
       v-toolbar-side-icon(@click.stop="drawer = !drawer")
       span.hidden-xs-only {{ title }}
     v-flex
       v-text-field.search(flat, solo-inverted, prepend-icon="search", label="Search...")
     v-spacer
-    v-toolbar-items(v-if="isLoggedIn")
-      v-btn(flat)
-        v-icon account_circle
-        .no-tt.ml-2 {{ user.login }}
-        v-icon arrow_drop_down
-    v-toolbar-items(v-else)
+    v-toolbar-items.mr-0(v-if="isLoggedIn")
+      v-menu(offset-y)
+        v-btn(slot="activator", flat)
+          v-icon account_circle
+          .no-tt.ml-2 {{ user.login }}
+          v-icon arrow_drop_down
+        v-list(dense)
+          v-list-tile(:to="`/useraccount/${user._id}`")
+            v-icon.mr-2 settings
+            v-list-tile-title My account
+          v-list-tile(@click="doLogout")
+            v-icon.mr-2 exit_to_app
+            v-list-tile-title Log out
+    v-toolbar-items.mr-0(v-else)
       v-btn(flat, @click="showDialog('register')") Register
       v-btn(flat, @click="showDialog('login')") Log in
-
   v-content
     v-container
       router-view
