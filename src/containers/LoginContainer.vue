@@ -1,13 +1,17 @@
 <template lang="pug">
-login-dialog(@login="doLogin", :error-message="errorMessage")
+component(:is="viewComponent", @login="doLogin", :error-message="errorMessage")
 </template>
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
-import LoginDialog from '../views/LoginDialog'
 
 export default {
-  components: { LoginDialog },
+  props: {
+    viewComponent: {
+      required: true,
+      type: Object
+    }
+  },
   data: () => ({
     errorMessage: ''
   }),

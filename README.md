@@ -48,6 +48,9 @@ mode can also be used to pass router query params as props.
 should simply trigger events that should be handled by an ancestor container component.
 * View components that contain container components inside them should put them into a named slot
 so that they can be easily replaced or mocked by callers.
+* In order to make container components usable independently of the presentation layer, it's a good idea to
+use dependency injection with dynamic components rather than statically importing a view component
+into the container component and registering it as a local component.
 
 ## Debugging test failures
 
