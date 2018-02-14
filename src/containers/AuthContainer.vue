@@ -1,5 +1,5 @@
 <template lang="pug">
-login-form(v-if="loginMode", @login="doLogin", :error-message="errorMessage")
+login-form(v-if="loginMode", @login="doLogin", :error-message="errorMessage", :login-in-progress="loginInProgress")
 </template>
 
 <script>
@@ -18,7 +18,8 @@ export default {
     }
   },
   data: () => ({
-    errorMessage: ''
+    errorMessage: '',
+    loginInProgress: false,
   }),
   computed: {
     loginMode () { return this.authDialogMode === authDialogModes.LOGIN },
@@ -29,10 +30,13 @@ export default {
   methods: {
     doLogin (credentials) {
       this.errorMessage = ''
+      this.loginInProgress = true
       this.login(credentials).then(() => {
         this.$emit('login')
       }).catch(({response}) => {
         this.errorMessage = response.data.message
+      }).finally(() => {
+        this.loginInProgress = false
       })
     },
     ...mapActions('auth', ['login'])

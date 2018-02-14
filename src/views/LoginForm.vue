@@ -8,7 +8,7 @@ v-card
       v-text-field(v-model="password", type="password", label="Password", :error-messages="errorMessages")
       input(type="submit", style="display: none;")
   v-card-actions
-    v-btn(color="primary", @click.stop="login") Login
+    v-btn(color="primary", @click.stop="login", :disabled="loginInProgress", :loading="loginInProgress") Login
 </template>
 
 <script>
@@ -17,6 +17,10 @@ export default {
     errorMessage: {
       default: '',
       type: String
+    },
+    loginInProgress: {
+      default: false,
+      type: Boolean
     }
   },
   data () {
@@ -36,9 +40,6 @@ export default {
         username: this.username,
         password: this.password
       })
-    },
-    getError () {
-      return this.errorMessage || true
     }
   }
 }
