@@ -1,16 +1,27 @@
 <template lang="pug">
-login-form(v-if="loginMode", @login="doLogin", :error-message="errorMessage", :login-in-progress="loginInProgress")
+div
+  login-form(v-if="loginMode", @login="doLogin", :error-message="loginErrorMessage", :login-in-progress="loginInProgress")
+  register-form(v-if="registerMode", @register="doRegister", :errors="registerErrors", :register-in-progress="registerInProgress")
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 import { authDialogModes } from '@/store/auth'
 import LoginForm from '../views/LoginForm'
+import RegisterForm from '../views/RegisterForm'
 
-// TODO add register-form and reset-password-form subcomponents
+// TODO add reset-password-form subcomponent
+
+const emptyRegisterErrors = () => ({
+  login: null,
+  email: null,
+  firstName: null,
+  lastName: null,
+  password: null
+})
 
 export default {
-  components: { LoginForm },
+  components: { LoginForm, RegisterForm },
   props: {
     show: {
       default: false,
@@ -18,8 +29,10 @@ export default {
     }
   },
   data: () => ({
-    errorMessage: '',
+    loginErrorMessage: '',
     loginInProgress: false,
+    registerErrors: emptyRegisterErrors(),
+    registerInProgress: false
   }),
   computed: {
     loginMode () { return this.authDialogMode === authDialogModes.LOGIN },
@@ -29,17 +42,28 @@ export default {
   },
   methods: {
     doLogin (credentials) {
-      this.errorMessage = ''
+      this.loginErrorMessage = ''
       this.loginInProgress = true
       this.login(credentials).then(() => {
         this.$emit('login')
       }).catch(({response}) => {
-        this.errorMessage = response.data.message
+        this.loginErrorMessage = response.data.message
       }).finally(() => {
         this.loginInProgress = false
       })
     },
-    ...mapActions('auth', ['login'])
+    doRegister (params) {
+      this.registerErrors = emptyRegisterErrors()
+      this.registerInProgress = true
+      this.register(params).then(() => {
+        this.$emit('register')
+      }).catch(({response}) => {
+        this.registerErrors[response.data.field] = response.data.message
+      }).finally(() => {
+        this.registerInProgress = false
+      })
+    },
+    ...mapActions('auth', ['login', 'register'])
   }
 }
 </script>

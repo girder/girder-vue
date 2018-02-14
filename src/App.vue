@@ -2,7 +2,7 @@
 #app
   router-view
   v-dialog(max-width="500px", v-model="showAuthDialog", @keydown.esc="showAuthDialog = false")
-    auth-container(@login="showAuthDialog = false")
+    auth-container(@login="showAuthDialog = false", @register="showAuthDialog = false")
 </template>
 
 <script>

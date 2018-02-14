@@ -1,4 +1,4 @@
-import rest, { setToken } from '@/rest'
+import rest, { formEncode, setToken } from '@/rest'
 
 export const authDialogModes = {
   LOGIN: 'login',
@@ -69,6 +69,16 @@ export default {
       return rest.delete('/user/authentication').then(() => {
         commit('setUser', null)
         commit('setToken', null)
+      })
+    },
+
+    register ({commit}, params) {
+      return rest.post('/user', formEncode(params), {
+        withCredentials: true
+      }).then((resp) => {
+        commit('setToken', resp.data.authToken.token)
+        commit('setUser', resp.data)
+        return resp
       })
     }
   }
