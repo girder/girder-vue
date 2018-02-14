@@ -19,10 +19,7 @@ div
 </template>
 
 <script>
-import Modal from './Modal'
-
 export default {
-  components: { Modal },
   props: {
     collections: {
       default: () => [],
@@ -39,8 +36,8 @@ export default {
         name: '',
         description: ''
       },
-    createFailedMessage: null,
-    showCreateDialog: this.createDialog
+      createFailedMessage: null,
+      showCreateDialog: this.createDialog
     }
   },
   methods: {

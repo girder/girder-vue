@@ -4,20 +4,20 @@ import { sync } from 'vuex-router-sync'
 import App from './App'
 import router from './router'
 import store from './store'
-import { setApiUrl, getTokenFromCookie, onError } from './rest'
+import { setApiUrl, getTokenFromCookie, onResponse } from './rest'
 import './utils/ui-setup'
 
 sync(store, router)
 setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
-onError((error) => {
-  if (401 === error.response.status && !store.getters.isLoggedIn) {
-    store.commit('dialog/showDialog', 'login')
+onResponse((resp) => {
+  if (401 === resp.response.status && !store.getters['auth/isLoggedIn'] && !store.state.auth.authDialogVisible) {
+    store.commit('auth/showAuthDialog', {})
     store.dispatch('toast/showToast', {
       text: 'You must log in first.',
-      type: 'info'
+      type: 'info' // TODO use constants for toast types
     })
   }
-  return Promise.reject(error)
+  return Promise.reject(resp)
 })
 
 store.commit('auth/setToken', getTokenFromCookie())

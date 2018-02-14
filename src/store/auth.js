@@ -1,8 +1,16 @@
 import rest, { setToken } from '@/rest'
 
+export const authDialogModes = {
+  LOGIN: 'login',
+  REGISTER: 'register',
+  PASSWORD_RESET: 'password_reset'
+}
+
 export default {
   namespaced: true,
   state: {
+    authDialogMode: authDialogModes.LOGIN,
+    authDialogVisible: false,
     user: null,
     token: null
   },
@@ -20,6 +28,19 @@ export default {
     setToken (state, data) {
       state.token = data
       setToken(data)
+    },
+
+    setAuthDialogMode (state, mode) {
+      state.authDialogMode = mode
+    },
+
+    setAuthDialogVisible (state, val) {
+      state.authDialogVisible = val
+    },
+
+    showAuthDialog (state, { mode = authDialogModes.LOGIN, visible = true }) {
+      state.authDialogMode = mode
+      state.authDialogVisible = visible
     }
   },
 

@@ -31,10 +31,9 @@ export const getTokenFromCookie = () => cookies.get('girderToken')
 
 /**
  * Register a function that will be called on responses to API requests.
- * Will receive
  * @param fn The function to call
  */
-export const onError = (fn) => {
+export const onResponse = (fn) => {
   instance.interceptors.response.use(undefined, fn)
 }
 

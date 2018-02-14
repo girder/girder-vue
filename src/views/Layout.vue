@@ -28,40 +28,29 @@ v-app
             v-icon.mr-2 exit_to_app
             v-list-tile-title Log out
     v-toolbar-items.mr-0(v-else)
-      v-btn(flat, @click="showDialog('register')") Register
-      v-btn(flat, @click="showDialog('login')") Log in
+      v-btn(flat, @click="showRegisterDialog") Register
+      v-btn(flat, @click="showLoginDialog") Log in
   v-content
     v-container
       router-view
   v-footer(app)
     v-flex.text-xs-center
       a(:href="getApiUrl") Web API
-  login-container(v-if="dialog === 'login'", :view-component="loginView")
-  register-container(v-if="dialog === 'register'", :view-component="registerView")
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import { getApiUrl } from '@/rest'
-import LoginContainer from '../containers/LoginContainer'
-import RegisterContainer from '../containers/RegisterContainer'
-import LoginDialog from './LoginDialog'
-import RegisterDialog from './RegisterDialog'
+import { authDialogModes } from '@/store/auth'
 
 export default {
-  components: {
-    LoginContainer,
-    RegisterContainer
-  },
   data: () => ({
-    drawer: null,
-    loginView: LoginDialog,
-    registerView: RegisterDialog,
+    dialog: null,
+    drawer: null
   }),
   computed: {
     getApiUrl,
     ...mapState('auth', ['user']),
-    ...mapState('dialog', ['dialog']),
     ...mapState('layout', ['navItems', 'title', 'toolbarColor']),
     ...mapGetters('auth', ['isLoggedIn', 'isAdmin'])
   },
@@ -79,8 +68,14 @@ export default {
       }
       return true
     },
+    showLoginDialog () {
+      this.showAuthDialog({mode: authDialogModes.LOGIN})
+    },
+    showRegisterDialog () {
+      this.showAuthDialog({mode: authDialogModes.REGISTER})
+    },
     ...mapActions('auth', ['logout']),
-    ...mapMutations('dialog', ['showDialog', 'hideDialog'])
+    ...mapMutations('auth', ['showAuthDialog'])
   }
 }
 </script>
