@@ -12,9 +12,9 @@ v-app
       v-toolbar-side-icon(@click.stop="drawer = !drawer")
       span.hidden-xs-only {{ title }}
     v-flex
-      v-text-field.search(flat, solo-inverted, prepend-icon="search", label="Search...")
+      v-text-field.search(flat, solo-inverted, prepend-icon="search", label="Search")
     v-spacer
-    v-toolbar-items.mr-0(v-if="isLoggedIn")
+    v-toolbar-items.ml-2.mr-0(v-if="isLoggedIn")
       v-menu(offset-y)
         v-btn(slot="activator", flat)
           v-icon account_circle

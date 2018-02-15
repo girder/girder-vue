@@ -16,7 +16,7 @@ export default {
   methods: {
     create (obj) {
       rest.post('/collection', formEncode(obj)).then(({data}) => {
-        this.$router.push(`/collection/${data._id}`)
+        this.$emit('created', data)
       })
     },
     fetch () {

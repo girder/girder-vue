@@ -23,9 +23,7 @@ export default {
   methods: {
     destroy () {
       rest.delete(`/collection/${this.id}`).then(() => {
-        if (this.$router) {
-          this.$router.push('/collections')
-        }
+        this.collection = null
         this.showToast({
           text: 'Collection deleted'
         })

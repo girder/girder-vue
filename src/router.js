@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/Layout'
-import CollectionContainer from '@/containers/CollectionContainer'
-import CollectionsContainer from '@/containers/CollectionsContainer'
+import CollectionRoute from '@/routes/CollectionRoute'
+import CollectionsRoute from '@/routes/CollectionsRoute'
 
 Vue.use(Router)
 
 const routes = [{
-  component: CollectionsContainer,
+  component: CollectionsRoute,
   path: 'collections'
 }, {
-  component: CollectionContainer,
+  component: CollectionRoute,
   path: 'collection/:id',
   props: true
 }]
