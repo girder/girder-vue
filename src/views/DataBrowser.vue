@@ -8,7 +8,7 @@ div
         v-icon {{ crumb.icon }}
         .bc-link.ml-1 {{ crumb.title }}
     v-spacer
-    v-btn(v-if="breadcrumbs.length > 1", icon, @click="$emit('up')")
+    v-btn(v-if="breadcrumbs.length > 1", icon, @click="$emit('up')", :to="parentRouteOpt")
       v-icon arrow_upward
 
   // Action bar
@@ -87,13 +87,14 @@ export default {
         icon: ResourceIcons[crumb.type.toUpperCase()],
         ...crumb
       }))
+    },
+    parentRouteOpt () {
+      return this.routerLinks ? `/${this.model.parentCollection}/${this.model.parentId}` : null
     }
   },
   methods: {
     routeOpt (model) {
-      if (this.routerLinks) {
-        return `/${model._modelType}/${model._id}`
-      }
+      return this.routerLinks ? `/${model._modelType}/${model._id}` : null
     }
   }
 }
@@ -102,4 +103,7 @@ export default {
 <style lang="stylus" scoped>
 .bc-link
   color white
+
+  &:hover
+    color #ddd
 </style>
