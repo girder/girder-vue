@@ -1,3 +1,5 @@
+import { ResourceIcons } from '@/constants'
+
 export default {
   namespaced: true,
   state: {
@@ -10,22 +12,22 @@ export default {
       route: '/'
     }, {
       id: 'collections',
-      icon: 'storage',
+      icon: ResourceIcons.COLLECTION,
       text: 'Collections',
       route: '/collections',
     }, {
       id: 'users',
-      icon: 'person',
+      icon: ResourceIcons.USER,
       text: 'Users',
       route: '/users'
     }, {
       id: 'groups',
-      icon: 'people',
+      icon: ResourceIcons.GROUP,
       text: 'Groups',
       route: '/groups'
     }, {
       id: 'myData',
-      icon: 'folder_special',
+      icon: 'folder_shared',
       text: 'My data',
       route: '/user/me',
       requireLogin: true

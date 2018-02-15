@@ -1,10 +1,9 @@
 <template lang="pug">
 div
-  button(@click="$emit('destroy')") Delete collection
   h2 {{ collection.name }}
   .description(v-if="collection.description") {{ collection.description }}
 
-  data-browser-container(:model="collection", model-type="collection")
+  data-browser-container.mt-4(:model="collection", model-type="collection")
 </template>
 
 <script>

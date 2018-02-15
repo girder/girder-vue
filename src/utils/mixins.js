@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { AccessType } from '@/constants'
 
 /**
  * This mixin should be used on any container component whose data needs to be
@@ -26,5 +27,16 @@ export const fetchingRoute = {
     $route () {
       this.$refs.wrapped.fetch()
     }
+  }
+}
+
+/**
+ * This mixin exposes helper methods for components that need to check that the current user has
+ * a certain access level on a given resource.
+ */
+export const accessLevelChecker = {
+  methods: {
+    hasWriteAccess: (resource) => resource._accessLevel >= AccessType.WRITE,
+    hasAdminAccess: (resource) => resource._accessLevel >= AccessType.ADMIN
   }
 }
