@@ -14,7 +14,8 @@ div
   // Action bar
   v-toolbar(v-if="showActions", dense, flat, color="blue-grey lighten-4")
     v-spacer
-    v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success")
+    v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
+        @click="showUploader = true")
       v-icon file_upload
     v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
       v-icon lock_outline
@@ -40,6 +41,11 @@ div
 
   // Empty status alert
   v-alert.mt-0(:value="empty", type="info", transition="scale-transition") This {{ modelType }} is currently empty.
+
+  // Upload container
+  v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
+      scrollable, transition="dialog-bottom-transition")
+    v-card(tile)
 </template>
 
 <script>
@@ -56,10 +62,6 @@ export default {
     model: {
       required: true,
       type: Object
-    },
-    modelType: {
-      default: 'folder',
-      type: String
     },
     breadcrumbs: {
       default: null,
@@ -83,7 +85,8 @@ export default {
     }
   },
   data: () => ({
-    ResourceIcons
+    ResourceIcons,
+    showUploader: false
   }),
   computed: {
     breadcrumbData () {
@@ -96,6 +99,9 @@ export default {
     },
     empty () {
       return !this.folders.length && !this.items.length && !this.loading
+    },
+    modelType () {
+      return this.model._modelType
     },
     parentRouteOpt () {
       return this.routerLinks ? `/${this.model.parentCollection}/${this.model.parentId}` : null // TODO no hardcode path

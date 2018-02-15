@@ -1,6 +1,6 @@
 <template lang="pug">
-data-browser(:model="model", :model-type="modelType", :breadcrumbs="breadcrumbs", :items="items",
-    :folders="folders", :loading="fetching", :router-links="true")
+data-browser(:model="model", :breadcrumbs="breadcrumbs", :items="items", :folders="folders",
+    :loading="fetching", :router-links="true")
 </template>
 
 <script>
@@ -15,10 +15,6 @@ export default {
     model: {
       required: true,
       type: Object
-    },
-    modelType: {
-      default: 'folder',
-      type: String
     }
   },
   data: () => ({
@@ -27,6 +23,11 @@ export default {
     folders: [],
     fetching: false
   }),
+  computed: {
+    modelType () {
+      return this.model._modelType
+    }
+  },
   watch: {
     model () {
       this.fetch()

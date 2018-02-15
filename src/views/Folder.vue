@@ -2,7 +2,7 @@
 div
   h2 {{ folder.name }}
   div(v-if="folder.description") {{ folder.description }}
-  data-browser-container.mt-4(:model="folder", model-type="folder")
+  data-browser-container.mt-4(:model="folder")
 </template>
 
 <script>

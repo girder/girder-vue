@@ -2,7 +2,7 @@
 div
   h2 {{ collection.name }}
   div(v-if="collection.description") {{ collection.description }}
-  data-browser-container.mt-4(:model="collection", model-type="collection")
+  data-browser-container.mt-4(:model="collection")
 </template>
 
 <script>
