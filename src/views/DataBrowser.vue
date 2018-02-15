@@ -1,22 +1,39 @@
 <template lang="pug">
 div
-  v-toolbar.top-toolbar(dense, dark, flat, color="blue-grey darken-2")
+  // Breadcrumb bar
+  v-toolbar(dense, dark, color="blue-grey lighten-1")
     v-breadcrumbs.ml-0
       v-icon(slot="divider") keyboard_arrow_right
       v-breadcrumbs-item(v-for="crumb in breadcrumbData", :key="crumb.object._id", :to="crumb.to")
         v-icon {{ crumb.icon }}
-        span.ml-1 {{ crumb.title }}
+        .bc-link.ml-1 {{ crumb.title }}
     v-spacer
     v-btn(v-if="breadcrumbs.length > 1", icon, @click="$emit('up')")
       v-icon arrow_upward
-  v-toolbar(v-if="showActions", dense, flat, color="blue-grey lighten-4")
+
+  // Action bar
+  v-toolbar(v-if="showActions", dense, color="blue-grey lighten-4")
     v-spacer
     v-btn(v-if="hasWriteAccess(model)", icon, color="success")
       v-icon file_upload
     v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
       v-icon lock_outline
-    v-btn(icon, flat)
-      v-icon menu
+    v-btn(icon, dark, color="blue-grey lighten-3")
+      v-icon list
+
+  // Folder list
+  v-list.pb-0(dense)
+    v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder)", :key="folder._id",
+        :to="routeOpt(folder)")
+      v-icon {{ ResourceIcons.FOLDER }}
+      v-list-tile-title.ml-1 {{ folder.name }}
+
+  // Item list
+  v-list.pb-0.pt-0(dense)
+    v-list-tile(v-for="item in items", @click="$emit('itemClick', item)", :key="item._id",
+        :to="routeOpt(item)")
+      v-icon {{ ResourceIcons.ITEM }}
+      v-list-tile-title.ml-1 {{ item.name }}
 </template>
 
 <script>
@@ -53,8 +70,15 @@ export default {
     showActions: {
       default: true,
       type: Boolean
+    },
+    routerLinks: {
+      default: false,
+      type: Boolean
     }
   },
+  data: () => ({
+    ResourceIcons
+  }),
   computed: {
     breadcrumbData () {
       return this.breadcrumbs.map((crumb) => ({
@@ -64,6 +88,18 @@ export default {
         ...crumb
       }))
     }
+  },
+  methods: {
+    routeOpt (model) {
+      if (this.routerLinks) {
+        return `/${model._modelType}/${model._id}`
+      }
+    }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.bc-link
+  color white
+</style>

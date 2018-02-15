@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Layout from '@/views/Layout'
 import CollectionRoute from '@/routes/CollectionRoute'
 import CollectionsRoute from '@/routes/CollectionsRoute'
+import FolderRoute from '@/routes/FolderRoute'
 
 Vue.use(Router)
 
@@ -12,12 +13,15 @@ const routes = [{
 }, {
   component: CollectionRoute,
   path: 'collection/:id'
+}, {
+  component: FolderRoute,
+  path: 'folder/:id'
 }]
 
 export default new Router({
   routes: [{
-      path: '/',
-      component: Layout,
-      children: routes
+    path: '/',
+    component: Layout,
+    children: routes
   }]
 })

@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { AccessType } from '@/constants'
 
@@ -25,7 +26,11 @@ export const fetchingContainer = {
 export const fetchingRoute = {
   watch: {
     $route () {
-      this.$refs.wrapped.fetch()
+      // This watch callback gets triggered before the data gets flowed down to child components,
+      // so we need to wait until the next tick to fetch.
+      Vue.nextTick().then(() =>{
+        this.$refs.wrapped.fetch()
+      })
     }
   }
 }

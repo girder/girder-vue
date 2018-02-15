@@ -10,7 +10,7 @@ export const AccessType = {
  * Icons corresponding to resource types in Girder.
  */
 export const ResourceIcons = {
-  COLLECTION: 'storage',
+  COLLECTION: 'collections',
   FOLDER: 'folder',
   GROUP: 'people',
   ITEM: 'description',

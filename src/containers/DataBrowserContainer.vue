@@ -1,6 +1,6 @@
 <template lang="pug">
 data-browser(:model="model", :model-type="modelType", :breadcrumbs="breadcrumbs", :items="items",
-    :folders="folders", :fetching="fetching")
+    :folders="folders", :fetching="fetching", :router-links="true")
 </template>
 
 <script>
@@ -25,17 +25,18 @@ export default {
     breadcrumbs: [],
     items: [],
     folders: [],
-    fetching: false,
+    fetching: false
   }),
+  watch: {
+    model () {
+      this.fetch()
+    }
+  },
   methods: {
     fetch () {
       this.fetching = true
       this.items = []
       this.folders = []
-      this.breadcrumbs = [{
-        type: this.modelType,
-        object: this.model
-      }]
 
       const requests = [rest.get('/folder', {
         params: {
@@ -56,10 +57,18 @@ export default {
         })
 
         const fetchRootPath = rest.get(`/folder/${this.model._id}/rootpath`).then(({data}) => {
-          this.breadcrumbs = data.concat(this.breadcrumbs)
+          this.breadcrumbs = data.concat([{
+            type: this.modelType,
+            object: this.model
+          }])
         })
 
         requests.push(fetchItems, fetchRootPath)
+      } else {
+        this.breadcrumbs = [{
+          type: this.modelType,
+          object: this.model
+        }]
       }
 
       Promise.all(requests).finally(() => {
