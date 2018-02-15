@@ -1,5 +1,5 @@
 <template lang="pug">
-collection(:collection="collection", @destroy="destroy")
+collection(v-if="collection", :collection="collection", @destroy="destroy")
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default {
     }
   },
   data: () => ({
-    collection: {}
+    collection: null
   }),
   methods: {
     destroy () {

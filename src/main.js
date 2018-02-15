@@ -17,6 +17,8 @@ onResponse((resp) => {
       type: 'info' // TODO use constants for toast types
     })
   }
+
+  // TODO Handle 500 errors (show a toast perhaps)
   return Promise.reject(resp)
 })
 
