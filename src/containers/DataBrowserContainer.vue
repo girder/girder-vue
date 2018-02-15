@@ -38,13 +38,14 @@ export default {
       this.items = []
       this.folders = []
 
+      let fetchedFolders, fetchedItems = []
       const requests = [rest.get('/folder', {
         params: {
           parentId: this.model._id,
           parentType: this.modelType
         }
       }).then(({data}) => {
-        this.folders = data
+        fetchedFolders = data
       })]
 
       if (this.modelType === 'folder') {
@@ -53,7 +54,7 @@ export default {
             folderId: this.model._id
           }
         }).then(({data}) => {
-          this.items = data
+          fetchedItems = data
         })
 
         const fetchRootPath = rest.get(`/folder/${this.model._id}/rootpath`).then(({data}) => {
@@ -72,6 +73,8 @@ export default {
       }
 
       Promise.all(requests).finally(() => {
+        this.folders = fetchedFolders
+        this.items = fetchedItems
         this.fetching = false
       })
     }
