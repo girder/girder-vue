@@ -22,12 +22,6 @@ const emptyRegisterErrors = () => ({
 
 export default {
   components: { LoginForm, RegisterForm },
-  props: {
-    show: {
-      default: false,
-      type: Boolean
-    }
-  },
   data: () => ({
     loginErrorMessage: '',
     loginInProgress: false,
