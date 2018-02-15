@@ -11,8 +11,7 @@ const routes = [{
   path: 'collections'
 }, {
   component: CollectionRoute,
-  path: 'collection/:id',
-  props: true
+  path: 'collection/:id'
 }]
 
 export default new Router({

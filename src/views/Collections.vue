@@ -5,7 +5,6 @@ div
   ul
     li(v-for="collection in collections")
       router-link(:to="`collection/${collection._id}`") {{ collection.name }}
-      .description {{ collection.description }}
   modal(v-if="showCreateDialog", @close="showCreateDialog = false")
     div(slot="header") Create new collection
     div(slot="body")

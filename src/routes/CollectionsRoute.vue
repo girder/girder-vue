@@ -1,16 +1,11 @@
 <template lang="pug">
-collections-container(@created="goToCollection")
+collections-container(@created="(data) => $router.push(`/collection/${data._id}`)")
 </template>
 
 <script>
 import CollectionsContainer from '../containers/CollectionsContainer'
 
 export default {
-  components: { CollectionsContainer },
-  methods: {
-    goToCollection (data) {
-      this.$router.push(`/collection/${data._id}`)
-    }
-  }
+  components: { CollectionsContainer }
 }
 </script>

@@ -1,5 +1,5 @@
 <template lang="pug">
-collection-container(ref="wrapped", :id="id", @destroyed="goToCollections")
+collection-container(ref="wrapped", :id="$route.params.id", @destroyed="$router.push('/collections')")
 </template>
 
 <script>
@@ -8,17 +8,6 @@ import CollectionContainer from '../containers/CollectionContainer'
 
 export default {
   components: { CollectionContainer },
-  mixins: [fetchingRoute],
-  props: {
-    id: {
-      required: true,
-      type: String
-    }
-  },
-  methods: {
-    goToCollections (data) {
-      this.$router.push(`/collections`)
-    }
-  }
+  mixins: [fetchingRoute]
 }
 </script>
