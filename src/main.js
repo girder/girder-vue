@@ -10,7 +10,8 @@ import './utils/ui-setup'
 sync(store, router)
 setApiUrl(document.getElementById('girder-api-root').getAttribute('url'))
 onResponse((resp) => {
-  if (401 === resp.response.status && !store.getters['auth/isLoggedIn'] && !store.state.auth.authDialogVisible) {
+  if (resp.response && 401 === resp.response.status && !store.getters['auth/isLoggedIn'] &&
+      !store.state.auth.authDialogVisible) {
     store.commit('auth/showAuthDialog', {})
     store.dispatch('toast/showToast', {
       text: 'You must log in first.',

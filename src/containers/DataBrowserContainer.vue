@@ -1,6 +1,6 @@
 <template lang="pug">
 data-browser(:model="model", :model-type="modelType", :breadcrumbs="breadcrumbs", :items="items",
-    :folders="folders", :fetching="fetching", :router-links="true")
+    :folders="folders", :loading="fetching", :router-links="true")
 </template>
 
 <script>
