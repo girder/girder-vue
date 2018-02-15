@@ -39,6 +39,10 @@ export default {
         username: this.username,
         password: this.password
       })
+    },
+    reset () {
+      this.username = ''
+      this.password = ''
     }
   }
 }

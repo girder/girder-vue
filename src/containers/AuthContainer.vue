@@ -1,7 +1,9 @@
 <template lang="pug">
 div
-  login-form(v-if="loginMode", @login="doLogin", :error-message="loginErrorMessage", :login-in-progress="loginInProgress")
-  register-form(v-if="registerMode", @register="doRegister", :errors="registerErrors", :register-in-progress="registerInProgress")
+  login-form(v-if="loginMode", ref="loginForm", @login="doLogin",
+      :error-message="loginErrorMessage", :login-in-progress="loginInProgress")
+  register-form(v-if="registerMode", ref="registerForm", @register="doRegister",
+      :errors="registerErrors", :register-in-progress="registerInProgress")
 </template>
 
 <script>
@@ -40,6 +42,7 @@ export default {
       this.loginInProgress = true
       this.login(credentials).then(() => {
         this.$emit('login')
+        this.$refs.loginForm.reset()
       }).catch(({response}) => {
         this.loginErrorMessage = response.data.message
       }).finally(() => {
@@ -51,6 +54,7 @@ export default {
       this.registerInProgress = true
       this.register(params).then(() => {
         this.$emit('register')
+        this.$refs.registerForm.reset()
       }).catch(({response}) => {
         this.registerErrors[response.data.field] = response.data.message
       }).finally(() => {

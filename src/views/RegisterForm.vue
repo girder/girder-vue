@@ -60,6 +60,14 @@ export default {
         password: this.password
       })
     },
+    reset () {
+      this.username = ''
+      this.email = ''
+      this.firstName = ''
+      this.lastName = ''
+      this.password = ''
+      this.retypePassword = ''
+    },
     validatePasswordsMatch () {
       if (this.password === this.retypePassword) {
         this.retypePasswordErrors = []
