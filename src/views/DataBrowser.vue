@@ -14,7 +14,7 @@ div
   // Action bar
   v-toolbar(v-if="showActions", dense, flat, color="blue-grey lighten-4")
     v-spacer
-    v-btn(v-if="hasWriteAccess(model)", icon, color="success")
+    v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success")
       v-icon file_upload
     v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
       v-icon lock_outline
