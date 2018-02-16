@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import LoginDialog from '@/views/LoginDialog';
+import LoginForm from '@/views/LoginForm';
 
 describe('Login dialog', () => {
   it('should render correct contents', () => {
-    const wrapper = mount(LoginDialog, {
+    const wrapper = mount(LoginForm, {
       propsData: {
         errorMessage: 'An error message',
       },
