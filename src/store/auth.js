@@ -1,10 +1,10 @@
-import rest, { formEncode, setToken } from '@/rest'
+import rest, { formEncode, setToken } from '@/rest';
 
 export const authDialogModes = {
   LOGIN: 'login',
   REGISTER: 'register',
-  PASSWORD_RESET: 'password_reset'
-}
+  PASSWORD_RESET: 'password_reset',
+};
 
 export default {
   namespaced: true,
@@ -12,74 +12,74 @@ export default {
     authDialogMode: authDialogModes.LOGIN,
     authDialogVisible: false,
     user: null,
-    token: null
+    token: null,
   },
 
   getters: {
-    isLoggedIn: (state) => !!state.user,
-    isAdmin: (state) => !!state.user && !!state.user.admin
+    isLoggedIn: state => !!state.user,
+    isAdmin: state => !!state.user && !!state.user.admin,
   },
 
   mutations: {
-    setUser (state, data) {
-      state.user = data
+    setUser(state, data) {
+      state.user = data;
     },
 
-    setToken (state, data) {
-      state.token = data
-      setToken(data)
+    setToken(state, data) {
+      state.token = data;
+      setToken(data);
     },
 
-    setAuthDialogMode (state, mode) {
-      state.authDialogMode = mode
+    setAuthDialogMode(state, mode) {
+      state.authDialogMode = mode;
     },
 
-    setAuthDialogVisible (state, val) {
-      state.authDialogVisible = val
+    setAuthDialogVisible(state, val) {
+      state.authDialogVisible = val;
     },
 
-    showAuthDialog (state, { mode = authDialogModes.LOGIN, visible = true }) {
-      state.authDialogMode = mode
-      state.authDialogVisible = visible
-    }
+    showAuthDialog(state, { mode = authDialogModes.LOGIN, visible = true }) {
+      state.authDialogMode = mode;
+      state.authDialogVisible = visible;
+    },
   },
 
   actions: {
-    whoami ({commit}) {
+    whoami({ commit }) {
       return rest.get('/user/me').then((resp) => {
-        commit('setUser', resp.data)
-        return resp
-      })
+        commit('setUser', resp.data);
+        return resp;
+      });
     },
 
-    login ({commit}, {username, password}) {
+    login({ commit }, { username, password }) {
       return rest.get('/user/authentication', {
         headers: {
-          'Girder-Authorization': 'Basic ' + window.btoa(`${username}:${password}`)
+          'Girder-Authorization': `Basic ${window.btoa(`${username}:${password}`)}`,
         },
-        withCredentials: true
+        withCredentials: true,
       }).then((resp) => {
-        commit('setUser', resp.data.user)
-        commit('setToken', resp.data.authToken.token)
-        return resp
-      })
+        commit('setUser', resp.data.user);
+        commit('setToken', resp.data.authToken.token);
+        return resp;
+      });
     },
 
-    logout ({commit}) {
+    logout({ commit }) {
       return rest.delete('/user/authentication').then(() => {
-        commit('setUser', null)
-        commit('setToken', null)
-      })
+        commit('setUser', null);
+        commit('setToken', null);
+      });
     },
 
-    register ({commit}, params) {
+    register({ commit }, params) {
       return rest.post('/user', formEncode(params), {
-        withCredentials: true
+        withCredentials: true,
       }).then((resp) => {
-        commit('setToken', resp.data.authToken.token)
-        commit('setUser', resp.data)
-        return resp
-      })
-    }
-  }
-}
+        commit('setToken', resp.data.authToken.token);
+        commit('setUser', resp.data);
+        return resp;
+      });
+    },
+  },
+};

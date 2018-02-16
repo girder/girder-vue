@@ -22,27 +22,27 @@ export default {
   props: {
     collections: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     createDialog: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  data () {
+  data() {
     return {
       newCollection: {
         name: '',
-        description: ''
+        description: '',
       },
       createFailedMessage: null,
-      showCreateDialog: this.createDialog
-    }
+      showCreateDialog: this.createDialog,
+    };
   },
   methods: {
-    create () {
-      this.$emit('create', this.newCollection)
-    }
-  }
-}
+    create() {
+      this.$emit('create', this.newCollection);
+    },
+  },
+};
 </script>

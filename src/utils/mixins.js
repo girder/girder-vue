@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import { AccessType } from '@/constants'
+import Vue from 'vue';
+import { mapGetters } from 'vuex';
+import { AccessType } from '@/constants';
 
 /**
  * This mixin should be used on any container component whose data needs to be
@@ -9,15 +9,15 @@ import { AccessType } from '@/constants'
  */
 export const fetchingContainer = {
   computed: mapGetters('auth', ['isLoggedIn']),
-  created () {
-    this.fetch()
+  created() {
+    this.fetch();
   },
   watch: {
-    isLoggedIn () {
-      this.fetch()
-    }
-  }
-}
+    isLoggedIn() {
+      this.fetch();
+    },
+  },
+};
 
 /**
  * Router components that wrap container components that should fetch data on route change
@@ -25,15 +25,15 @@ export const fetchingContainer = {
  */
 export const fetchingRoute = {
   watch: {
-    $route () {
+    $route() {
       // This watch callback gets triggered before the data gets flowed down to child components,
       // so we need to wait until the next tick to fetch.
-      Vue.nextTick().then(() =>{
-        this.$refs.wrapped.fetch()
-      })
-    }
-  }
-}
+      Vue.nextTick().then(() => {
+        this.$refs.wrapped.fetch();
+      });
+    },
+  },
+};
 
 /**
  * This mixin exposes helper methods for components that need to check that the current user has
@@ -41,7 +41,7 @@ export const fetchingRoute = {
  */
 export const accessLevelChecker = {
   methods: {
-    hasWriteAccess: (resource) => resource._accessLevel >= AccessType.WRITE,
-    hasAdminAccess: (resource) => resource._accessLevel >= AccessType.ADMIN
-  }
-}
+    hasWriteAccess: resource => resource._accessLevel >= AccessType.WRITE,
+    hasAdminAccess: resource => resource._accessLevel >= AccessType.ADMIN,
+  },
+};

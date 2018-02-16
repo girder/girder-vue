@@ -1,27 +1,27 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 export default {
   namespaced: true,
   state: {
-    toasts: _([])
+    toasts: _([]),
   },
 
   mutations: {
-    addToast (state, obj) {
-      state.toasts.push(obj)
+    addToast(state, obj) {
+      state.toasts.push(obj);
     },
-    removeToast (state, obj) {
-      state.toasts.pull(obj)
-    }
+    removeToast(state, obj) {
+      state.toasts.pull(obj);
+    },
   },
 
   actions: {
-    showToast ({commit}, {text, type, ms=4000}) {
-      const obj = { text, type }
-      commit('addToast', obj)
+    showToast({ commit }, { text, type, ms = 4000 }) {
+      const obj = { text, type };
+      commit('addToast', obj);
       window.setTimeout(() => {
-        commit('removeToast', obj)
-      }, ms)
-    }
-  }
-}
+        commit('removeToast', obj);
+      }, ms);
+    },
+  },
+};

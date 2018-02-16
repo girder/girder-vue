@@ -6,15 +6,15 @@ div
 </template>
 
 <script>
-import DataBrowserContainer from '../containers/DataBrowserContainer'
+import DataBrowserContainer from '../containers/DataBrowserContainer';
 
 export default {
   components: { DataBrowserContainer },
   props: {
     collection: {
       required: true,
-      type: Object
-    }
-  }
-}
+      type: Object,
+    },
+  },
+};
 </script>

@@ -1,4 +1,4 @@
-import { ResourceIcons } from '@/constants'
+import { ResourceIcons } from '@/constants';
 
 export default {
   namespaced: true,
@@ -9,7 +9,7 @@ export default {
       id: 'home',
       icon: 'home',
       text: 'Home',
-      route: '/'
+      route: '/',
     }, {
       id: 'collections',
       icon: ResourceIcons.COLLECTION,
@@ -19,37 +19,37 @@ export default {
       id: 'users',
       icon: ResourceIcons.USER,
       text: 'Users',
-      route: '/users'
+      route: '/users',
     }, {
       id: 'groups',
       icon: ResourceIcons.GROUP,
       text: 'Groups',
-      route: '/groups'
+      route: '/groups',
     }, {
       id: 'myData',
       icon: 'folder_shared',
       text: 'My data',
       route: '/user/me',
-      requireLogin: true
+      requireLogin: true,
     }, {
       id: 'admin',
       icon: 'build',
       text: 'Admin console',
       route: '/admin',
-      requireAdmin: true
-    }]
+      requireAdmin: true,
+    }],
   },
 
   mutations: {
-    setTitle (state, title) {
-      state.title = title
+    setTitle(state, title) {
+      state.title = title;
     },
-    setToolbarColor (state, color) {
-      state.toolbarColor = color
+    setToolbarColor(state, color) {
+      state.toolbarColor = color;
     },
-    addNavItem (state, {item}) {
+    addNavItem(state, { item }) {
       // TODO support adding before or after a particular id
-      state.navItems.push(item)
-    }
-  }
-}
+      state.navItems.push(item);
+    },
+  },
+};

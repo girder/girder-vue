@@ -3,9 +3,9 @@ folder(v-if="folder", :folder="folder", @destroy="destroy")
 </template>
 
 <script>
-import rest from '@/rest'
-import { fetchingContainer } from '@/utils/mixins'
-import Folder from '../views/Folder'
+import rest from '@/rest';
+import { fetchingContainer } from '@/utils/mixins';
+import Folder from '../views/Folder';
 
 export default {
   components: { Folder },
@@ -13,24 +13,24 @@ export default {
   props: {
     id: {
       default: null,
-      type: String
-    }
+      type: String,
+    },
   },
   data: () => ({
-    folder: null
+    folder: null,
   }),
   methods: {
-    destroy () {
+    destroy() {
       rest.delete(`/folder/${this.id}`).then(() => {
-        this.$emit('destroyed', this.folder)
-        this.folder = null
-      })
+        this.$emit('destroyed', this.folder);
+        this.folder = null;
+      });
     },
-    fetch () {
-      rest.get(`/folder/${this.id}`).then(({data}) => {
-        this.folder = data
-      })
-    }
-  }
-}
+    fetch() {
+      rest.get(`/folder/${this.id}`).then(({ data }) => {
+        this.folder = data;
+      });
+    },
+  },
+};
 </script>

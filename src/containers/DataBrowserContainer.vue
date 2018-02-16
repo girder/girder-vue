@@ -4,9 +4,9 @@ data-browser(:model="model", :breadcrumbs="breadcrumbs", :items="items", :folder
 </template>
 
 <script>
-import rest from '../rest'
-import { fetchingContainer } from '../utils/mixins'
-import DataBrowser from '../views/DataBrowser'
+import rest from '../rest';
+import { fetchingContainer } from '../utils/mixins';
+import DataBrowser from '../views/DataBrowser';
 
 export default {
   components: { DataBrowser },
@@ -14,71 +14,72 @@ export default {
   props: {
     model: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
   data: () => ({
     breadcrumbs: [],
     items: [],
     folders: [],
-    fetching: false
+    fetching: false,
   }),
   computed: {
-    modelType () {
-      return this.model._modelType
-    }
+    modelType() {
+      return this.model._modelType;
+    },
   },
   watch: {
-    model () {
-      this.fetch()
-    }
+    model() {
+      this.fetch();
+    },
   },
   methods: {
-    fetch () {
-      this.fetching = true
-      this.items = []
-      this.folders = []
+    fetch() {
+      this.fetching = true;
+      this.items = [];
+      this.folders = [];
 
-      let fetchedFolders, fetchedItems = []
+      let fetchedFolders,
+        fetchedItems = [];
       const requests = [rest.get('/folder', {
         params: {
           parentId: this.model._id,
-          parentType: this.modelType
-        }
-      }).then(({data}) => {
-        fetchedFolders = data
-      })]
+          parentType: this.modelType,
+        },
+      }).then(({ data }) => {
+        fetchedFolders = data;
+      })];
 
       if (this.modelType === 'folder') {
         const fetchItems = rest.get('/item', {
           params: {
-            folderId: this.model._id
-          }
-        }).then(({data}) => {
-          fetchedItems = data
-        })
+            folderId: this.model._id,
+          },
+        }).then(({ data }) => {
+          fetchedItems = data;
+        });
 
-        const fetchRootPath = rest.get(`/folder/${this.model._id}/rootpath`).then(({data}) => {
+        const fetchRootPath = rest.get(`/folder/${this.model._id}/rootpath`).then(({ data }) => {
           this.breadcrumbs = data.concat([{
             type: this.modelType,
-            object: this.model
-          }])
-        })
+            object: this.model,
+          }]);
+        });
 
-        requests.push(fetchItems, fetchRootPath)
+        requests.push(fetchItems, fetchRootPath);
       } else {
         this.breadcrumbs = [{
           type: this.modelType,
-          object: this.model
-        }]
+          object: this.model,
+        }];
       }
 
       Promise.all(requests).finally(() => {
-        this.folders = fetchedFolders
-        this.items = fetchedItems
-        this.fetching = false
-      })
-    }
-  }
-}
+        this.folders = fetchedFolders;
+        this.items = fetchedItems;
+        this.fetching = false;
+      });
+    },
+  },
+};
 </script>

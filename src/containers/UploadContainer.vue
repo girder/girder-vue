@@ -1,10 +1,17 @@
+<template/>
+
 <script>
+import { ResourceIcons } from '@/constants';
+
 export default {
   props: {
     model: {
       required: true,
-      type: Object
-    }
-  }
-}
+      type: Object,
+    },
+  },
+  data: () => ({
+    ResourceIcons,
+  }),
+};
 </script>

@@ -3,10 +3,10 @@ collection(v-if="collection", :collection="collection", @destroy="destroy")
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import rest from '@/rest'
-import { fetchingContainer } from '@/utils/mixins'
-import Collection from '../views/Collection'
+import { mapActions } from 'vuex';
+import rest from '@/rest';
+import { fetchingContainer } from '@/utils/mixins';
+import Collection from '../views/Collection';
 
 export default {
   components: { Collection },
@@ -14,28 +14,28 @@ export default {
   props: {
     id: {
       default: null,
-      type: String
-    }
+      type: String,
+    },
   },
   data: () => ({
-    collection: null
+    collection: null,
   }),
   methods: {
-    destroy () {
+    destroy() {
       rest.delete(`/collection/${this.id}`).then(() => {
-        this.collection = null
+        this.collection = null;
         this.showToast({
-          text: 'Collection deleted'
-        })
-        this.$emit('destroyed')
-      })
+          text: 'Collection deleted',
+        });
+        this.$emit('destroyed');
+      });
     },
-    fetch () {
-      rest.get(`/collection/${this.id}`).then(({data}) => {
-        this.collection = data
-      })
+    fetch() {
+      rest.get(`/collection/${this.id}`).then(({ data }) => {
+        this.collection = data;
+      });
     },
-    ...mapActions('toast', ['showToast'])
-  }
-}
+    ...mapActions('toast', ['showToast']),
+  },
+};
 </script>

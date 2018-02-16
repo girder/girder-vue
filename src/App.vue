@@ -6,29 +6,29 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
-import AuthContainer from './containers/AuthContainer'
+import { mapMutations, mapState } from 'vuex';
+import AuthContainer from './containers/AuthContainer';
 
 export default {
   components: {
-    AuthContainer
+    AuthContainer,
   },
-  data () {
+  data() {
     return {
-      showAuthDialog: this.authDialogVisible
-    }
+      showAuthDialog: this.authDialogVisible,
+    };
   },
   computed: mapState('auth', ['authDialogMode', 'authDialogVisible']),
   watch: {
-    authDialogVisible (val) {
-      this.showAuthDialog = val
+    authDialogVisible(val) {
+      this.showAuthDialog = val;
     },
-    showAuthDialog (val) {
-      this.setAuthDialogVisible(val)
-    }
+    showAuthDialog(val) {
+      this.setAuthDialogVisible(val);
+    },
   },
-  methods: mapMutations('auth', ['setAuthDialogMode', 'setAuthDialogVisible'])
-}
+  methods: mapMutations('auth', ['setAuthDialogMode', 'setAuthDialogVisible']),
+};
 </script>
 
 <style lang="stylus">

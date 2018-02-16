@@ -3,10 +3,11 @@
 // we are also using it with karma-webpack
 //   https://github.com/webpack/karma-webpack
 
-var webpackConfig = require('../../build/webpack.test.conf')
-var browser = process.env.KARMA_BROWSER || 'ChromeHeadless'
+const webpackConfig = require('../../build/webpack.test.conf');
 
-module.exports = function karmaConfig (config) {
+const browser = process.env.KARMA_BROWSER || 'ChromeHeadless';
+
+module.exports = function karmaConfig(config) {
   config.set({
     // to run in additional browsers:
     // 1. install corresponding karma launcher
@@ -17,18 +18,18 @@ module.exports = function karmaConfig (config) {
     reporters: ['spec', 'coverage'],
     files: ['./index.js'],
     preprocessors: {
-      './index.js': ['webpack', 'sourcemap']
+      './index.js': ['webpack', 'sourcemap'],
     },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     },
     coverageReporter: {
       dir: './coverage',
       reporters: [
         { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
-      ]
-    }
-  })
-}
+        { type: 'text-summary' },
+      ],
+    },
+  });
+};

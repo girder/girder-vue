@@ -19,14 +19,14 @@ export default {
   props: {
     errors: {
       default: () => ({}),
-      type: Object
+      type: Object,
     },
     registerInProgress: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  data () {
+  data() {
     return {
       username: '',
       email: '',
@@ -34,48 +34,48 @@ export default {
       lastName: '',
       password: '',
       retypePassword: '',
-      retypePasswordErrors: []
-    }
+      retypePasswordErrors: [],
+    };
   },
   computed: {
-    submitDisabled () {
-      return !!this.retypePasswordErrors.length || this.registerInProgress
+    submitDisabled() {
+      return !!this.retypePasswordErrors.length || this.registerInProgress;
     },
   },
   watch: {
-    password () {
-      this.validatePasswordsMatch()
+    password() {
+      this.validatePasswordsMatch();
     },
-    retypePassword () {
-      this.validatePasswordsMatch()
-    }
+    retypePassword() {
+      this.validatePasswordsMatch();
+    },
   },
   methods: {
-    register () {
+    register() {
       this.$emit('register', {
         login: this.username,
         email: this.email,
         firstName: this.firstName,
         lastName: this.lastName,
-        password: this.password
-      })
+        password: this.password,
+      });
     },
-    reset () {
-      this.username = ''
-      this.email = ''
-      this.firstName = ''
-      this.lastName = ''
-      this.password = ''
-      this.retypePassword = ''
+    reset() {
+      this.username = '';
+      this.email = '';
+      this.firstName = '';
+      this.lastName = '';
+      this.password = '';
+      this.retypePassword = '';
     },
-    validatePasswordsMatch () {
+    validatePasswordsMatch() {
       if (this.password === this.retypePassword) {
-        this.retypePasswordErrors = []
+        this.retypePasswordErrors = [];
       } else {
-        this.retypePasswordErrors = ['Passwords do not match']
+        this.retypePasswordErrors = ['Passwords do not match'];
       }
     },
-    listify: (v) => v ? [v] : []
-  }
-}
+    listify: v => (v ? [v] : []),
+  },
+};
 </script>

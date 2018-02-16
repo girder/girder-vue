@@ -39,45 +39,45 @@ v-app
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
-import { getApiUrl } from '@/rest'
-import { authDialogModes } from '@/store/auth'
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { getApiUrl } from '@/rest';
+import { authDialogModes } from '@/store/auth';
 
 export default {
   data: () => ({
     dialog: null,
-    drawer: null
+    drawer: null,
   }),
   computed: {
     getApiUrl,
     ...mapState('auth', ['user']),
     ...mapState('layout', ['navItems', 'title', 'toolbarColor']),
-    ...mapGetters('auth', ['isLoggedIn', 'isAdmin'])
+    ...mapGetters('auth', ['isLoggedIn', 'isAdmin']),
   },
   methods: {
-    doLogout () {
-      this.logout()
-      this.$router.push({path: '/'})
+    doLogout() {
+      this.logout();
+      this.$router.push({ path: '/' });
     },
-    isNavItemVisible (item) {
+    isNavItemVisible(item) {
       if (item.requireAdmin === true) {
-        return this.isAdmin
+        return this.isAdmin;
       }
       if (item.requireLogin === true) {
-        return this.isLoggedIn
+        return this.isLoggedIn;
       }
-      return true
+      return true;
     },
-    showLoginDialog () {
-      this.showAuthDialog({mode: authDialogModes.LOGIN})
+    showLoginDialog() {
+      this.showAuthDialog({ mode: authDialogModes.LOGIN });
     },
-    showRegisterDialog () {
-      this.showAuthDialog({mode: authDialogModes.REGISTER})
+    showRegisterDialog() {
+      this.showAuthDialog({ mode: authDialogModes.REGISTER });
     },
     ...mapActions('auth', ['logout']),
-    ...mapMutations('auth', ['showAuthDialog'])
-  }
-}
+    ...mapMutations('auth', ['showAuthDialog']),
+  },
+};
 </script>
 
 <style lang="stylus" scoped>

@@ -3,11 +3,11 @@ collection-container(ref="wrapped", :id="$route.params.id", @destroyed="$router.
 </template>
 
 <script>
-import { fetchingRoute } from '@/utils/mixins'
-import CollectionContainer from '../containers/CollectionContainer'
+import { fetchingRoute } from '@/utils/mixins';
+import CollectionContainer from '../containers/CollectionContainer';
 
 export default {
   components: { CollectionContainer },
-  mixins: [fetchingRoute]
-}
+  mixins: [fetchingRoute],
+};
 </script>

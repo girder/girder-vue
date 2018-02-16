@@ -3,9 +3,9 @@ collections-container(@created="(data) => $router.push(`/collection/${data._id}`
 </template>
 
 <script>
-import CollectionsContainer from '../containers/CollectionsContainer'
+import CollectionsContainer from '../containers/CollectionsContainer';
 
 export default {
-  components: { CollectionsContainer }
-}
+  components: { CollectionsContainer },
+};
 </script>

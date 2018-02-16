@@ -7,10 +7,10 @@ div
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-import { authDialogModes } from '@/store/auth'
-import LoginForm from '../views/LoginForm'
-import RegisterForm from '../views/RegisterForm'
+import { mapActions, mapState } from 'vuex';
+import { authDialogModes } from '@/store/auth';
+import LoginForm from '../views/LoginForm';
+import RegisterForm from '../views/RegisterForm';
 
 // TODO add reset-password-form subcomponent
 
@@ -19,8 +19,8 @@ const emptyRegisterErrors = () => ({
   email: null,
   firstName: null,
   lastName: null,
-  password: null
-})
+  password: null,
+});
 
 export default {
   components: { LoginForm, RegisterForm },
@@ -28,40 +28,40 @@ export default {
     loginErrorMessage: '',
     loginInProgress: false,
     registerErrors: emptyRegisterErrors(),
-    registerInProgress: false
+    registerInProgress: false,
   }),
   computed: {
-    loginMode () { return this.authDialogMode === authDialogModes.LOGIN },
-    registerMode () { return this.authDialogMode === authDialogModes.REGISTER },
-    resetPasswordMode () { return this.authDialogMode === authDialogModes.PASSWORD_RESET },
-    ...mapState('auth', ['authDialogMode'])
+    loginMode() { return this.authDialogMode === authDialogModes.LOGIN; },
+    registerMode() { return this.authDialogMode === authDialogModes.REGISTER; },
+    resetPasswordMode() { return this.authDialogMode === authDialogModes.PASSWORD_RESET; },
+    ...mapState('auth', ['authDialogMode']),
   },
   methods: {
-    doLogin (credentials) {
-      this.loginErrorMessage = ''
-      this.loginInProgress = true
+    doLogin(credentials) {
+      this.loginErrorMessage = '';
+      this.loginInProgress = true;
       this.login(credentials).then(() => {
-        this.$emit('login')
-        this.$refs.loginForm.reset()
-      }).catch(({response}) => {
-        this.loginErrorMessage = response.data.message
+        this.$emit('login');
+        this.$refs.loginForm.reset();
+      }).catch(({ response }) => {
+        this.loginErrorMessage = response.data.message;
       }).finally(() => {
-        this.loginInProgress = false
-      })
+        this.loginInProgress = false;
+      });
     },
-    doRegister (params) {
-      this.registerErrors = emptyRegisterErrors()
-      this.registerInProgress = true
+    doRegister(params) {
+      this.registerErrors = emptyRegisterErrors();
+      this.registerInProgress = true;
       this.register(params).then(() => {
-        this.$emit('register')
-        this.$refs.registerForm.reset()
-      }).catch(({response}) => {
-        this.registerErrors[response.data.field] = response.data.message
+        this.$emit('register');
+        this.$refs.registerForm.reset();
+      }).catch(({ response }) => {
+        this.registerErrors[response.data.field] = response.data.message;
       }).finally(() => {
-        this.registerInProgress = false
-      })
+        this.registerInProgress = false;
+      });
     },
-    ...mapActions('auth', ['login', 'register'])
-  }
-}
+    ...mapActions('auth', ['login', 'register']),
+  },
+};
 </script>

@@ -55,9 +55,9 @@ div
 </template>
 
 <script>
-import { ResourceIcons } from '@/constants'
-import { accessLevelChecker } from '@/utils/mixins'
-import UploadContainer from '../containers/UploadContainer'
+import { ResourceIcons } from '@/constants';
+import { accessLevelChecker } from '@/utils/mixins';
+import UploadContainer from '../containers/UploadContainer';
 
 export default {
   components: { UploadContainer },
@@ -65,62 +65,62 @@ export default {
   props: {
     loading: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     model: {
       required: true,
-      type: Object
+      type: Object,
     },
     breadcrumbs: {
       default: null,
-      type: Array
+      type: Array,
     },
     folders: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     items: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     showActions: {
       default: true,
-      type: Boolean
+      type: Boolean,
     },
     routerLinks: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data: () => ({
     ResourceIcons,
-    showUploader: false
+    showUploader: false,
   }),
   computed: {
-    breadcrumbData () {
-      return this.breadcrumbs.map((crumb) => ({
+    breadcrumbData() {
+      return this.breadcrumbs.map(crumb => ({
         title: crumb.object.name || crumb.object.login,
         to: `/${crumb.type}/${crumb.object._id}`, // TODO no hardcode path
         icon: ResourceIcons[crumb.type.toUpperCase()],
-        ...crumb
-      }))
+        ...crumb,
+      }));
     },
-    empty () {
-      return !this.folders.length && !this.items.length && !this.loading
+    empty() {
+      return !this.folders.length && !this.items.length && !this.loading;
     },
-    modelType () {
-      return this.model._modelType
+    modelType() {
+      return this.model._modelType;
     },
-    parentRouteOpt () {
-      return this.routerLinks ? `/${this.model.parentCollection}/${this.model.parentId}` : null // TODO no hardcode path
-    }
+    parentRouteOpt() {
+      return this.routerLinks ? `/${this.model.parentCollection}/${this.model.parentId}` : null; // TODO no hardcode path
+    },
   },
   methods: {
-    routeOpt (model) {
-      return this.routerLinks ? `/${model._modelType}/${model._id}` : null // TODO no hardcode path
-    }
-  }
-}
+    routeOpt(model) {
+      return this.routerLinks ? `/${model._modelType}/${model._id}` : null; // TODO no hardcode path
+    },
+  },
+};
 </script>
 
 <style lang="stylus" scoped>

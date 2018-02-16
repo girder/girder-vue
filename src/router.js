@@ -1,27 +1,27 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Layout from '@/views/Layout'
-import CollectionRoute from '@/routes/CollectionRoute'
-import CollectionsRoute from '@/routes/CollectionsRoute'
-import FolderRoute from '@/routes/FolderRoute'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Layout from '@/views/Layout';
+import CollectionRoute from '@/routes/CollectionRoute';
+import CollectionsRoute from '@/routes/CollectionsRoute';
+import FolderRoute from '@/routes/FolderRoute';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const routes = [{
   component: CollectionsRoute,
-  path: 'collections'
+  path: 'collections',
 }, {
   component: CollectionRoute,
-  path: 'collection/:id'
+  path: 'collection/:id',
 }, {
   component: FolderRoute,
-  path: 'folder/:id'
-}]
+  path: 'folder/:id',
+}];
 
 export default new Router({
   routes: [{
     path: '/',
     component: Layout,
-    children: routes
-  }]
-})
+    children: routes,
+  }],
+});

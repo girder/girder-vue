@@ -3,8 +3,8 @@ export const AccessType = {
   READ: 0,
   WRITE: 1,
   ADMIN: 2,
-  SITE_ADMIN: 100
-}
+  SITE_ADMIN: 100,
+};
 
 /**
  * Icons corresponding to resource types in Girder.
@@ -14,5 +14,5 @@ export const ResourceIcons = {
   FOLDER: 'folder',
   GROUP: 'people',
   ITEM: 'description',
-  USER: 'person'
-}
+  USER: 'person',
+};

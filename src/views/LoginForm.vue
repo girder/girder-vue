@@ -15,35 +15,35 @@ export default {
   props: {
     errorMessage: {
       default: '',
-      type: String
+      type: String,
     },
     loginInProgress: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  data () {
+  data() {
     return {
       username: '',
-      password: ''
-    }
+      password: '',
+    };
   },
   computed: {
-    errorMessages () {
-      return this.errorMessage ? [this.errorMessage] : []
-    }
+    errorMessages() {
+      return this.errorMessage ? [this.errorMessage] : [];
+    },
   },
   methods: {
-    login () {
+    login() {
       this.$emit('login', {
         username: this.username,
-        password: this.password
-      })
+        password: this.password,
+      });
     },
-    reset () {
-      this.username = ''
-      this.password = ''
-    }
-  }
-}
+    reset() {
+      this.username = '';
+      this.password = '';
+    },
+  },
+};
 </script>
