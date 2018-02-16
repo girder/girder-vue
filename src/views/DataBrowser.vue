@@ -1,58 +1,59 @@
 <template lang="pug">
 div
   // Breadcrumb bar
-  v-toolbar(dense, dark, flat, color="blue-grey")
-    v-breadcrumbs.ml-0
-      v-icon(slot="divider") keyboard_arrow_right
-      v-breadcrumbs-item(v-for="crumb in breadcrumbData", :key="crumb.object._id", :to="crumb.to")
-        v-icon {{ crumb.icon }}
-        .bc-link.ml-1 {{ crumb.title }}
-    v-spacer
-    v-btn(v-if="breadcrumbs.length > 1", icon, @click="$emit('up')", :to="parentRouteOpt")
-      v-icon arrow_upward
+  slot(name="breadcrumbs")
+    v-toolbar(dense, dark, flat, color="blue-grey")
+      v-breadcrumbs.ml-0
+        v-icon(slot="divider") keyboard_arrow_right
+        v-breadcrumbs-item(v-for="crumb in breadcrumbData", :key="crumb.object._id", :to="crumb.to")
+          v-icon {{ crumb.icon }}
+          .bc-link.ml-1 {{ crumb.title }}
+      v-spacer
+      v-btn(v-if="breadcrumbs.length > 1", icon, @click="$emit('up')", :to="parentRouteOpt")
+        v-icon arrow_upward
 
   // Action bar
-  v-toolbar(v-if="showActions", dense, flat, color="blue-grey lighten-4")
-    v-spacer
-    v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
-        @click="showUploader = true")
-      v-icon file_upload
-    v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
-      v-icon lock_outline
-    v-btn(icon, dark, color="blue-grey lighten-2")
-      v-icon menu
+  slot(name="actions")
+    v-toolbar(dense, flat, color="blue-grey lighten-4")
+      v-spacer
+      v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
+          @click="showUploader = true")
+        v-icon file_upload
+      v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
+        v-icon lock_outline
+      v-btn(icon, dark, color="blue-grey lighten-2")
+        v-icon menu
 
   // Loading indicator
-  v-progress-linear.mt-0.mb-0(v-if="loading", indeterminate)
+  slot(name="loading")
+    v-progress-linear.mt-0.mb-0(v-if="loading", indeterminate)
 
   // Folder list
-  v-list.pb-0.pt-0(dense)
-    v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder)", :key="folder._id",
-        :to="routeOpt(folder)")
-      v-icon {{ ResourceIcons.FOLDER }}
-      v-list-tile-title.ml-1 {{ folder.name }}
+  slot(name="folders")
+    v-list.pb-0.pt-0(dense)
+      v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder)",
+          :key="folder._id", :to="routeOpt(folder)")
+        v-icon {{ ResourceIcons.FOLDER }}
+        v-list-tile-title.ml-1 {{ folder.name }}
 
   // Item list
-  v-list.pb-0.pt-0(dense)
-    v-list-tile(v-for="item in items", @click="$emit('itemClick', item)", :key="item._id",
-        :to="routeOpt(item)")
-      v-icon {{ ResourceIcons.ITEM }}
-      v-list-tile-title.ml-1 {{ item.name }}
+  slot(name="items")
+    v-list.pb-0.pt-0(dense)
+      v-list-tile(v-for="item in items", @click="$emit('itemClick', item)", :key="item._id",
+          :to="routeOpt(item)")
+        v-icon {{ ResourceIcons.ITEM }}
+        v-list-tile-title.ml-1 {{ item.name }}
 
   // Empty status alert
-  v-alert.mt-0(:value="empty", type="info", transition="scale-transition")
-    | This {{ modelType }} is currently empty.
+  slot(name="empty_alert")
+    v-alert.mt-0(:value="empty", type="info", transition="scale-transition")
+      | This {{ modelType }} is currently empty.
 
   // Upload container
-  v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
-      scrollable, transition="dialog-bottom-transition")
-    v-card(tile)
-      v-toolbar(card, dense, dark, color="success")
-        v-toolbar-title UPLOAD
-        v-spacer
-        v-btn(icon, flat, @click="showUploader = false")
-          v-icon close
-    upload-container(:model="model")
+  slot(name="uploader")
+    v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
+        scrollable, transition="dialog-bottom-transition")
+      upload-container(:model="model", @close="showUploader = false")
 </template>
 
 <script>
@@ -83,10 +84,6 @@ export default {
     items: {
       default: () => [],
       type: Array,
-    },
-    showActions: {
-      default: true,
-      type: Boolean,
     },
     routerLinks: {
       default: false,
