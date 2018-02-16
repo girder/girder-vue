@@ -1,6 +1,6 @@
 <template lang="pug">
-data-browser(:model="model", :breadcrumbs="breadcrumbs", :items="items", :folders="folders",
-    :loading="fetching", :router-links="true")
+data-browser(ref="view", :model="model", :breadcrumbs="breadcrumbs", :items="items",
+    :folders="folders", :loading="fetching", :router-links="true")
 </template>
 
 <script>
@@ -35,12 +35,13 @@ export default {
   },
   methods: {
     fetch() {
+      this.$refs.view.showUploader = false;
       this.fetching = true;
       this.items = [];
       this.folders = [];
 
-      let fetchedFolders,
-        fetchedItems = [];
+      let fetchedFolders;
+      let fetchedItems = [];
       const requests = [rest.get('/folder', {
         params: {
           parentId: this.model._id,

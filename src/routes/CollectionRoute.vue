@@ -1,5 +1,6 @@
 <template lang="pug">
-collection-container(ref="wrapped", :id="$route.params.id", @destroyed="$router.push('/collections')")
+collection-container(ref="wrapped", :id="$route.params.id",
+    @destroyed="$router.push('/collections')")
 </template>
 
 <script>

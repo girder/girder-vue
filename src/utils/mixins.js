@@ -4,12 +4,13 @@ import { AccessType } from '@/constants';
 
 /**
  * This mixin should be used on any container component whose data needs to be
- * fetched on creation and also on user login/logout. Components using this mixin
+ * fetched on initialization and also on user login/logout. Components using this mixin
  * must implement a ``fetch`` method.
  */
 export const fetchingContainer = {
   computed: mapGetters('auth', ['isLoggedIn']),
-  created() {
+  // Use mounted hook instead of created so that $refs is available in fetch()
+  mounted() {
     this.fetch();
   },
   watch: {

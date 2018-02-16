@@ -2,7 +2,8 @@
 v-app
   v-navigation-drawer(fixed, :clipped="$vuetify.breakpoint.mdAndUp", app, v-model="drawer")
     v-list
-      v-list-tile(v-for="item in navItems", :key="item.id", v-if="isNavItemVisible(item)", :to="item.route")
+      v-list-tile(v-for="item in navItems", :key="item.id", v-if="isNavItemVisible(item)",
+          :to="item.route")
         v-list-tile-action(v-if="item.icon")
           v-icon {{ item.icon }}
         v-list-tile-content

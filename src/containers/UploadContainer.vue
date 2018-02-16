@@ -1,4 +1,6 @@
-<template/>
+<template lang="pug">
+div
+</template>
 
 <script>
 import { ResourceIcons } from '@/constants';

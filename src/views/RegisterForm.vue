@@ -4,14 +4,20 @@ v-card
     h3.headline Register
   form(@submit.prevent="register")
     v-card-text
-      v-text-field(v-model="username", label="Username", autofocus, :error-messages="listify(errors.login)")
+      v-text-field(v-model="username", label="Username", autofocus,
+          :error-messages="listify(errors.login)")
       v-text-field(v-model="email", label="Email", :error-messages="listify(errors.email)")
-      v-text-field(v-model="firstName", label="First name", :error-messages="listify(errors.firstName)")
-      v-text-field(v-model="lastName", label="Last name", :error-messages="listify(errors.lastName)")
-      v-text-field(v-model="password", type="password", label="Password", :error-messages="listify(errors.password)")
-      v-text-field(v-model="retypePassword", type="password", label="Retype password", :error-messages="retypePasswordErrors")
+      v-text-field(v-model="firstName", label="First name",
+          :error-messages="listify(errors.firstName)")
+      v-text-field(v-model="lastName", label="Last name",
+          :error-messages="listify(errors.lastName)")
+      v-text-field(v-model="password", type="password", label="Password",
+          :error-messages="listify(errors.password)")
+      v-text-field(v-model="retypePassword", type="password", label="Retype password",
+          :error-messages="retypePasswordErrors")
     v-card-actions
-      v-btn(type="submit", color="primary", :disabled="submitDisabled", :loading="registerInProgress") Register
+      v-btn(type="submit", color="primary", :disabled="submitDisabled",
+          :loading="registerInProgress") Register
 </template>
 
 <script>

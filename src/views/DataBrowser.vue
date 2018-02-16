@@ -40,7 +40,8 @@ div
       v-list-tile-title.ml-1 {{ item.name }}
 
   // Empty status alert
-  v-alert.mt-0(:value="empty", type="info", transition="scale-transition") This {{ modelType }} is currently empty.
+  v-alert.mt-0(:value="empty", type="info", transition="scale-transition")
+    | This {{ modelType }} is currently empty.
 
   // Upload container
   v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
@@ -125,7 +126,7 @@ export default {
 
 <style lang="stylus" scoped>
 .bc-link
-  color white
+  color #fff
 
   &:hover
     color #ddd

@@ -5,9 +5,11 @@ v-card
   form(@submit.prevent="login")
     v-card-text
       v-text-field(v-model="username", label="Username or email", autofocus)
-      v-text-field(v-model="password", type="password", label="Password", :error-messages="errorMessages")
+      v-text-field(v-model="password", type="password", label="Password",
+          :error-messages="errorMessages")
     v-card-actions
-      v-btn(type="submit", color="primary", :disabled="loginInProgress", :loading="loginInProgress") Login
+      v-btn(type="submit", color="primary", :disabled="loginInProgress",
+          :loading="loginInProgress") Login
 </template>
 
 <script>
