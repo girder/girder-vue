@@ -22,7 +22,7 @@ v-app
           v-icon arrow_drop_down
         v-list(dense)
           v-list-tile(:to="`/useraccount/${user._id}`")
-            v-icon.mr-2 settings
+            v-icon.mr-2 fingerprint
             v-list-tile-title My account
           v-list-tile(@click="doLogout")
             v-icon.mr-2 exit_to_app

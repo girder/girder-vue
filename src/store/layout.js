@@ -33,7 +33,7 @@ export default {
       requireLogin: true
     }, {
       id: 'admin',
-      icon: 'settings',
+      icon: 'build',
       text: 'Admin console',
       route: '/admin',
       requireAdmin: true

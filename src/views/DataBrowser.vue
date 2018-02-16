@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   // Breadcrumb bar
-  v-toolbar(dense, dark, flat, color="blue-grey lighten-1")
+  v-toolbar(dense, dark, flat, color="blue-grey")
     v-breadcrumbs.ml-0
       v-icon(slot="divider") keyboard_arrow_right
       v-breadcrumbs-item(v-for="crumb in breadcrumbData", :key="crumb.object._id", :to="crumb.to")
@@ -19,8 +19,8 @@ div
       v-icon file_upload
     v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
       v-icon lock_outline
-    v-btn(icon, dark, color="blue-grey lighten-3")
-      v-icon list
+    v-btn(icon, dark, color="blue-grey lighten-2")
+      v-icon menu
 
   // Loading indicator
   v-progress-linear.mt-0.mb-0(v-if="loading", indeterminate)
@@ -46,13 +46,21 @@ div
   v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
       scrollable, transition="dialog-bottom-transition")
     v-card(tile)
+      v-toolbar(card, dense, dark, color="success")
+        v-toolbar-title UPLOAD
+        v-spacer
+        v-btn(icon, flat, @click="showUploader = false")
+          v-icon close
+    upload-container(:model="model")
 </template>
 
 <script>
 import { ResourceIcons } from '@/constants'
 import { accessLevelChecker } from '@/utils/mixins'
+import UploadContainer from '../containers/UploadContainer'
 
 export default {
+  components: { UploadContainer },
   mixins: [accessLevelChecker],
   props: {
     loading: {
