@@ -6,6 +6,7 @@ upload(:model="model", :multiple="multiple", :error-message="errorMessage",
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { viewSlotWrapper } from '@/utils/mixins';
 import { uploadFile } from '@/utils/upload';
 import Upload from '../views/Upload';
@@ -70,9 +71,15 @@ export default {
       }
 
       this.uploading = false;
+      this.showToast({
+        text: 'Upload complete',
+        type: 'success',
+        ms: 2500,
+      });
       this.files = [];
-      this.$emit('filesUploaded', results);
+      this.$emit('done', results);
     },
+    ...mapActions('toast', ['showToast']),
   },
 };
 </script>

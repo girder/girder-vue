@@ -36,7 +36,7 @@ v-card(tile)
       .subheading.px-3.
         {{ formatDataSize(totalProgress) }} / {{ formatDataSize(totalSize) }}
         ({{ totalProgressPercent }}%)
-      v-progress-linear(:value="totalProgressPercent", height="21")
+      v-progress-linear(:value="totalProgressPercent", height="20")
 
   slot(name="files")
     v-list.file-list(v-show="files.length", dense)

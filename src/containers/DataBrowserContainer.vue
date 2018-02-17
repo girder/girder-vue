@@ -1,6 +1,6 @@
 <template lang="pug">
 data-browser(ref="view", :model="model", :breadcrumbs="breadcrumbs", :items="items",
-    :folders="folders", :loading="fetching", :router-links="true")
+    :folders="folders", :loading="fetching", :router-links="true", @uploadComplete="fetch")
   slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 

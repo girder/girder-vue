@@ -53,7 +53,7 @@ div
   slot(name="uploader")
     v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
         scrollable, transition="dialog-bottom-transition")
-      upload-container(:model="model", @close="showUploader = false")
+      upload-container(:model="model", @close="showUploader = false", @done="uploadFinished")
 </template>
 
 <script>
@@ -116,6 +116,10 @@ export default {
   methods: {
     routeOpt(model) {
       return this.routerLinks ? `/${model._modelType}/${model._id}` : null; // TODO no hardcode path
+    },
+    uploadFinished(files) {
+      this.showUploader = false;
+      this.$emit('uploadComplete', files);
     },
   },
 };
