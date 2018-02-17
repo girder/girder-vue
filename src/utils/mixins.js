@@ -3,6 +3,17 @@ import { mapGetters } from 'vuex';
 import { AccessType } from '@/constants';
 
 /**
+ * This mixin exposes helper methods for components that need to check that the current user has
+ * a certain access level on a given resource.
+ */
+export const accessLevelChecker = {
+  methods: {
+    hasWriteAccess: resource => resource._accessLevel >= AccessType.WRITE,
+    hasAdminAccess: resource => resource._accessLevel >= AccessType.ADMIN,
+  },
+};
+
+/**
  * This mixin should be used on any container component whose data needs to be
  * fetched on initialization and also on user login/logout. Components using this mixin
  * must implement a ``fetch`` method.
@@ -37,17 +48,6 @@ export const fetchingRoute = {
 };
 
 /**
- * This mixin exposes helper methods for components that need to check that the current user has
- * a certain access level on a given resource.
- */
-export const accessLevelChecker = {
-  methods: {
-    hasWriteAccess: resource => resource._accessLevel >= AccessType.WRITE,
-    hasAdminAccess: resource => resource._accessLevel >= AccessType.ADMIN,
-  },
-};
-
-/**
  * Any view component that needs to display human-readable data sizes should use this.
  */
 export const sizeFormatter = {
@@ -63,6 +63,21 @@ export const sizeFormatter = {
       }
 
       return `${size.toFixed(1)}  ${['B', 'KB', 'MB', 'GB', 'TB'][Math.min(i, 4)]}`;
+    },
+  },
+};
+
+/**
+ * Container components that need to expose slots from their child components should use this.
+ * It exposes a special property "view-slots" that parents can set to indicate which of the
+ * view slots are being overridden. This should be an Array of strings for named slots, or
+ * for the default slot, use ``null`` instead of a string.
+ */
+export const viewSlotWrapper = {
+  props: {
+    viewSlots: {
+      default: () => [],
+      type: Array,
     },
   },
 };

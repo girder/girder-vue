@@ -1,16 +1,17 @@
 <template lang="pug">
 data-browser(ref="view", :model="model", :breadcrumbs="breadcrumbs", :items="items",
     :folders="folders", :loading="fetching", :router-links="true")
+  slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
 <script>
 import rest from '../rest';
-import { fetchingContainer } from '../utils/mixins';
+import { fetchingContainer, viewSlotWrapper } from '../utils/mixins';
 import DataBrowser from '../views/DataBrowser';
 
 export default {
   components: { DataBrowser },
-  mixins: [fetchingContainer],
+  mixins: [fetchingContainer, viewSlotWrapper],
   props: {
     model: {
       required: true,

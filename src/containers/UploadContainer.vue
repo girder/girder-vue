@@ -2,19 +2,17 @@
 upload(:model="model", :multiple="multiple", :error-message="errorMessage",
     :uploading="uploading", :files="files", @close="$emit('close')", @start="start",
     @clear="files = []", @filesChanged="filesChanged", @removeFile="removeFile")
-  slot(name="dropzone", slot="dropzone")
-  slot(name="files", slot="files")
-  slot(name="header", slot="header")
-  slot(name="progress", slot="progress")
-  slot(name="toolbar", slot="toolbar")
+  slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
 <script>
 import { uploadFile } from '@/utils/upload';
+import { viewSlotWrapper } from '../utils/mixins';
 import Upload from '../views/Upload';
 
 export default {
   components: { Upload },
+  mixins: [viewSlotWrapper],
   props: {
     model: {
       required: true,
