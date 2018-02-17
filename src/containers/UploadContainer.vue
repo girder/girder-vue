@@ -6,8 +6,8 @@ upload(:model="model", :multiple="multiple", :error-message="errorMessage",
 </template>
 
 <script>
+import { viewSlotWrapper } from '@/utils/mixins';
 import { uploadFile } from '@/utils/upload';
-import { viewSlotWrapper } from '../utils/mixins';
 import Upload from '../views/Upload';
 
 export default {
@@ -31,7 +31,11 @@ export default {
   }),
   methods: {
     filesChanged(files) {
-      this.files = [...files].map(file => ({ file }));
+      this.files = [...files].map(file => ({
+        file,
+        status: 'pending',
+        progress: {},
+      }));
     },
     removeFile(i) {
       this.files.splice(i, 1);
@@ -54,9 +58,9 @@ export default {
           file.status = 'done';
         } catch (error) {
           if (error.response) {
-            file.errorMessage = error.response.data.message;
+            this.errorMessage = error.response.data.message;
           } else {
-            file.errorMessage = 'Could not connect to the server.';
+            this.errorMessage = 'Could not connect to the server.';
           }
           file.status = 'error';
           this.uploading = false;
@@ -66,6 +70,7 @@ export default {
       }
 
       this.uploading = false;
+      this.files = [];
       this.$emit('filesUploaded', results);
     },
   },

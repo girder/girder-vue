@@ -32,16 +32,24 @@ v-card(tile)
       | Start upload
 
   slot(name="progress")
-    v-progress(v-if="uploading")
+    v-progress-linear(v-if="uploading")
 
   slot(name="files")
     v-list.file-list(v-show="files.length", dense)
-      v-list-tile(v-for="(file, i) in files", :key="file.file.name")
-        v-btn(icon, @click="$emit('removeFile', i)")
-          v-icon close
+      // TODO Consider a subcomponent for each file in the list
+      v-list-tile(v-for="(file, i) in files", :key="file.file.name", avatar)
+        v-list-tile-avatar
+          v-btn.mx-0(v-if="file.status === 'pending'", icon, @click="$emit('removeFile', i)")
+            v-icon close
+          v-progress-circular(v-if="file.status === 'uploading'", color="amber",
+              :value="progressPercent(file.progress)", :indeterminate="file.progress.indeterminate")
+          v-icon(v-if="file.status === 'done'", color="success", large) check
+
         v-list-tile-content
           v-list-tile-title {{ file.file.name }}
-          v-list-tile-sub-title {{ formatDataSize(file.file.size) }}
+          v-list-tile-sub-title
+            span(v-if="file.progress.current") {{ formatDataSize(file.progress.current ) }} /&nbsp;
+            span {{ formatDataSize(file.file.size) }}
 </template>
 
 <script>
@@ -76,11 +84,6 @@ export default {
     dragover: false,
     dropzoneClass: null,
     ResourceIcons,
-    fileStatus: {
-      PENDING: 'pending',
-      UPLOADING: 'uploading',
-      DONE: 'done',
-    },
   }),
   computed: {
     dropzoneMessage() {
@@ -100,6 +103,12 @@ export default {
     },
   },
   methods: {
+    progressPercent(progress) {
+      if (!progress.total) {
+        return 0;
+      }
+      return Math.round((100 * (progress.current || 0)) / progress.total);
+    },
     updateFiles({ target }) {
       this.$emit('filesChanged', target.files);
     },
