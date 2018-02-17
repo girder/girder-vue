@@ -38,26 +38,37 @@ export default {
     removeFile(i) {
       this.files.splice(i, 1);
     },
-    start() {
+    async start() {
       this.uploading = true;
+      const results = [];
 
-      let chain = Promise.resolve();
-
-      this.files.forEach((file) => {
-        chain = chain.then(() => {
-          return uploadFile(file.file, this.model, {
+      for (let i = 0; i < this.files.length; i += 1) {
+        // We could upload these in parallel if we wanted.
+        const file = this.files[i];
+        file.status = 'uploading';
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          results.push(await uploadFile(file.file, this.model, {
             progress: (progress) => {
               file.progress = progress;
             },
-          });
-        });
-      });
+          }));
+          file.status = 'done';
+        } catch (error) {
+          if (error.response) {
+            file.errorMessage = error.response.data.message;
+          } else {
+            file.errorMessage = 'Could not connect to the server.';
+          }
+          file.status = 'error';
+          this.uploading = false;
+          this.$emit('error', error);
+          break;
+        }
+      }
 
-      chain.then((f) => {
-        console.log('we are done!', f);
-      }).catch((e) => {
-        console.log('we failed!', e.response.response);
-      });
+      this.uploading = false;
+      this.$emit('filesUploaded', results);
     },
   },
 };
