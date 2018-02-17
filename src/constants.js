@@ -16,3 +16,5 @@ export const ResourceIcons = {
   ITEM: 'description',
   USER: 'person',
 };
+
+export const UPLOAD_CHUNK_SIZE = 1024 * 1024 * 64;

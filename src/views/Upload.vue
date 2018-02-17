@@ -21,24 +21,27 @@ v-card(tile)
         .title.mt-3 {{ dropzoneMessage }}
       input.file-input(type="file", :multiple="multiple", @change="updateFiles")
 
-  .mb-1.pb-2.px-3(v-show="files.length")
+  .pb-2.px-3(v-show="files.length")
     v-subheader(v-show="!uploading") {{ statusMessage }}
 
-    v-btn(v-if="!uploading", color="warning", @click="files = []")
+    v-btn(v-if="!uploading", color="warning", @click="$emit('clear')")
       v-icon.mr-1 close
       | Clear all
     v-btn(v-if="!uploading", color="success", @click="$emit('start')")
       v-icon.mr-1 play_arrow
       | Start upload
 
+  slot(name="progress")
+    v-progress(v-if="uploading")
+
   slot(name="files")
-    v-list(v-show="files.length", dense)
-      v-list-tile(v-for="(file, i) in files", :key="file.name")
-        v-btn(icon, @click="removeFile(i)")
+    v-list.file-list(v-show="files.length", dense)
+      v-list-tile(v-for="(file, i) in files", :key="file.file.name")
+        v-btn(icon, @click="$emit('removeFile', i)")
           v-icon close
         v-list-tile-content
-          v-list-tile-title {{ file.name }}
-          v-list-tile-sub-title {{ formatDataSize(file.size) }}
+          v-list-tile-title {{ file.file.name }}
+          v-list-tile-sub-title {{ formatDataSize(file.file.size) }}
 </template>
 
 <script>
@@ -51,6 +54,10 @@ export default {
     errorMessage: {
       default: null,
       type: String,
+    },
+    files: {
+      default: () => [],
+      type: Array,
     },
     model: {
       required: true,
@@ -68,8 +75,12 @@ export default {
   data: () => ({
     dragover: false,
     dropzoneClass: null,
-    files: [],
     ResourceIcons,
+    fileStatus: {
+      PENDING: 'pending',
+      UPLOADING: 'uploading',
+      DONE: 'done',
+    },
   }),
   computed: {
     dropzoneMessage() {
@@ -85,18 +96,12 @@ export default {
       return `${this.files.length} selected (${this.formatDataSize(this.totalSize)} total)`;
     },
     totalSize() {
-      return this.files.reduce((v, f) => f.size + v, 0);
+      return this.files.reduce((v, f) => f.file.size + v, 0);
     },
   },
   methods: {
     updateFiles({ target }) {
-      this.files = [...target.files];
-      this.$emit('filesChanged', this.files);
-    },
-    removeFile(i) {
-      this.files.splice(i, 1);
-
-      this.$emit('filesChanged', this.files);
+      this.$emit('filesChanged', target.files);
     },
   },
 };
@@ -147,7 +152,4 @@ $img = linear-gradient(
   position relative
   top 50%
   transform translateY(-50%)
-
-.file-list
-  border-top 1px solid #e4e4e8
 </style>
