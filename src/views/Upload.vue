@@ -39,13 +39,13 @@ v-card(tile)
       v-progress-linear(:value="totalProgressPercent", height="20")
 
   slot(name="files")
-    v-list.file-list(v-show="files.length", dense)
+    v-list.file-list.pb-4(v-show="files.length", dense)
       // TODO Consider a subcomponent for each file in the list
       v-list-tile(v-for="(file, i) in files", :key="file.file.name", avatar)
         v-list-tile-avatar
           v-btn.mx-0(v-if="file.status === 'pending'", icon, @click="$emit('removeFile', i)")
             v-icon close
-          v-progress-circular(v-if="file.status === 'uploading'", color="amber",
+          v-progress-circular(v-if="file.status === 'uploading'", color="primary", rotate="-90",
               :value="progressPercent(file.progress)", :indeterminate="file.progress.indeterminate")
           v-icon(v-if="file.status === 'done'", color="success", large) check
 

@@ -45,12 +45,12 @@ export default {
       this.uploading = true;
       const results = [];
 
+      // eslint-disable-next-line no-await-in-loop
       for (let i = 0; i < this.files.length; i += 1) {
         // We could upload these in parallel if we wanted.
         const file = this.files[i];
         file.status = 'uploading';
         try {
-          // eslint-disable-next-line no-await-in-loop
           results.push(await uploadFile(file.file, this.model, {
             progress: (progress) => {
               file.progress = progress;

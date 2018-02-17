@@ -3,6 +3,7 @@
   router-view
   v-dialog(max-width="500px", v-model="showAuthDialog", @keydown.esc="showAuthDialog = false")
     auth-container(@login="showAuthDialog = false", @register="showAuthDialog = false")
+  v-snackbar(v-for="(toast, i) in toasts", :key="i")
 </template>
 
 <script>
@@ -18,7 +19,10 @@ export default {
       showAuthDialog: this.authDialogVisible,
     };
   },
-  computed: mapState('auth', ['authDialogMode', 'authDialogVisible']),
+  computed: {
+    ...mapState('auth', ['authDialogMode', 'authDialogVisible']),
+    ...mapState('toast', ['toasts']),
+  },
   watch: {
     authDialogVisible(val) {
       this.showAuthDialog = val;

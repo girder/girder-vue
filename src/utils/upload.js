@@ -49,11 +49,11 @@ export async function uploadFile(file, parent, { progress, params = {} }) {
     });
   } : undefined;
 
+  // eslint-disable-next-line no-await-in-loop
   while (offset < file.size) {
     const end = Math.min(offset + UPLOAD_CHUNK_SIZE, file.size);
     const blob = file.slice(offset, end);
     try {
-      // eslint-disable-next-line no-await-in-loop
       ({ data } = (await rest.post(`file/chunk?offset=${offset}&uploadId=${data._id}`, blob, {
         onUploadProgress,
         headers: { 'Content-Type': 'application/octet-stream' },
