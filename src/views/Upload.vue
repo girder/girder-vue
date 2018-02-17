@@ -1,7 +1,7 @@
 <template lang="pug">
 v-card(tile)
   slot(name="toolbar")
-    v-toolbar(dense, dark, color="success")
+    v-toolbar(dense, dark, color="primary")
       v-btn(icon, flat, @click="$emit('close')")
         v-icon close
       v-toolbar-title Upload
@@ -11,8 +11,7 @@ v-card(tile)
         v-avatar.mr-2(color="blue-grey lighten-4")
           v-icon {{ ResourceIcons[modelType.toUpperCase()] }}
         span {{ model.name }}
-  slot(name="error")
-    v-alert(v-if="errorMessage", type="error") {{ errorMessage }}
+
   slot(name="dropzone")
     .dropzone-wrapper(
         v-if="!files.length", :class="dropzoneClass", @dragenter="dropzoneClass = 'animate'",
@@ -21,14 +20,33 @@ v-card(tile)
         v-icon(size="50px") attach_file
         .title.mt-3 {{ dropzoneMessage }}
       input.file-input(type="file", :multiple="multiple", @change="updateFiles")
+
+  .mb-1.pb-2.px-3(v-show="files.length")
+    v-subheader(v-show="!uploading") {{ statusMessage }}
+
+    v-btn(v-if="!uploading", color="warning", @click="files = []")
+      v-icon.mr-1 close
+      | Clear all
+    v-btn(v-if="!uploading", color="success", @click="$emit('start')")
+      v-icon.mr-1 play_arrow
+      | Start upload
+
   slot(name="files")
-    v-list(v-if="files.length")
+    v-list(v-show="files.length", dense)
+      v-list-tile(v-for="(file, i) in files", :key="file.name")
+        v-btn(icon, @click="removeFile(i)")
+          v-icon close
+        v-list-tile-content
+          v-list-tile-title {{ file.name }}
+          v-list-tile-sub-title {{ formatDataSize(file.size) }}
 </template>
 
 <script>
+import { sizeFormatter } from '../utils/mixins';
 import { ResourceIcons } from '../constants';
 
 export default {
+  mixins: [sizeFormatter],
   props: {
     errorMessage: {
       default: null,
@@ -40,6 +58,10 @@ export default {
     },
     multiple: {
       default: true,
+      type: Boolean,
+    },
+    uploading: {
+      default: false,
       type: Boolean,
     },
   },
@@ -59,14 +81,21 @@ export default {
     modelType() {
       return this.model._modelType;
     },
+    statusMessage() {
+      return `${this.files.length} selected (${this.formatDataSize(this.totalSize)} total)`;
+    },
+    totalSize() {
+      return this.files.reduce((v, f) => f.size + v, 0);
+    },
   },
   methods: {
     updateFiles({ target }) {
-      if (this.multiple) {
-        this.files = target.files;
-      } else {
-        this.files = target.files.slice(0, 1);
-      }
+      this.files = [...target.files];
+      this.$emit('filesChanged', this.files);
+    },
+    removeFile(i) {
+      this.files.splice(i, 1);
+
       this.$emit('filesChanged', this.files);
     },
   },
@@ -118,4 +147,7 @@ $img = linear-gradient(
   position relative
   top 50%
   transform translateY(-50%)
+
+.file-list
+  border-top 1px solid #e4e4e8
 </style>

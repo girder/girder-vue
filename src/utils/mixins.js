@@ -46,3 +46,23 @@ export const accessLevelChecker = {
     hasAdminAccess: resource => resource._accessLevel >= AccessType.ADMIN,
   },
 };
+
+/**
+ * Any view component that needs to display human-readable data sizes should use this.
+ */
+export const sizeFormatter = {
+  methods: {
+    formatDataSize(size) {
+      if (size < 1024) {
+        return `${size} B`;
+      }
+
+      let i;
+      for (i = 0; size >= 1024; i += 1) {
+        size /= 1024;
+      }
+
+      return `${size.toFixed(1)}  ${['B', 'kB', 'MB', 'GB', 'TB'][Math.min(i, 4)]}`;
+    },
+  },
+};

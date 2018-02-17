@@ -1,8 +1,10 @@
 <template lang="pug">
 upload(ref="view", :model="model", :multiple="multiple", :error-message="errorMessage",
-    @close="$emit('close')")
-  slot(name="toolbar", slot="toolbar")
+    :uploading="uploading", @close="$emit('close')")
+  slot(name="dropzone", slot="dropzone")
+  slot(name="files", slot="files")
   slot(name="header", slot="header")
+  slot(name="toolbar", slot="toolbar")
 </template>
 
 <script>
@@ -21,7 +23,9 @@ export default {
     },
   },
   data: () => ({
-    errorMessage: null
+    errorMessage: null,
+    statusMessage: null,
+    uploading: false
   }),
 };
 </script>
