@@ -32,7 +32,11 @@ v-card(tile)
       | Start upload
 
   slot(name="progress")
-    v-progress-linear(v-if="uploading")
+    div(v-if="uploading")
+      .subheading.px-3.
+        {{ formatDataSize(totalProgress) }} / {{ formatDataSize(totalSize) }}
+        ({{ totalProgressPercent }}%)
+      v-progress-linear(:value="totalProgressPercent", height="21")
 
   slot(name="files")
     v-list.file-list(v-show="files.length", dense)
@@ -98,8 +102,17 @@ export default {
     statusMessage() {
       return `${this.files.length} selected (${this.formatDataSize(this.totalSize)} total)`;
     },
+    totalProgress() {
+      return this.files.reduce((v, f) => v + (f.progress.current || 0), 0);
+    },
     totalSize() {
-      return this.files.reduce((v, f) => f.file.size + v, 0);
+      return this.files.reduce((v, f) => v + f.file.size, 0);
+    },
+    totalProgressPercent() {
+      return this.progressPercent({
+        current: this.totalProgress,
+        total: this.totalSize,
+      });
     },
   },
   methods: {
