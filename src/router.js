@@ -16,6 +16,10 @@ const routes = [{
 }, {
   component: FolderRoute,
   path: 'folder/:id',
+}, {
+  // Legacy route, might remove in the future
+  path: 'collection/:cid/folder/:id',
+  redirect: '/folder/:id',
 }];
 
 export default new Router({
