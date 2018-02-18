@@ -43,6 +43,8 @@ export default {
     },
     async start() {
       this.uploading = true;
+      this.errorMessage = null;
+
       const results = [];
 
       // eslint-disable-next-line no-await-in-loop
@@ -61,7 +63,7 @@ export default {
           if (error.response) {
             this.errorMessage = error.response.data.message;
           } else {
-            this.errorMessage = 'Could not connect to the server.';
+            this.errorMessage = 'Connection failed.';
           }
           file.status = 'error';
           this.uploading = false;

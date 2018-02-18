@@ -21,7 +21,7 @@ v-card(tile)
         .title.mt-3 {{ dropzoneMessage }}
       input.file-input(type="file", :multiple="multiple", @change="updateFiles")
 
-  .pb-2.px-3(v-show="files.length")
+  .pb-2.px-3(v-show="files.length && !errorMessage")
     v-subheader(v-show="!uploading") {{ statusMessage }}
 
     v-btn(v-if="!uploading", color="warning", @click="$emit('clear')")
@@ -30,6 +30,13 @@ v-card(tile)
     v-btn(v-if="!uploading", color="success", @click="$emit('start')")
       v-icon.mr-1 play_arrow
       | Start upload
+
+  div(v-if="errorMessage")
+    v-alert(:value="true", type="error")
+      span.mr-2 {{ errorMessage }}
+      v-btn(v-if="!uploading", color="teal lighten-1", dark, @click="$emit('resume')")
+        v-icon.mr-1 replay
+        | Resume upload
 
   slot(name="progress")
     div(v-if="uploading")
@@ -48,7 +55,7 @@ v-card(tile)
           v-progress-circular(v-if="file.status === 'uploading'", color="primary", :rotate="-90",
               :value="progressPercent(file.progress)", :indeterminate="file.progress.indeterminate")
           v-icon(v-if="file.status === 'done'", color="success", large) check
-          v-icon(v-if="file.status === 'error'", color="error", large) error
+          v-icon(v-if="file.status === 'error'", color="error", large) warning
 
         v-list-tile-content
           v-list-tile-title {{ file.file.name }}
@@ -188,4 +195,5 @@ $img = linear-gradient(
   &.status-done
     width 0
     height 0
+    overflow hidden
 </style>
