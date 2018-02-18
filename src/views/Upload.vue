@@ -1,7 +1,7 @@
 <template lang="pug">
 v-card(tile)
   slot(name="toolbar")
-    v-toolbar(dense, dark, color="primary")
+    v-toolbar(dense, dark, color="success")
       v-btn(icon, flat, @click="$emit('close')")
         v-icon close
       v-toolbar-title Upload
@@ -40,14 +40,15 @@ v-card(tile)
 
   slot(name="files")
     v-list.file-list.pb-4(v-show="files.length", dense)
-      // TODO Consider a subcomponent for each file in the list
-      v-list-tile(v-for="(file, i) in files", :key="file.file.name", avatar)
+      v-list-tile.file-tile(v-for="(file, i) in files", :key="file.file.name", avatar,
+          :class="`status-${file.status}`")
         v-list-tile-avatar
           v-btn.mx-0(v-if="file.status === 'pending'", icon, @click="$emit('removeFile', i)")
             v-icon close
-          v-progress-circular(v-if="file.status === 'uploading'", color="primary", rotate="-90",
+          v-progress-circular(v-if="file.status === 'uploading'", color="primary", :rotate="-90",
               :value="progressPercent(file.progress)", :indeterminate="file.progress.indeterminate")
           v-icon(v-if="file.status === 'done'", color="success", large) check
+          v-icon(v-if="file.status === 'error'", color="error", large) error
 
         v-list-tile-content
           v-list-tile-title {{ file.file.name }}
@@ -174,4 +175,17 @@ $img = linear-gradient(
   position relative
   top 50%
   transform translateY(-50%)
+
+.file-tile
+  transition width 1s ease-in-out, height 1s ease-in-out
+  transition-delay 1s
+  width 100%
+  height 100%
+
+  &.status-uploading
+    background-color #fef4c9
+
+  &.status-done
+    width 0
+    height 0
 </style>

@@ -3,7 +3,7 @@ import _ from 'lodash';
 export default {
   namespaced: true,
   state: {
-    toasts: _([]),
+    toasts: [],
   },
 
   mutations: {
@@ -11,13 +11,14 @@ export default {
       state.toasts.push(obj);
     },
     removeToast(state, obj) {
-      state.toasts.pull(obj);
+      state.toasts = _.without(state.toasts, obj);
     },
   },
 
   actions: {
-    showToast({ commit }, { text, type, ms = 4000 }) {
-      const obj = { text, type };
+    // eslint-disable-next-line object-curly-newline
+    showToast({ commit }, { text, icon, color, ms = 4000 }) {
+      const obj = { text, icon, color };
       commit('addToast', obj);
       window.setTimeout(() => {
         commit('removeToast', obj);

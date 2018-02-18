@@ -15,7 +15,7 @@ onResponse((resp) => {
     store.commit('auth/showAuthDialog', {});
     store.dispatch('toast/showToast', {
       text: 'You must log in first.',
-      type: 'info', // TODO use constants for toast types
+      icon: 'info_circled',
     });
   }
 

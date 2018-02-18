@@ -66,15 +66,16 @@ export default {
           file.status = 'error';
           this.uploading = false;
           this.$emit('error', error);
-          break;
+          return;
         }
       }
 
       this.uploading = false;
       this.showToast({
         text: 'Upload complete',
-        type: 'success',
-        ms: 2500,
+        color: 'success',
+        icon: 'check_circled',
+        ms: 3000,
       });
       this.files = [];
       this.$emit('done', results);
