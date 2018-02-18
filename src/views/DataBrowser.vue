@@ -33,7 +33,10 @@ div
     v-list.pb-0.pt-0(dense)
       v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder)",
           :key="folder._id", :to="routeOpt(folder)")
-        v-icon {{ ResourceIcons.FOLDER }}
+        v-badge.mr-2(overlap, color="transparent")
+          v-icon(small, slot="badge", :color="folder.public ? 'blue' : 'amber'")
+            | {{ folder.public ? 'public' : 'lock' }}
+          v-icon(size="24px") {{ ResourceIcons.FOLDER }}
         v-list-tile-title.ml-1 {{ folder.name }}
 
   // Item list
@@ -41,7 +44,10 @@ div
     v-list.pb-0.pt-0(dense)
       v-list-tile(v-for="item in items", @click="$emit('itemClick', item)", :key="item._id",
           :to="routeOpt(item)")
-        v-icon {{ ResourceIcons.ITEM }}
+        v-badge.mr-2(overlap, color="transparent")
+          v-icon(small, slot="badge", :color="model.public ? 'blue' : 'amber'")
+            | {{ model.public ? 'public' : 'lock' }}
+          v-icon(size="24px") {{ ResourceIcons.ITEM }}
         v-list-tile-title.ml-1 {{ item.name }}
 
   // Empty status alert
