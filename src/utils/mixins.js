@@ -62,7 +62,7 @@ export const sizeFormatter = {
         size /= 1024;
       }
 
-      return `${size.toFixed(1)}  ${['B', 'KB', 'MB', 'GB', 'TB'][Math.min(i, 4)]}`;
+      return `${size.toFixed(2)}  ${['B', 'KB', 'MB', 'GB', 'TB'][Math.min(i, 4)]}`;
     },
   },
 };
