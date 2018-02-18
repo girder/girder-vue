@@ -7,7 +7,7 @@ import FolderRoute from '@/routes/FolderRoute';
 
 Vue.use(Router);
 
-const routes = [{
+const layoutRoutes = [{
   component: CollectionsRoute,
   path: 'collections',
 }, {
@@ -22,10 +22,21 @@ const routes = [{
   redirect: '/folder/:id',
 }];
 
+const rootRoutes = [];
+
 export default new Router({
   routes: [{
     path: '/',
     component: Layout,
-    children: routes,
-  }],
+    children: layoutRoutes,
+  },
+  ...rootRoutes],
 });
+
+export const addRootRoute = (route) => {
+  rootRoutes.push(route);
+};
+
+export const addLayoutRoute = (route) => {
+  layoutRoutes.push(route);
+};
