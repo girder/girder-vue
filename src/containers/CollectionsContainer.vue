@@ -1,18 +1,27 @@
 <template lang="pug">
-collections(:collections="collections", @create="create")
+resource-list(:models="collections", model-type="collection", title="Collections",
+    :can-create="canCreate", :subtitle="subtitle")
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import rest, { formEncode } from '@/rest';
-import { fetchingContainer } from '@/utils/mixins';
-import Collections from '../views/Collections';
+import { fetchingContainer, sizeFormatter } from '@/utils/mixins';
+import ResourceList from '../views/ResourceList';
 
 export default {
-  components: { Collections },
-  mixins: [fetchingContainer],
+  components: { ResourceList },
+  mixins: [fetchingContainer, sizeFormatter],
   data: () => ({
     collections: [],
   }),
+  computed: {
+    canCreate() {
+      // TODO base this on the actual setting by doing an API call
+      return this.isLoggedIn;
+    },
+    ...mapGetters('auth', ['isLoggedIn']),
+  },
   methods: {
     create(obj) {
       rest.post('/collection', formEncode(obj)).then(({ data }) => {
@@ -23,6 +32,9 @@ export default {
       rest.get('/collection').then(({ data }) => {
         this.collections = data;
       });
+    },
+    subtitle(collection) {
+      return collection.size ? this.formatDataSize(collection.size) : 'No data';
     },
   },
 };
