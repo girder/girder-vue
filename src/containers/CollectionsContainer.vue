@@ -1,6 +1,8 @@
 <template lang="pug">
-resource-list(:models="collections", model-type="collection", :can-create="canCreate",
-    :subtitle="subtitle")
+div
+  slot
+    resource-list(:models="collections", model-type="collection", :can-create="canCreate",
+        :subtitle="subtitle")
 </template>
 
 <script>

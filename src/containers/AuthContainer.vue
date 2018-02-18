@@ -1,9 +1,10 @@
 <template lang="pug">
 div
-  login-form(v-if="loginMode", ref="loginForm", @login="doLogin",
-      :error-message="loginErrorMessage", :login-in-progress="loginInProgress")
-  register-form(v-if="registerMode", ref="registerForm", @register="doRegister",
-      :errors="registerErrors", :register-in-progress="registerInProgress")
+  slot
+    login-form(v-if="loginMode", ref="loginForm", @login="doLogin",
+        :error-message="loginErrorMessage", :login-in-progress="loginInProgress")
+    register-form(v-if="registerMode", ref="registerForm", @register="doRegister",
+        :errors="registerErrors", :register-in-progress="registerInProgress")
 </template>
 
 <script>

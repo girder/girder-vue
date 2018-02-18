@@ -1,8 +1,10 @@
 <template lang="pug">
-upload(:model="model", :multiple="multiple", :error-message="errorMessage",
-    :uploading="uploading", :files="files", @close="$emit('close')", @start="start",
-    @clear="files = []", @filesChanged="filesChanged", @removeFile="removeFile")
-  slot(v-for="name in viewSlots", :name="name", :slot="name")
+div
+  slot
+    upload(:model="model", :multiple="multiple", :error-message="errorMessage",
+        :uploading="uploading", :files="files", @close="$emit('close')", @start="start",
+        @clear="files = []", @filesChanged="filesChanged", @removeFile="removeFile")
+      slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
 <script>

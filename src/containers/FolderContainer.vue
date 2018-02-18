@@ -1,5 +1,7 @@
 <template lang="pug">
-folder(v-if="folder", :folder="folder", @destroy="destroy")
+div
+  slot
+    folder(v-if="folder", :folder="folder", @destroy="destroy")
 </template>
 
 <script>

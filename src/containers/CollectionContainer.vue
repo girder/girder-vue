@@ -1,5 +1,7 @@
 <template lang="pug">
-collection(v-if="collection", :collection="collection", @destroy="destroy")
+div
+  slot
+    collection(v-if="collection", :collection="collection", @destroy="destroy")
 </template>
 
 <script>
