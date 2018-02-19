@@ -52,7 +52,7 @@ div
 
   // Empty status alert
   slot(name="empty_alert")
-    v-alert.mt-0(:value="empty", type="info", transition="scale-transition")
+    v-alert.mt-0(:value="empty", type="info")
       | This {{ modelType }} is currently empty.
 
   // Upload container

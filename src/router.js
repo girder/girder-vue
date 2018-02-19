@@ -4,6 +4,7 @@ import Layout from '@/views/Layout';
 import CollectionRoute from '@/routes/CollectionRoute';
 import CollectionsRoute from '@/routes/CollectionsRoute';
 import FolderRoute from '@/routes/FolderRoute';
+import UserRoute from '@/routes/UserRoute';
 import UsersRoute from '@/routes/UsersRoute';
 
 Vue.use(Router);
@@ -20,6 +21,9 @@ const layoutRoutes = [{
 }, {
   component: UsersRoute,
   path: 'users',
+}, {
+  component: UserRoute,
+  path: 'user/:id',
 }, {
   // Legacy route, might remove in the future
   path: 'collection/:cid/folder/:id',
