@@ -9,8 +9,14 @@ import { AccessType } from '@/constants';
 import rest from '@/rest';
 import Search from '../views/Search';
 
+// TODO add pagination features.
+
 export default {
   components: { Search },
+  model: {
+    prop: 'value',
+    event: 'queryChange',
+  },
   props: {
     level: {
       default: AccessType.READ,
@@ -28,12 +34,18 @@ export default {
       required: true,
       type: Array,
     },
+    value: {
+      default: '',
+      type: String,
+    },
   },
-  data: () => ({
-    query: '',
-    pending: null,
-    next: null,
-  }),
+  data() {
+    return {
+      query: this.value,
+      pending: null,
+      next: null,
+    };
+  },
   watch: {
     query() {
       this.$emit('queryChange', this.query);

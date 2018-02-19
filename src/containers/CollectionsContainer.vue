@@ -4,7 +4,7 @@ div
     resource-list(:models="collections", model-type="collection", :can-create="canCreate",
         :subtitle="subtitle", @searchResults="showSearchResults", @searchCleared="fetch",
         :fetching="fetching", :has-next-page="hasNextPage", :current-page="currentPage",
-        @next="fetchNextPage", @prev="fetchPrevPage")
+        @next="fetchNextPage", @prev="fetchPrevPage", ref="view")
 </template>
 
 <script>
@@ -36,7 +36,9 @@ export default {
       return rest.get('/collection', {
         params: this.pagingParams,
       }).then(({ data }) => {
-        this.collections = this.transformDataPage(data);
+        if (!this.$refs.view.searchQuery) {
+          this.collections = this.transformDataPage(data);
+        }
       }).finally(() => {
         this.fetching = false;
       });

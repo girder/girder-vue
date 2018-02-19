@@ -1,21 +1,24 @@
 <template lang="pug">
 div
-  v-toolbar(color="transparent", flat)
-    v-toolbar-title {{ title_ }}
-    v-spacer
-    v-tooltip(bottom)
-      v-btn(large, v-if="canCreate", icon, @click="showCreateDialog = true", color="primary",
-          slot="activator")
-        v-icon(large, color="white") add
-      span Create {{ modelType }}
+  slot(name="toolbar")
+    v-toolbar(color="transparent", flat)
+      v-toolbar-title {{ title_ }}
+      v-spacer
+      v-tooltip(bottom)
+        v-btn(large, v-if="canCreate", icon, @click="showCreateDialog = true", color="primary",
+            slot="activator")
+          v-icon(large, color="white") add
+        span Create {{ modelType }}
 
   slot(name="subheader")
 
-  search-container(prepend-icon="search", :placeholder="`Search ${modelNamePlural_}`",
-     :types="[modelType]", @clear="$emit('searchCleared')", @results="showSearchResults")
+  slot(name="search")
+    search-container(prepend-icon="search", :placeholder="`Search ${modelNamePlural_}`",
+       :types="[modelType]", @clear="$emit('searchCleared')", @results="showSearchResults",
+       v-model="searchQuery")
 
-  paginator(v-if="hasNextPage || currentPage > 0", :current-page="currentPage",
-      :has-next-page="hasNextPage", @next="$emit('next')", @prev="$emit('prev')")
+  paginator(v-if="showPaginator", :current-page="currentPage", :has-next-page="hasNextPage",
+      @next="$emit('next')", @prev="$emit('prev')")
 
   v-progress-linear.my-0(v-if="fetching", indeterminate, height="8")
   v-progress-linear.my-0(v-else, height="8", color="transparent", :value="0")
@@ -94,6 +97,7 @@ export default {
   data() {
     return {
       showCreateDialog: false,
+      searchQuery: '',
     };
   },
   computed: {
@@ -105,6 +109,9 @@ export default {
     },
     icon_() {
       return this.icon || ResourceIcons[this.modelType.toUpperCase()];
+    },
+    showPaginator() {
+      return (this.hasNextPage || this.currentPage > 0) && !this.searchQuery;
     },
     title_() {
       return this.title || this.modelNamePlural_.charAt(0).toUpperCase() +
