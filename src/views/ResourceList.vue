@@ -9,8 +9,8 @@ div
         v-icon(large, color="white") add
       span Create {{ modelType }}
 
-  v-text-field(prepend-icon="search", :placeholder="`Search ${modelNamePlural_}`",
-     clearable, :loading="searching", v-model="searchText")
+  search-container(prepend-icon="search", :placeholder="`Search ${modelNamePlural_}`",
+     :types="[modelType]", @clear="$emit('searchCleared')", @results="showSearchResults")
 
   slot(name="subheader")
 
@@ -26,15 +26,17 @@ div
         v-list-tile-title {{ model.name }}
         v-list-tile-sub-title {{ subtitle(model) }}
 
-  v-alert(:value="!models.length && !searching", type="info") {{ emptyText }}
+  v-alert(:value="!models.length", type="info") {{ emptyText }}
   v-dialog(v-model="showCreateDialog", max-width="500px")
     slot(name="createDialog")
 </template>
 
 <script>
 import { ResourceIcons } from '@/constants';
+import SearchContainer from '../containers/SearchContainer';
 
 export default {
+  components: { SearchContainer },
   props: {
     canCreate: {
       default: false,
@@ -75,16 +77,12 @@ export default {
   },
   data() {
     return {
-      searchText: '',
       showCreateDialog: false,
     };
   },
   computed: {
     emptyText() {
-      if (this.searchText) {
-        return `No matching ${this.modelNamePlural_}.`;
-      }
-      return `There are no ${this.modelNamePlural_} to show.`;
+      return `No ${this.modelNamePlural_} to display.`;
     },
     modelNamePlural_() {
       return this.modelNamePlural || `${this.modelType}s`;
@@ -97,14 +95,12 @@ export default {
         this.modelNamePlural_.slice(1);
     },
   },
-  watch: {
-    searchText() {
-      this.$emit('search', this.searchText);
-    },
-  },
   methods: {
     routeOpt(model) {
       return this.routerLinks ? `/${model._modelType}/${model._id}` : null;
+    },
+    showSearchResults(results) {
+      this.$emit('searchResults', results);
     },
   },
 };

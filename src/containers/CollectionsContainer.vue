@@ -2,7 +2,7 @@
 div
   slot
     resource-list(:models="collections", model-type="collection", :can-create="canCreate",
-        :subtitle="subtitle")
+        :subtitle="subtitle", @searchResults="showSearchResults", @searchCleared="fetch")
 </template>
 
 <script>
@@ -34,6 +34,9 @@ export default {
       rest.get('/collection').then(({ data }) => {
         this.collections = data;
       });
+    },
+    showSearchResults(results) {
+      this.collections = results.data.collection || [];
     },
     subtitle(collection) {
       return collection.size ? this.formatDataSize(collection.size) : 'No data';
