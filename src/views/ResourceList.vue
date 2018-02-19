@@ -9,12 +9,16 @@ div
         v-icon(large, color="white") add
       span Create {{ modelType }}
 
+  slot(name="subheader")
+
   search-container(prepend-icon="search", :placeholder="`Search ${modelNamePlural_}`",
      :types="[modelType]", @clear="$emit('searchCleared')", @results="showSearchResults")
 
-  slot(name="subheader")
+  paginator(v-if="hasNextPage || currentPage > 0", :current-page="currentPage",
+      :has-next-page="hasNextPage", @next="$emit('next')", @prev="$emit('prev')")
 
-  v-progress-linear.my-0(v-if="fetching", indeterminate)
+  v-progress-linear.my-0(v-if="fetching", indeterminate, height="8")
+  v-progress-linear.my-0(v-else, height="8", color="transparent", :value="0")
 
   v-list.py-0(two-line)
     v-list-tile(v-for="model in models", :key="model._id", @click="$emit('clicked', model)",
@@ -29,22 +33,32 @@ div
         v-list-tile-sub-title {{ subtitle(model) }}
 
   v-alert(:value="!models.length && !fetching", type="info") {{ emptyText }}
+
   v-dialog(v-model="showCreateDialog", max-width="500px")
     slot(name="createDialog")
 </template>
 
 <script>
 import { ResourceIcons } from '@/constants';
+import Paginator from './Paginator';
 import SearchContainer from '../containers/SearchContainer';
 
 export default {
-  components: { SearchContainer },
+  components: { Paginator, SearchContainer },
   props: {
     canCreate: {
       default: false,
       type: Boolean,
     },
+    currentPage: {
+      default: 1,
+      type: Number,
+    },
     fetching: {
+      default: false,
+      type: Boolean,
+    },
+    hasNextPage: {
       default: false,
       type: Boolean,
     },

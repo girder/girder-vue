@@ -3,7 +3,8 @@ div
   slot
     resource-list(:models="collections", model-type="collection", :can-create="canCreate",
         :subtitle="subtitle", @searchResults="showSearchResults", @searchCleared="fetch",
-        :fetching="fetching")
+        :fetching="fetching", :has-next-page="hasNextPage", :current-page="currentPage",
+        @next="fetchNextPage", @prev="fetchPrevPage")
 </template>
 
 <script>
