@@ -1,23 +1,12 @@
-<template lang="pug">
-div
-  slot
-    resource-list(:models="collections", model-type="collection", :can-create="canCreate",
-        :subtitle="subtitle", @searchResults="showSearchResults", @searchCleared="fetch",
-        :fetching="fetching", :has-next-page="hasNextPage", :current-page="currentPage",
-        @next="fetchNextPage", @prev="fetchPrevPage", ref="view")
-</template>
-
 <script>
-import rest, { formEncode } from '@/rest';
-import { fetchingContainer, pagingContainer, sizeFormatter } from '@/utils/mixins';
-import ResourceList from '../views/ResourceList';
+import { sizeFormatter } from '@/utils/mixins';
+import ResourceListContainer from './ResourceListContainer';
 
 export default {
-  components: { ResourceList },
-  mixins: [fetchingContainer, pagingContainer, sizeFormatter],
+  extends: ResourceListContainer,
+  mixins: [sizeFormatter],
   data: () => ({
-    collections: [],
-    fetching: false,
+    modelType: 'collection',
   }),
   computed: {
     canCreate() {
@@ -26,27 +15,7 @@ export default {
     },
   },
   methods: {
-    create(obj) {
-      return rest.post('/collection', formEncode(obj)).then(({ data }) => {
-        this.$emit('created', data);
-      });
-    },
-    fetch() {
-      this.fetching = true;
-      return rest.get('/collection', {
-        params: this.pagingParams,
-      }).then(({ data }) => {
-        if (!this.$refs.view.searchQuery) {
-          this.collections = this.transformDataPage(data);
-        }
-      }).finally(() => {
-        this.fetching = false;
-      });
-    },
-    showSearchResults(results) {
-      this.collections = results.data.collection || [];
-    },
-    subtitle(collection) {
+    getSubtitle(collection) {
       return collection.size ? this.formatDataSize(collection.size) : 'No data';
     },
   },

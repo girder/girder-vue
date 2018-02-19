@@ -32,8 +32,8 @@ div
             | {{ model.public ? 'public' : 'lock' }}
           v-icon(size="24px") {{ icon_ }}
       v-list-tile-content
-        v-list-tile-title {{ model.name }}
-        v-list-tile-sub-title {{ subtitle(model) }}
+        v-list-tile-title {{ getTitle(model) }}
+        v-list-tile-sub-title {{ getSubtitle(model) }}
 
   v-alert(:value="!models.length && !fetching", type="info") {{ emptyText }}
 
@@ -61,6 +61,14 @@ export default {
       default: false,
       type: Boolean,
     },
+    getSubtitle: {
+      default: () => '',
+      type: Function,
+    },
+    getTitle: {
+      default: model => model.name,
+      type: Function,
+    },
     hasNextPage: {
       default: false,
       type: Boolean,
@@ -80,10 +88,6 @@ export default {
     modelType: {
       required: true,
       type: String,
-    },
-    subtitle: {
-      default: () => '',
-      type: Function,
     },
     routerLinks: {
       default: true,
