@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  h2 {{ user.name }}
+  .display-1 {{ user.login }}
   data-browser-container.mt-4(:model="user")
 </template>
 

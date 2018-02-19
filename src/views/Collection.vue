@@ -1,7 +1,7 @@
 <template lang="pug">
 div
-  h2 {{ collection.name }}
-  div(v-if="collection.description") {{ collection.description }}
+  .display-1 {{ collection.name }}
+  .body-2(v-if="collection.description") {{ collection.description }}
   data-browser-container.mt-4(:model="collection")
 </template>
 
