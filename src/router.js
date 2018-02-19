@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '@/store';
 import Layout from '@/views/Layout';
 import CollectionRoute from '@/routes/CollectionRoute';
 import CollectionsRoute from '@/routes/CollectionsRoute';
@@ -21,6 +22,14 @@ const layoutRoutes = [{
 }, {
   component: UsersRoute,
   path: 'users',
+}, {
+  path: 'user/me',
+  redirect: () => {
+    if (store.state.auth.user) {
+      return `/user/${store.state.auth.user._id}`;
+    }
+    return '/';
+  },
 }, {
   component: UserRoute,
   path: 'user/:id',
