@@ -59,7 +59,8 @@ div
   slot(name="uploader")
     v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
         scrollable, transition="dialog-bottom-transition")
-      upload-container(:model="model", @close="showUploader = false", @done="uploadFinished")
+      v-card(tile)
+        upload-container(:model="model", @close="showUploader = false", @done="uploadFinished")
 </template>
 
 <script>

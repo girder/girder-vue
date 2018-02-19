@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card(tile)
+.upload-wrapper
   slot(name="toolbar")
     v-toolbar(dense, dark, color="success")
       v-btn(icon, flat, @click="$emit('close')")
@@ -33,8 +33,8 @@ v-card(tile)
 
   div(v-if="errorMessage")
     v-alert(:value="true", type="error")
-      span.mr-2 {{ errorMessage }}
-      v-btn(v-if="!uploading", color="teal lighten-1", dark, @click="$emit('resume')")
+      span.body-2.mr-2 {{ errorMessage }}
+      v-btn(v-if="!uploading", color="purple darken-1", dark, @click="$emit('resume')")
         v-icon.mr-1 replay
         | Resume upload
 
@@ -196,4 +196,9 @@ $img = linear-gradient(
     width 0
     height 0
     overflow hidden
+
+.upload-wrapper
+  display flex
+  flex-direction column
+  height 100%
 </style>
