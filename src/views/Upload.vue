@@ -185,8 +185,8 @@ $img = linear-gradient(
   transform translateX(-50%) translateY(-50%)
 
 .file-tile
-  transition width 1s ease-in-out, height 1s ease-in-out
-  transition-delay 1s
+  background-color transparent
+  transition width 0.8s ease-in-out 1s, height 0.8s ease-in-out 1s, background .5s ease-in-out
   width 100%
   height 100%
 
