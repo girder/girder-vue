@@ -78,7 +78,7 @@ export default {
         }];
       }
 
-      Promise.all(requests).finally(() => {
+      return Promise.all(requests).finally(() => {
         this.folders = fetchedFolders;
         this.items = fetchedItems;
         this.fetching = false;

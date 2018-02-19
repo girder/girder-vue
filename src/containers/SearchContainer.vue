@@ -49,7 +49,7 @@ export default {
     search(q) {
       if (!q) {
         this.$emit('clear');
-        return;
+        return Promise.resolve();
       }
 
       this.pending = rest.get('/resource/search', {
@@ -67,6 +67,8 @@ export default {
       }).finally(() => {
         this.pending = null;
       });
+
+      return this.pending;
     },
   },
 };

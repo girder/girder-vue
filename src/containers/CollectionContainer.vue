@@ -24,7 +24,7 @@ export default {
   }),
   methods: {
     destroy() {
-      rest.delete(`/collection/${this.id}`).then(() => {
+      return rest.delete(`/collection/${this.id}`).then(() => {
         this.collection = null;
         this.showToast({
           text: 'Collection deleted',
@@ -33,7 +33,7 @@ export default {
       });
     },
     fetch() {
-      rest.get(`/collection/${this.id}`).then(({ data }) => {
+      return rest.get(`/collection/${this.id}`).then(({ data }) => {
         this.collection = data;
       });
     },

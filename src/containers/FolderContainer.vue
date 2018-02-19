@@ -23,13 +23,13 @@ export default {
   }),
   methods: {
     destroy() {
-      rest.delete(`/folder/${this.id}`).then(() => {
+      return rest.delete(`/folder/${this.id}`).then(() => {
         this.$emit('destroyed', this.folder);
         this.folder = null;
       });
     },
     fetch() {
-      rest.get(`/folder/${this.id}`).then(({ data }) => {
+      return rest.get(`/folder/${this.id}`).then(({ data }) => {
         this.folder = data;
       });
     },

@@ -41,7 +41,7 @@ export default {
     doLogin(credentials) {
       this.loginErrorMessage = '';
       this.loginInProgress = true;
-      this.login(credentials).then(() => {
+      return this.login(credentials).then(() => {
         this.$emit('login');
         this.$refs.loginForm.reset();
       }).catch(({ response }) => {
@@ -53,7 +53,7 @@ export default {
     doRegister(params) {
       this.registerErrors = emptyRegisterErrors();
       this.registerInProgress = true;
-      this.register(params).then(() => {
+      return this.register(params).then(() => {
         this.$emit('register');
         this.$refs.registerForm.reset();
       }).catch(({ response }) => {
