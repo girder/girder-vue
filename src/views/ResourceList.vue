@@ -14,6 +14,8 @@ div
 
   slot(name="subheader")
 
+  v-progress-linear.my-0(v-if="fetching", indeterminate)
+
   v-list.py-0(two-line)
     v-list-tile(v-for="model in models", :key="model._id", @click="$emit('clicked', model)",
         :to="routeOpt(model)")
@@ -26,7 +28,7 @@ div
         v-list-tile-title {{ model.name }}
         v-list-tile-sub-title {{ subtitle(model) }}
 
-  v-alert(:value="!models.length", type="info") {{ emptyText }}
+  v-alert(:value="!models.length && !fetching", type="info") {{ emptyText }}
   v-dialog(v-model="showCreateDialog", max-width="500px")
     slot(name="createDialog")
 </template>
@@ -39,6 +41,10 @@ export default {
   components: { SearchContainer },
   props: {
     canCreate: {
+      default: false,
+      type: Boolean,
+    },
+    fetching: {
       default: false,
       type: Boolean,
     },
@@ -57,10 +63,6 @@ export default {
     modelType: {
       required: true,
       type: String,
-    },
-    searching: {
-      default: false,
-      type: Boolean,
     },
     subtitle: {
       default: () => '',

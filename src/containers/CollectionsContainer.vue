@@ -2,7 +2,8 @@
 div
   slot
     resource-list(:models="collections", model-type="collection", :can-create="canCreate",
-        :subtitle="subtitle", @searchResults="showSearchResults", @searchCleared="fetch")
+        :subtitle="subtitle", @searchResults="showSearchResults", @searchCleared="fetch",
+        :fetching="fetching")
 </template>
 
 <script>
@@ -16,6 +17,7 @@ export default {
   mixins: [fetchingContainer, sizeFormatter],
   data: () => ({
     collections: [],
+    fetching: false,
   }),
   computed: {
     canCreate() {
@@ -31,8 +33,11 @@ export default {
       });
     },
     fetch() {
+      this.fetching = true;
       rest.get('/collection').then(({ data }) => {
         this.collections = data;
+      }).finally(() => {
+        this.fetching = false;
       });
     },
     showSearchResults(results) {
