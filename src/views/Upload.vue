@@ -179,9 +179,10 @@ $img = linear-gradient(
     background-position 30px 60px
 
 .dropzone-message
-  position relative
+  position absolute
+  left 50%
   top 50%
-  transform translateY(-50%)
+  transform translateX(-50%) translateY(-50%)
 
 .file-tile
   transition width 1s ease-in-out, height 1s ease-in-out
