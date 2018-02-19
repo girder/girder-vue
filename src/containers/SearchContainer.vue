@@ -32,34 +32,37 @@ export default {
   data: () => ({
     query: '',
     pending: null,
+    next: null,
   }),
   watch: {
     query() {
       this.$emit('queryChange', this.query);
 
       if (this.pending) {
-        this.pending.finally(() => {
-          this.search();
-        });
+        this.next = this.query;
       } else {
-        this.search();
+        this.search(this.query);
       }
     },
   },
   methods: {
-    search() {
-      if (!this.query) {
+    search(q) {
+      if (!q) {
         this.$emit('clear');
         return;
       }
 
       this.pending = rest.get('/resource/search', {
         params: {
+          q,
           mode: this.mode,
-          q: this.query,
           types: JSON.stringify(this.types),
         },
       }).then(({ data }) => {
+        if (this.next !== null) {
+          this.search(this.next);
+          this.next = null;
+        }
         this.$emit('results', { data });
       }).finally(() => {
         this.pending = null;
