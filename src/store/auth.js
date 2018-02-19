@@ -57,7 +57,6 @@ export default {
         headers: {
           'Girder-Authorization': `Basic ${window.btoa(`${username}:${password}`)}`,
         },
-        withCredentials: true,
       }).then((resp) => {
         commit('setUser', resp.data.user);
         commit('setToken', resp.data.authToken.token);
@@ -73,9 +72,7 @@ export default {
     },
 
     register({ commit }, params) {
-      return rest.post('/user', formEncode(params), {
-        withCredentials: true,
-      }).then((resp) => {
+      return rest.post('/user', formEncode(params)).then((resp) => {
         commit('setToken', resp.data.authToken.token);
         commit('setUser', resp.data);
         return resp;

@@ -22,6 +22,7 @@ export const setApiUrl = (url) => {
  */
 export const setToken = (token) => {
   instance.defaults.headers.common['Girder-Token'] = token;
+  cookies.set('girderToken', token);
 };
 
 /**

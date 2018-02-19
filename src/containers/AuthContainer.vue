@@ -45,7 +45,11 @@ export default {
         this.$emit('login');
         this.$refs.loginForm.reset();
       }).catch(({ response }) => {
-        this.loginErrorMessage = response.data.message;
+        if (response) {
+          this.loginErrorMessage = response.data.message;
+        } else {
+          this.loginErrorMessage = 'Could not connect to server.';
+        }
       }).finally(() => {
         this.loginInProgress = false;
       });
@@ -57,7 +61,11 @@ export default {
         this.$emit('register');
         this.$refs.registerForm.reset();
       }).catch(({ response }) => {
-        this.registerErrors[response.data.field] = response.data.message;
+        if (response) {
+          this.registerErrors[response.data.field] = response.data.message;
+        } else {
+          this.registerErrors = 'Could not connect to server.';
+        }
       }).finally(() => {
         this.registerInProgress = false;
       });
