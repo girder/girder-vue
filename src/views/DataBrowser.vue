@@ -60,7 +60,8 @@ div
     v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
         scrollable, transition="dialog-bottom-transition")
       v-card(tile)
-        upload-container(:model="model", @close="showUploader = false", @done="uploadFinished")
+        upload-container.uploader(:model="model", @close="showUploader = false",
+            @done="uploadFinished")
 </template>
 
 <script>
@@ -138,4 +139,7 @@ export default {
 
   &:hover
     color #ddd
+
+.uploader
+  height 100%
 </style>
