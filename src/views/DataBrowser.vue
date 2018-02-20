@@ -31,24 +31,28 @@ div
   // Folder list
   slot(name="folders")
     v-list.pb-0.pt-0(dense)
-      v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder)",
-          :key="folder._id", :to="routeOpt(folder)")
+      v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder.folder)",
+          :key="folder.folder._id", :to="routeOpt(folder.folder)")
+        v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
+          v-checkbox(@click.prevent="toggleChecked(folder)", v-model="folder.checked")
         v-badge.mr-2(overlap, color="transparent")
           v-icon(small, slot="badge", :color="folder.public ? 'blue' : 'amber'")
             | {{ folder.public ? 'public' : 'lock' }}
           v-icon(size="24px") {{ ResourceIcons.FOLDER }}
-        v-list-tile-title.ml-1 {{ folder.name }}
+        v-list-tile-title.ml-1 {{ folder.folder.name }}
 
   // Item list
   slot(name="items")
     v-list.pb-0.pt-0(dense)
-      v-list-tile(v-for="item in items", @click="$emit('itemClick', item)", :key="item._id",
-          :to="routeOpt(item)")
+      v-list-tile(v-for="item in items", @click="$emit('itemClick', item.item)", :key="item._id",
+          :to="routeOpt(item.item)")
+        v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
+          v-checkbox(@click.prevent="toggleChecked(item)", :input-value="item.checked")
         v-badge.mr-2(overlap, color="transparent")
           v-icon(small, slot="badge", :color="model.public ? 'blue' : 'amber'")
             | {{ model.public ? 'public' : 'lock' }}
           v-icon(size="24px") {{ ResourceIcons.ITEM }}
-        v-list-tile-title.ml-1 {{ item.name }}
+        v-list-tile-title.ml-1 {{ item.item.name }}
 
   // Empty status alert
   slot(name="empty_alert")
@@ -73,6 +77,10 @@ export default {
   components: { UploadContainer },
   mixins: [accessLevelChecker],
   props: {
+    checkboxes: {
+      default: true,
+      type: Boolean,
+    },
     loading: {
       default: false,
       type: Boolean,
@@ -125,6 +133,9 @@ export default {
     routeOpt(model) {
       return this.routerLinks ? `/${model._modelType}/${model._id}` : null; // TODO no hardcode path
     },
+    toggleChecked(model) {
+      model.checked = !model.checked;
+    },
     uploadFinished(files) {
       this.showUploader = false;
       this.$emit('uploadComplete', files);
@@ -142,4 +153,7 @@ export default {
 
 .uploader
   height 100%
+
+.checkbox-container
+  min-width 0
 </style>
