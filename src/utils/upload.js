@@ -17,14 +17,15 @@ export class UploadError extends Error {
  * @param file {File} the browser File to upload
  * @param parent {Object} the parent document. Must contain _id and _modelType.
  * @param opts {Object} upload options.
+ * @param opts.progress {Function} A progress callback for the upload. It will receive an Object
+ * argument with either ``"indeterminate": true``, or numeric ``current`` and ``total`` fields.
+ * @param opts.params {Object} Additional parameters to pass on the upload init request.
  * @type Promise
  */
-export async function uploadFile(file, parent, { progress, params = {} }) {
-  if (progress) {
-    progress({
-      indeterminate: true,
-    });
-  }
+export async function uploadFile(file, parent, { progress = () => null, params = {} }) {
+  progress({
+    indeterminate: true,
+  });
 
   let data;
   try {
@@ -41,13 +42,11 @@ export async function uploadFile(file, parent, { progress, params = {} }) {
   }
 
   let offset = 0;
-  const onUploadProgress = progress ? ({ loaded, lengthComputable }) => {
-    progress({
-      current: offset + loaded,
-      total: file.size,
-      indeterminate: !lengthComputable,
-    });
-  } : undefined;
+  const onUploadProgress = e => progress({
+    current: offset + e.loaded,
+    total: file.size,
+    indeterminate: !e.lengthComputable,
+  });
 
   // eslint-disable-next-line no-await-in-loop
   while (offset < file.size) {
