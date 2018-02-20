@@ -37,7 +37,7 @@ div
   // Folder list
   slot(name="folders")
     v-list.pb-0.pt-0(dense)
-      v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder.folder)",
+      v-list-tile(v-for="folder in folders_", @click="$emit('folderClick', folder.folder)",
           :key="folder.folder._id", :to="routeOpt(folder.folder)")
         v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
           v-checkbox(@click.prevent="toggleChecked(folder)", v-model="folder.checked",
@@ -51,7 +51,7 @@ div
   // Item list
   slot(name="items")
     v-list.pb-0.pt-0(dense)
-      v-list-tile(v-for="item in items", @click="$emit('itemClick', item.item)", :key="item._id",
+      v-list-tile(v-for="item in items_", @click="$emit('itemClick', item.item)", :key="item._id",
           :to="routeOpt(item.item)")
         v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
           v-checkbox(@click.prevent="toggleChecked(item)", :input-value="item.checked",
@@ -114,20 +114,21 @@ export default {
       type: Boolean,
     },
   },
-  data: () => ({
-    ResourceIcons,
-    showUploader: false,
-  }),
+  data() {
+    return {
+      ResourceIcons,
+      showUploader: false,
+      folders_: this.folders.map(folder => ({
+        folder,
+        checked: false,
+      })),
+      items_: this.items.map(item => ({
+        item,
+        checked: false,
+      })),
+    };
+  },
   computed: {
-    checkedItems() {
-      return this.items.filter(item => item.checked);
-    },
-    checkedFolders() {
-      return this.folders.filter(folder => folder.checked);
-    },
-    checkedCount() {
-      return this.checkedItems.length + this.checkedFolders.length;
-    },
     breadcrumbData() {
       return this.breadcrumbs.map(crumb => ({
         title: crumb.object.name || crumb.object.login,
@@ -135,6 +136,15 @@ export default {
         icon: ResourceIcons[crumb.type.toUpperCase()],
         ...crumb,
       }));
+    },
+    checkedItems() {
+      return this.items_.filter(item => item.checked);
+    },
+    checkedFolders() {
+      return this.folders_.filter(folder => folder.checked);
+    },
+    checkedCount() {
+      return this.checkedItems.length + this.checkedFolders.length;
     },
     empty() {
       return !this.folders.length && !this.items.length && !this.loading;

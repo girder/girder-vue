@@ -51,10 +51,7 @@ export default {
           parentType: this.modelType,
         },
       }).then(({ data }) => {
-        fetchedFolders = data.map(folder => ({
-          folder,
-          checked: false,
-        }));
+        fetchedFolders = data;
       })];
 
       if (this.modelType === 'folder') {
@@ -63,10 +60,7 @@ export default {
             folderId: this.model._id,
           },
         }).then(({ data }) => {
-          fetchedItems = data.map(item => ({
-            item,
-            checked: false,
-          }));
+          fetchedItems = data;
         });
 
         const fetchRootPath = rest.get(`/folder/${this.model._id}/rootpath`).then(({ data }) => {
