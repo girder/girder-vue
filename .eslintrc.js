@@ -15,7 +15,8 @@ module.exports = {
     'no-underscore-dangle': 0,
     'import/extensions': {
       vue: 'never'
-    }
+    },
+    'import/prefer-default-export': 0
   },
   settings: {
     'import/resolver': {
