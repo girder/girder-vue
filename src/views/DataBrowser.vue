@@ -45,8 +45,8 @@ div
           v-checkbox(@click.prevent="toggleChecked(folder)", v-model="folder.checked",
               :hide-details="true")
         v-badge.mr-2(overlap, color="transparent")
-          v-icon(small, slot="badge", :color="folder.public ? 'blue' : 'amber'")
-            | {{ folder.public ? 'public' : 'lock' }}
+          v-icon(small, slot="badge", :color="folder.folder.public ? 'blue' : 'amber'")
+            | {{ folder.folder.public ? 'public' : 'lock' }}
           v-icon(size="24px") {{ ResourceIcons.FOLDER }}
         v-list-tile-title.ml-1 {{ folder.folder.name }}
 
