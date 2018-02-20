@@ -17,9 +17,9 @@ div
     v-toolbar(dense, flat, color="blue-grey lighten-4")
       span
         v-checkbox(:hide-details="true", @click.prevent.stop="toggleAllCheckboxes",
-            @mousedown.prevent.stop="", :indeterminate="checkedCount > 0 && !allChecked",
+            @mousedown.prevent.stop="", :indeterminate="!!checkedCount && !allChecked",
             :input-value="allChecked")
-      v-btn.checkbox-actions(v-if="checkboxes", :disabled="!checkedCount")
+      v-btn.actions-button(v-if="checkboxes", :disabled="!checkedCount")
         v-icon(size="18px", color="grey darken-1") check_box
         v-icon arrow_drop_down
       v-spacer
@@ -28,8 +28,9 @@ div
         v-icon file_upload
       v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
         v-icon lock_outline
-      v-btn(icon, dark, color="blue-grey lighten-2")
-        v-icon menu
+      v-btn.actions-button(:disabled="!!checkedCount")
+        v-icon {{ ResourceIcons[modelType.toUpperCase()] }}
+        v-icon arrow_drop_down
 
   // Loading indicator
   slot(name="loading")
@@ -187,6 +188,11 @@ export default {
     },
     toggleChecked(model) {
       model.checked = !model.checked;
+      if (this.checkedCount === this.folders.length + this.items.length) {
+        this.allChecked = true;
+      } else {
+        this.allChecked = false;
+      }
     },
     uploadFinished(files) {
       this.showUploader = false;
@@ -206,6 +212,6 @@ export default {
 .uploader
   height 100%
 
-.checkbox-container,.checkbox-actions
+.checkbox-container,.actions-button
   min-width 0
 </style>
