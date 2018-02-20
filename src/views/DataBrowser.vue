@@ -17,7 +17,8 @@ div
     v-toolbar(dense, flat, color="blue-grey lighten-4")
       span
         v-checkbox(:hide-details="true", @click.prevent.stop="toggleAllCheckboxes",
-            @mousedown.prevent.stop="", :indeterminate="checkedCount")
+            @mousedown.prevent.stop="", :indeterminate="checkedCount > 0 && !allChecked",
+            :input-value="allChecked")
       v-btn.checkbox-actions(v-if="checkboxes", :disabled="!checkedCount")
         v-icon(size="18px", color="grey darken-1") check_box
         v-icon arrow_drop_down
@@ -117,15 +118,10 @@ export default {
   data() {
     return {
       ResourceIcons,
+      allChecked: false,
+      folders_: this._constructFoldersList(),
+      items_: this._constructItemsList(),
       showUploader: false,
-      folders_: this.folders.map(folder => ({
-        folder,
-        checked: false,
-      })),
-      items_: this.items.map(item => ({
-        item,
-        checked: false,
-      })),
     };
   },
   computed: {
@@ -156,12 +152,38 @@ export default {
       return this.routerLinks ? `/${this.model.parentCollection}/${this.model.parentId}` : null; // TODO no hardcode path
     },
   },
+  watch: {
+    folders() {
+      this.folders_ = this._constructFoldersList();
+    },
+    items() {
+      this.items_ = this._constructItemsList();
+    },
+  },
   methods: {
+    _constructFoldersList() {
+      return this.folders.map(folder => ({
+        folder,
+        checked: false,
+      }));
+    },
+    _constructItemsList() {
+      return this.items.map(item => ({
+        item,
+        checked: false,
+      }));
+    },
     routeOpt(model) {
       return this.routerLinks ? `/${model._modelType}/${model._id}` : null; // TODO no hardcode path
     },
     toggleAllCheckboxes() {
-      // TODO implement
+      this.allChecked = this.checkedCount === 0;
+      this.folders_.forEach((folder) => {
+        folder.checked = this.allChecked;
+      });
+      this.items_.forEach((item) => {
+        item.checked = this.allChecked;
+      });
     },
     toggleChecked(model) {
       model.checked = !model.checked;
