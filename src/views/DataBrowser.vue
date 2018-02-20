@@ -15,10 +15,11 @@ div
   // Action bar
   slot(name="actions")
     v-toolbar(dense, flat, color="blue-grey lighten-4")
-
-      v-btn
+      span
         v-checkbox(:hide-details="true", @click.prevent.stop="toggleAllCheckboxes",
-          @mousedown.prevent.stop="")
+            @mousedown.prevent.stop="", :indeterminate="checkedCount")
+      v-btn.checkbox-actions(v-if="checkboxes", :disabled="!checkedCount")
+        v-icon(size="18px", color="grey darken-1") check_box
         v-icon arrow_drop_down
       v-spacer
       v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
@@ -118,6 +119,15 @@ export default {
     showUploader: false,
   }),
   computed: {
+    checkedItems() {
+      return this.items.filter(item => item.checked);
+    },
+    checkedFolders() {
+      return this.folders.filter(folder => folder.checked);
+    },
+    checkedCount() {
+      return this.checkedItems.length + this.checkedFolders.length;
+    },
     breadcrumbData() {
       return this.breadcrumbs.map(crumb => ({
         title: crumb.object.name || crumb.object.login,
@@ -164,6 +174,6 @@ export default {
 .uploader
   height 100%
 
-.checkbox-container
+.checkbox-container,.checkbox-actions
   min-width 0
 </style>
