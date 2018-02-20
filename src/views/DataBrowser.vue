@@ -15,6 +15,11 @@ div
   // Action bar
   slot(name="actions")
     v-toolbar(dense, flat, color="blue-grey lighten-4")
+
+      v-btn
+        v-checkbox(:hide-details="true", @click.prevent.stop="toggleAllCheckboxes",
+          @mousedown.prevent.stop="")
+        v-icon arrow_drop_down
       v-spacer
       v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
           @click="showUploader = true")
@@ -34,7 +39,8 @@ div
       v-list-tile(v-for="folder in folders", @click="$emit('folderClick', folder.folder)",
           :key="folder.folder._id", :to="routeOpt(folder.folder)")
         v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
-          v-checkbox(@click.prevent="toggleChecked(folder)", v-model="folder.checked")
+          v-checkbox(@click.prevent="toggleChecked(folder)", v-model="folder.checked",
+              :hide-details="true")
         v-badge.mr-2(overlap, color="transparent")
           v-icon(small, slot="badge", :color="folder.public ? 'blue' : 'amber'")
             | {{ folder.public ? 'public' : 'lock' }}
@@ -47,7 +53,8 @@ div
       v-list-tile(v-for="item in items", @click="$emit('itemClick', item.item)", :key="item._id",
           :to="routeOpt(item.item)")
         v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
-          v-checkbox(@click.prevent="toggleChecked(item)", :input-value="item.checked")
+          v-checkbox(@click.prevent="toggleChecked(item)", :input-value="item.checked",
+              :hide-details="true")
         v-badge.mr-2(overlap, color="transparent")
           v-icon(small, slot="badge", :color="model.public ? 'blue' : 'amber'")
             | {{ model.public ? 'public' : 'lock' }}
@@ -132,6 +139,9 @@ export default {
   methods: {
     routeOpt(model) {
       return this.routerLinks ? `/${model._modelType}/${model._id}` : null; // TODO no hardcode path
+    },
+    toggleAllCheckboxes() {
+      // TODO implement
     },
     toggleChecked(model) {
       model.checked = !model.checked;
