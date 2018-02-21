@@ -33,13 +33,22 @@ div
           v-icon {{ ResourceIcons[modelType.toUpperCase()] }}
           v-icon arrow_drop_down
         v-list(dense, color="black")
-          v-divider
-          v-list-tile(@click="showCreateFolder = true")
-            v-icon.mr-2 create_new_folder
-            | New folder
-          v-list-tile(v-if="modelType === 'folder'", @click="showCreateItem = true")
-            v-icon.mr-2 note_add
-            | New item
+          v-list-tile
+            v-icon.mr-2 file_download
+            | Download {{ modelType }}
+          div(v-if="hasWriteAccess(model)")
+            v-divider
+            v-list-tile(@click="showCreateFolder = true")
+              v-icon.mr-2 create_new_folder
+              | New folder
+            v-list-tile(v-if="modelType === 'folder'", @click="showCreateItem = true")
+              v-icon.mr-2 note_add
+              | New item
+          div(v-if="hasAdminAccess(model)")
+            v-divider
+            v-list-tile
+              v-icon.mr-2 delete
+              | Delete {{ modelType }}
 
   // Loading indicator
   slot(name="loading")
@@ -87,7 +96,7 @@ div
             @done="uploadFinished")
 
   // Create folder dialog
-  v-dialog(v-model="showCreateFolder", max-width="500px", @keydown.esc="showCreateFolder = false")
+  v-dialog(v-model="showCreateFolder", max-width="550px", @keydown.esc="showCreateFolder = false")
     create-folder-container(:parent="model", @created="folderCreated")
 </template>
 

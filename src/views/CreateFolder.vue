@@ -5,13 +5,16 @@ v-card
   v-form(@submit.prevent="create")
     v-card-text
       v-text-field(v-model="name", label="Name", :error-messages="listify(errors.name)")
-      v-text-field(v-model="description", label="Description", hint="Optional", multi-line)
+      markdown-editor(v-model="description", placeholder="Description (optional)")
     v-card-actions
       v-btn(type="submit", color="primary", :loading="loading") Create
 </template>
 
 <script>
+import MarkdownEditor from './MarkdownEditor';
+
 export default {
+  components: { MarkdownEditor },
   props: {
     errors: {
       default: null,
