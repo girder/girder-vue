@@ -28,9 +28,18 @@ div
         v-icon file_upload
       v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
         v-icon lock_outline
-      v-btn.actions-button(:disabled="!!checkedCount")
-        v-icon {{ ResourceIcons[modelType.toUpperCase()] }}
-        v-icon arrow_drop_down
+      v-menu(left, offset-y)
+        v-btn.actions-button(:disabled="!!checkedCount", slot="activator")
+          v-icon {{ ResourceIcons[modelType.toUpperCase()] }}
+          v-icon arrow_drop_down
+        v-list(dense, color="black")
+          v-divider
+          v-list-tile(@click="showCreateFolder = true")
+            v-icon.mr-2 create_new_folder
+            | New folder
+          v-list-tile(v-if="modelType === 'folder'", @click="showCreateItem = true")
+            v-icon.mr-2 note_add
+            | New item
 
   // Loading indicator
   slot(name="loading")
@@ -69,22 +78,27 @@ div
     v-alert.mt-0(:value="empty", type="info")
       | This {{ modelType }} is currently empty.
 
-  // Upload container
+  // Upload dialog
   slot(name="uploader")
     v-dialog(v-if="modelType === 'folder'", v-model="showUploader", fullscreen, :overlay="false",
-        scrollable, transition="dialog-bottom-transition")
+        scrollable, transition="dialog-bottom-transition", @keydown.esc="showUploader = false")
       v-card(tile)
         upload-container.uploader(:model="model", @close="showUploader = false",
             @done="uploadFinished")
+
+  // Create folder dialog
+  v-dialog(v-model="showCreateFolder", max-width="500px", @keydown.esc="showCreateFolder = false")
+    create-folder-container(:parent="model", @created="folderCreated")
 </template>
 
 <script>
 import { ResourceIcons } from '@/constants';
 import { accessLevelChecker } from '@/utils/mixins';
+import CreateFolderContainer from '../containers/CreateFolderContainer';
 import UploadContainer from '../containers/UploadContainer';
 
 export default {
-  components: { UploadContainer },
+  components: { CreateFolderContainer, UploadContainer },
   mixins: [accessLevelChecker],
   props: {
     checkboxes: {
@@ -122,6 +136,10 @@ export default {
       allChecked: false,
       folders_: this._constructFoldersList(),
       items_: this._constructItemsList(),
+      newFolderName: '',
+      newFolderDescription: '',
+      showCreateFolder: false,
+      showCreateItem: false,
       showUploader: false,
     };
   },
@@ -173,6 +191,10 @@ export default {
         item,
         checked: false,
       }));
+    },
+    folderCreated(folder) {
+      this.showCreateFolder = false;
+      this.$emit('folderCreated', folder);
     },
     routeOpt(model) {
       return this.routerLinks ? `/${model._modelType}/${model._id}` : null; // TODO no hardcode path

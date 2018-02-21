@@ -21,6 +21,7 @@ const emptyRegisterErrors = () => ({
   firstName: null,
   lastName: null,
   password: null,
+  NONE: null,
 });
 
 export default {
@@ -62,7 +63,7 @@ export default {
         this.$refs.registerForm.reset();
       }).catch(({ response }) => {
         if (response) {
-          this.registerErrors[response.data.field] = response.data.message;
+          this.registerErrors[response.data.field || 'NONE'] = response.data.message;
         } else {
           this.registerErrors = 'Could not connect to server.';
         }

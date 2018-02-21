@@ -15,6 +15,7 @@ v-card
           :error-messages="listify(errors.password)")
       v-text-field(v-model="retypePassword", type="password", label="Retype password",
           :error-messages="retypePasswordErrors")
+      v-alert(type="error", :value="!!errors.NONE") {{ errors.NONE }}
     v-card-actions
       v-btn(type="submit", color="primary", :disabled="submitDisabled",
           :loading="registerInProgress") Register

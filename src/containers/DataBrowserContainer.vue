@@ -2,7 +2,8 @@
 div
   slot
     data-browser(ref="view", :model="model", :breadcrumbs="breadcrumbs", :items="items",
-        :folders="folders", :loading="fetching", :router-links="true", @uploadComplete="fetch")
+        :folders="folders", :loading="fetching", :router-links="routerLinks",
+        @uploadComplete="fetch", @folderCreated="fetch")
       slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
@@ -18,6 +19,10 @@ export default {
     model: {
       required: true,
       type: Object,
+    },
+    routerLinks: {
+      default: true,
+      type: Boolean,
     },
   },
   data: () => ({
