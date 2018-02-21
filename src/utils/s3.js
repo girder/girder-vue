@@ -83,7 +83,11 @@ async function multiChunkUpload(file, upload, { progress }) {
     offset += blob.size;
   }
 
-  progress({ indeterminate: true });
+  progress({
+    current: offset,
+    total: offset,
+    indeterminate: true,
+  });
 
   // Finalize multipart upload in S3
   try {
@@ -130,7 +134,11 @@ async function uploadFile(file, upload, { progress }) {
     throw new UploadError(response, 's3_send', 0, upload);
   }
 
-  progress({ indeterminate: true });
+  progress({
+    current: file.size,
+    total: file.size,
+    indeterminate: true,
+  });
 
   try {
     return (await rest.post('file/completion', formEncode({ uploadId: upload._id }))).data;
