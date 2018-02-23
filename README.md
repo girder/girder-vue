@@ -9,6 +9,9 @@
 yarn
 
 # serve with hot reload
+# assumes Girder is running locally on port 8080 with CORS enabled
+# with an Allowed Origins that includes http://localhost:8081,
+# see http://girder.readthedocs.io/en/latest/security.html?#cors-cross-origin-resource-sharing
 yarn start
 
 # build for production with minification
