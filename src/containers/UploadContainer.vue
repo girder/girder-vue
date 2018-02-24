@@ -3,14 +3,15 @@ div
   slot
     upload(:model="model", :multiple="multiple", :error-message="errorMessage",
         :uploading="uploading", :files="files", @close="$emit('close')", @start="start",
-        @clear="files = []", @filesChanged="filesChanged", @removeFile="removeFile")
+        @resume="start", @clear="files = []", @filesChanged="filesChanged",
+        @removeFile="removeFile")
       slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { viewSlotWrapper } from '@/utils/mixins';
-import { uploadFile } from '@/utils/upload';
+import { uploadFile, resumeUpload } from '@/utils/upload';
 import Upload from '../views/Upload';
 
 export default {
@@ -38,6 +39,8 @@ export default {
         file,
         status: 'pending',
         progress: {},
+        upload: null,
+        result: null,
       }));
     },
     removeFile(i) {
@@ -51,26 +54,37 @@ export default {
 
       // eslint-disable-next-line no-await-in-loop
       for (let i = 0; i < this.files.length; i += 1) {
-        // We could upload these in parallel if we wanted.
         const file = this.files[i];
-        file.status = 'uploading';
-        try {
-          results.push(await uploadFile(file.file, this.model, {
-            progress: (progress) => {
-              file.progress = progress;
-            },
-          }));
-          file.status = 'done';
-        } catch (error) {
-          if (error.response) {
-            this.errorMessage = error.response.data.message;
-          } else {
-            this.errorMessage = 'Connection failed.';
+
+        if (file.status === 'done') {
+          // We are resuming, skip already completed files
+          results.push(file.result);
+        } else {
+          const progress = (event) => {
+            file.progress = Object.assign({}, file.progress, event);
+          };
+          file.status = 'uploading';
+
+          try {
+            if (file.upload) {
+              file.result = await resumeUpload(file.file, file.upload, { progress });
+            } else {
+              file.result = await uploadFile(file.file, this.model, { progress });
+            }
+            results.push(file.result);
+            file.status = 'done';
+          } catch (error) {
+            if (error.response) {
+              this.errorMessage = error.response.data.message;
+            } else {
+              this.errorMessage = 'Connection failed.';
+            }
+            file.upload = error.upload;
+            file.status = 'error';
+            this.uploading = false;
+            this.$emit('error', error);
+            return;
           }
-          file.status = 'error';
-          this.uploading = false;
-          this.$emit('error', error);
-          return;
         }
       }
 
