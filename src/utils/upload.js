@@ -26,7 +26,7 @@ async function sendChunks(file, upload, { progress = () => null, offset = 0 }) {
         headers: { 'Content-Type': 'application/octet-stream' },
       })));
     } catch ({ response }) {
-      throw new UploadError(response, 'chunk', offset, data);
+      throw new UploadError(response, 'chunk', offset, upload);
     }
     offset = end;
   }
@@ -79,9 +79,11 @@ export async function uploadFile(file, parent, { progress = () => null, params =
  * @returns Promise
  */
 export async function resumeUpload(file, upload, { progress = () => null }) {
+  progress({ indeterminate: true });
+
   if (upload.behavior && uploadBehaviors[upload.behavior] &&
-      uploadBehaviors[upload.behavior].resume) {
-    return uploadBehaviors[upload.behavior].resume(file, upload, { progress });
+      uploadBehaviors[upload.behavior].resumeUpload) {
+    return uploadBehaviors[upload.behavior].resumeUpload(file, upload, { progress });
   }
 
   let data;
