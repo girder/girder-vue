@@ -105,6 +105,20 @@ div
           v-icon(size="24px") {{ ResourceIcons.ITEM }}
         v-list-tile-title.ml-1 {{ item.item.name }}
 
+  // File list
+  slot(name="files")
+    v-list.pb-0.pt-0(dense)
+      v-list-tile(v-for="file in files_", @click="$emit('fileClick', file.file)", :key="file._id",
+          :to="routeOpt(file.file)")
+        v-list-tile-action.mr-2.checkbox-container(v-if="checkboxes")
+          v-checkbox(@click.prevent="toggleChecked(file)", :input-value="file.checked",
+              :hide-details="true")
+        v-badge.mr-2(overlap, color="transparent")
+          v-icon(small, slot="badge", :color="model.public ? 'blue' : 'amber'")
+            | {{ model.public ? 'public' : 'lock' }}
+          v-icon(size="24px") {{ ResourceIcons.FILE }}
+        v-list-tile-title.ml-1 {{ file.file.name }}
+
   // Empty status alert
   slot(name="empty_alert")
     v-alert.mt-0(:value="empty", type="info")
@@ -157,6 +171,10 @@ export default {
       default: () => [],
       type: Array,
     },
+    files: {
+      default: () => [],
+      type: Array,
+    },
     routerLinks: {
       default: false,
       type: Boolean,
@@ -168,6 +186,7 @@ export default {
       allChecked: false,
       folders_: this._constructFoldersList(),
       items_: this._constructItemsList(),
+      files_: this._constructFilesList(),
       newFolderName: '',
       newFolderDescription: '',
       showCreateFolder: false,
@@ -179,13 +198,13 @@ export default {
     breadcrumbData() {
       return this.breadcrumbs.map(crumb => ({
         title: crumb.object.name || crumb.object.login,
-        to: `/${crumb.type}/${crumb.object._id}`, // TODO no hardcode path
+        to: crumb.object._id ? `/${crumb.type}/${crumb.object._id}` : `/${crumb.type}`, // TODO no hardcode path
         icon: ResourceIcons[crumb.type.toUpperCase()],
         ...crumb,
       }));
     },
     checkedCount() {
-      return this.checkedItems.length + this.checkedFolders.length;
+      return this.checkedItems.length + this.checkedFolders.length + this.checkedFiles.length;
     },
     checkedFolders() {
       return this.folders_.filter(folder => folder.checked);
@@ -202,8 +221,11 @@ export default {
     checkedItems() {
       return this.items_.filter(item => item.checked);
     },
+    checkedFiles() {
+      return this.files.filter(file => file.checked);
+    },
     empty() {
-      return !this.folders.length && !this.items.length && !this.loading;
+      return !this.folders.length && !this.items.length && !this.files.length && !this.loading;
     },
     modelType() {
       return this.model._modelType;
@@ -219,6 +241,9 @@ export default {
     items() {
       this.items_ = this._constructItemsList();
     },
+    files() {
+      this.files_ = this._constructFilesList();
+    },
   },
   methods: {
     _constructFoldersList() {
@@ -230,6 +255,12 @@ export default {
     _constructItemsList() {
       return this.items.map(item => ({
         item,
+        checked: false,
+      }));
+    },
+    _constructFilesList() {
+      return this.files.map(file => ({
+        file,
         checked: false,
       }));
     },
@@ -248,10 +279,13 @@ export default {
       this.items_.forEach((item) => {
         item.checked = this.allChecked;
       });
+      this.files_.forEach((file) => {
+        file.checked = this.allChecked;
+      });
     },
     toggleChecked(model) {
       model.checked = !model.checked;
-      if (this.checkedCount === this.folders.length + this.items.length) {
+      if (this.checkedCount === this.folders.length + this.items.length + this.files.length) {
         this.allChecked = true;
       } else {
         this.allChecked = false;

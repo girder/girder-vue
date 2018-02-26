@@ -11,6 +11,7 @@ export const AccessType = {
  */
 export const ResourceIcons = {
   COLLECTION: 'collections',
+  FILE: 'insert_drive_file',
   FOLDER: 'folder',
   GROUP: 'people',
   ITEM: 'description',
