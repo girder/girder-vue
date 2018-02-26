@@ -19,20 +19,43 @@ div
         v-checkbox(:hide-details="true", @click.prevent.stop="toggleAllCheckboxes",
             @mousedown.prevent.stop="", :indeterminate="!!checkedCount && !allChecked",
             :input-value="allChecked")
-      v-btn.actions-button(v-if="checkboxes", :disabled="!checkedCount")
-        v-icon(size="18px", color="grey darken-1") check_box
-        v-icon arrow_drop_down
+      v-menu(offset-y, :disabled="!checkedCount")
+        v-btn.actions-button(v-if="checkboxes", :disabled="!checkedCount", slot="activator")
+          v-icon(size="18px", color="grey darken-1") check_box
+          v-icon arrow_drop_down
+        v-list(dense, subheader)
+          v-subheader.g-subheader(dark)
+            .mr-3(v-for="header in checkedHeaders", v-if="header.count > 0",
+                :key="header.icon")
+              v-icon.mr-1(small) {{ header.icon }}
+              span.g-text {{ header.count }}
+          v-list-tile
+            v-icon.mr-2 file_download
+            | Download
+          v-list-tile
+            v-icon.mr-2 content_copy
+            | Copy
+          div(v-if="hasWriteAccess(model)")
+            v-list-tile
+              v-icon.mr-2 content_cut
+              | Cut
+          div(v-if="hasWriteAccess(model)")
+            v-divider
+            v-list-tile
+              v-icon.mr-2 delete
+              | Delete
+
       v-spacer
       v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
           @click="showUploader = true")
         v-icon file_upload
       v-btn(v-if="hasAdminAccess(model)", icon, color="warning")
         v-icon lock_outline
-      v-menu(left, offset-y)
+      v-menu(left, offset-y, :disabled="!!checkedCount")
         v-btn.actions-button(:disabled="!!checkedCount", slot="activator")
           v-icon {{ ResourceIcons[modelType.toUpperCase()] }}
           v-icon arrow_drop_down
-        v-list(dense, color="black")
+        v-list(dense)
           v-list-tile
             v-icon.mr-2 file_download
             | Download {{ modelType }}
@@ -161,14 +184,23 @@ export default {
         ...crumb,
       }));
     },
-    checkedItems() {
-      return this.items_.filter(item => item.checked);
+    checkedCount() {
+      return this.checkedItems.length + this.checkedFolders.length;
     },
     checkedFolders() {
       return this.folders_.filter(folder => folder.checked);
     },
-    checkedCount() {
-      return this.checkedItems.length + this.checkedFolders.length;
+    checkedHeaders() {
+      return [{
+        count: this.checkedFolders.length,
+        icon: ResourceIcons.FOLDER,
+      }, {
+        count: this.checkedItems.length,
+        icon: ResourceIcons.ITEM,
+      }];
+    },
+    checkedItems() {
+      return this.items_.filter(item => item.checked);
     },
     empty() {
       return !this.folders.length && !this.items.length && !this.loading;
@@ -245,4 +277,11 @@ export default {
 
 .checkbox-container,.actions-button
   min-width 0
+
+.g-subheader
+  background-color #606065
+
+  span
+    position relative
+    top 2px
 </style>
