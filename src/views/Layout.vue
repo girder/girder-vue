@@ -41,6 +41,7 @@ v-app
 
 <script>
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { navItems, theme } from '@/behaviors/layout';
 import { getApiUrl } from '@/rest';
 import { authDialogModes } from '@/store/auth';
 
@@ -48,11 +49,13 @@ export default {
   data: () => ({
     dialog: null,
     drawer: null,
+    navItems,
+    title: theme.title,
+    toolbarColor: theme.toolbarColor,
   }),
   computed: {
     getApiUrl,
     ...mapState('auth', ['user']),
-    ...mapState('layout', ['navItems', 'title', 'toolbarColor']),
     ...mapGetters('auth', ['isLoggedIn', 'isAdmin']),
   },
   methods: {

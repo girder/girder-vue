@@ -9,7 +9,7 @@ const { hasAdminAccess, hasWriteAccess } = accessLevelChecker.methods;
 const buildResourceObject = (resources) => {
   const obj = {};
   resources.forEach((r) => {
-    if (!obj.hasOwnProperty(r._modelType)) {
+    if (!(r._modelType in obj)) {
       obj[r._modelType] = [];
     }
     obj[r._modelType].push(r._id);

@@ -9,7 +9,6 @@ div
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { actions, checkedActions } from '@/behaviors/dataBrowser';
 import rest from '@/rest';
 import { accessLevelChecker, fetchingContainer, viewSlotWrapper } from '../utils/mixins';
