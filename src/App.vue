@@ -5,7 +5,7 @@
     auth-container(@login="showAuthDialog = false", @register="showAuthDialog = false")
   v-snackbar(v-for="(toast, i) in toasts", :key="i", :value="true", :timeout="null"
       :color="toast.color", right, bottom)
-    v-icon(v-if="toast.icon") {{ toast.icon }}
+    v-icon.mr-2(v-if="toast.icon") {{ toast.icon }}
     span {{ toast.text }}
 </template>
 

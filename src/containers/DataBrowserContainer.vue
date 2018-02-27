@@ -2,14 +2,15 @@
 div
   slot
     data-browser(ref="view", :model="model", :breadcrumbs="breadcrumbs", :items="items",
-        :folders="folders", :loading="fetching", :router-links="routerLinks",
-        :checked-actions="checkedActions_", @checked="checkboxesChanged", @uploadComplete="fetch",
+        :folders="folders", :loading="loading", :router-links="routerLinks",
+        :checked-actions="checkedActions", @checked="checkboxesChanged", @uploadComplete="fetch",
         @checkedActionClick="checkedActionClick", @folderCreated="fetch")
       slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions } from 'vuex';
+import { actions, checkedActions } from '@/behaviors/dataBrowser';
 import rest from '@/rest';
 import { accessLevelChecker, fetchingContainer, viewSlotWrapper } from '../utils/mixins';
 import DataBrowser from '../views/DataBrowser';
@@ -28,37 +29,36 @@ export default {
     },
   },
   data: () => ({
+    actions: [],
     breadcrumbs: [],
-    checkedActions_: [],
+    checkedActions: [],
     items: [],
     folders: [],
-    fetching: false,
+    loading: false,
   }),
   computed: {
     modelType() {
       return this.model._modelType;
     },
-    ...mapState('dataBrowser', ['actions', 'checkedActions']),
   },
   watch: {
     model() {
       this.fetch();
+      // TODO this.actions = actions.filter(a => ) ...
     },
   },
   methods: {
     // Figure out which actions the user can take given the set of checked resources
     checkboxesChanged(checked) {
-      this.checkedActions_ = this.checkedActions.filter(a =>
+      this.checkedActions = checkedActions.filter(a =>
         !a.condition || a.condition.call(this, checked));
     },
     checkedActionClick({ action, checkedResources }) {
-      if (action.click) {
-        action.click.call(this, checkedResources);
-      }
+      action.execute.call(this, checkedResources);
     },
     fetch() {
       this.$refs.view.showUploader = false;
-      this.fetching = true;
+      this.loading = true;
       this.items = [];
       this.folders = [];
 
@@ -100,7 +100,7 @@ export default {
       return Promise.all(requests).finally(() => {
         this.folders = fetchedFolders;
         this.items = fetchedItems;
-        this.fetching = false;
+        this.loading = false;
       });
     },
   },
