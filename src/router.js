@@ -5,6 +5,7 @@ import Layout from '@/views/Layout';
 import CollectionRoute from '@/routes/CollectionRoute';
 import CollectionsRoute from '@/routes/CollectionsRoute';
 import FolderRoute from '@/routes/FolderRoute';
+import ItemRoute from '@/routes/ItemRoute';
 import UserRoute from '@/routes/UserRoute';
 import UsersRoute from '@/routes/UsersRoute';
 
@@ -33,6 +34,9 @@ const layoutRoutes = [{
 }, {
   component: UserRoute,
   path: 'user/:id',
+}, {
+  component: ItemRoute,
+  path: 'item/:id',
 }, {
   // Legacy route, might remove in the future
   path: 'collection/:cid/folder/:id',
