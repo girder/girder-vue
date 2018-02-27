@@ -29,21 +29,10 @@ div
                 :key="header.icon")
               v-icon.mr-1(small) {{ header.icon }}
               span.g-text {{ header.count }}
-          v-list-tile
-            v-icon.mr-2 file_download
-            | Download
-          v-list-tile
-            v-icon.mr-2 content_copy
-            | Copy
-          div(v-if="hasWriteAccess(model)")
-            v-list-tile
-              v-icon.mr-2 content_cut
-              | Cut
-          div(v-if="hasWriteAccess(model)")
-            v-divider
-            v-list-tile
-              v-icon.mr-2 delete
-              | Delete
+          v-list-tile(v-for="action in checkedActions", :key="action.text", :to="action.to",
+              @click="$emit('checkedActionClick', { action, checkedResources })")
+            v-icon.mr-2 {{ action.icon }}
+            | {{ action.text }}
 
       v-spacer
       v-btn(v-if="hasWriteAccess(model) && modelType === 'folder'", icon, color="success",
@@ -133,9 +122,17 @@ export default {
   components: { CreateFolderContainer, UploadContainer },
   mixins: [accessLevelChecker],
   props: {
+    actions: {
+      default: () => [],
+      type: Array,
+    },
     checkboxes: {
       default: true,
       type: Boolean,
+    },
+    checkedActions: {
+      default: () => [],
+      type: Array,
     },
     loading: {
       default: false,
@@ -187,8 +184,12 @@ export default {
     checkedCount() {
       return this.checkedItems.length + this.checkedFolders.length;
     },
+    checkedResources() {
+      // TODO checkedFolders and checkedItems should go away. Types should be determined dynamically
+      return this.checkedFolders.concat(this.checkedItems);
+    },
     checkedFolders() {
-      return this.folders_.filter(folder => folder.checked);
+      return this.folders_.filter(f => f.checked).map(f => f.folder);
     },
     checkedHeaders() {
       return [{
@@ -200,7 +201,7 @@ export default {
       }];
     },
     checkedItems() {
-      return this.items_.filter(item => item.checked);
+      return this.items_.filter(i => i.checked).map(i => i.item);
     },
     empty() {
       return !this.folders.length && !this.items.length && !this.loading;
@@ -248,6 +249,7 @@ export default {
       this.items_.forEach((item) => {
         item.checked = this.allChecked;
       });
+      this.$emit('checked', this.checkedResources);
     },
     toggleChecked(model) {
       model.checked = !model.checked;
@@ -256,6 +258,7 @@ export default {
       } else {
         this.allChecked = false;
       }
+      this.$emit('checked', this.checkedResources);
     },
     uploadFinished(files) {
       this.showUploader = false;

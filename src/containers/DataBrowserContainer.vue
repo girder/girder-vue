@@ -3,18 +3,20 @@ div
   slot
     data-browser(ref="view", :model="model", :breadcrumbs="breadcrumbs", :items="items",
         :folders="folders", :loading="fetching", :router-links="routerLinks",
-        @uploadComplete="fetch", @folderCreated="fetch")
+        :checked-actions="checkedActions_", @checked="checkboxesChanged", @uploadComplete="fetch",
+        @checkedActionClick="checkedActionClick", @folderCreated="fetch")
       slot(v-for="name in viewSlots", :name="name", :slot="name")
 </template>
 
 <script>
-import rest from '../rest';
-import { fetchingContainer, viewSlotWrapper } from '../utils/mixins';
+import { mapState } from 'vuex';
+import rest from '@/rest';
+import { accessLevelChecker, fetchingContainer, viewSlotWrapper } from '../utils/mixins';
 import DataBrowser from '../views/DataBrowser';
 
 export default {
   components: { DataBrowser },
-  mixins: [fetchingContainer, viewSlotWrapper],
+  mixins: [accessLevelChecker, fetchingContainer, viewSlotWrapper],
   props: {
     model: {
       required: true,
@@ -27,6 +29,7 @@ export default {
   },
   data: () => ({
     breadcrumbs: [],
+    checkedActions_: [],
     items: [],
     folders: [],
     fetching: false,
@@ -35,6 +38,7 @@ export default {
     modelType() {
       return this.model._modelType;
     },
+    ...mapState('dataBrowser', ['actions', 'checkedActions']),
   },
   watch: {
     model() {
@@ -42,6 +46,16 @@ export default {
     },
   },
   methods: {
+    // Figure out which actions the user can take given the set of checked resources
+    checkboxesChanged(checked) {
+      this.checkedActions_ = this.checkedActions.filter(a =>
+        !a.condition || a.condition.call(this, checked));
+    },
+    checkedActionClick({ action, checkedResources }) {
+      if (action.click) {
+        action.click.call(this, checkedResources);
+      }
+    },
     fetch() {
       this.$refs.view.showUploader = false;
       this.fetching = true;
