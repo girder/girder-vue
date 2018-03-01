@@ -4,7 +4,7 @@ v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="cancel"
     v-card-text {{ message }}
     v-card-actions
       v-spacer
-      v-btn(color="grey", @click="cancel") {{ cancelText }}
+      v-btn(@click="cancel") {{ cancelText }}
       v-btn(color="primary", @click="accept") {{ acceptText }}
 </template>
 
@@ -23,31 +23,30 @@ export default {
       default: 'Are you sure?',
       type: String,
     },
-    promise: {
-      default: null,
-      type: Promise,
+    resolve: {
+      default: () => {},
+      type: Function,
     },
     width: {
       default: 550,
       type: Number,
     },
   },
-  data() {
-    return {
-      dialog: false,
-    };
-  },
+  data: () => ({
+    dialog: false,
+  }),
   methods: {
     accept() {
-      this.promise.resolve();
+      this.resolve(true);
       this.dialog = false;
     },
     cancel() {
-      this.promise.reject();
+      this.resolve(false);
       this.dialog = false;
     },
     show() {
       this.dialog = true;
+      return this;
     },
   },
 };

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import store from '@/store';
 import rest, { formEncode } from '@/rest';
+import confirm from '@/utils/confirm';
 import { downloadResources } from '@/utils/download';
 import { accessLevelChecker } from '@/utils/mixins';
 
@@ -63,29 +64,37 @@ export const checkedActions = [{
       return hasAdminAccess(obj);
     });
   },
-  execute(checked) {
-    // TODO get confirmation from user
-    this.fetching = true;
+  async execute(checked) {
+    if (!await confirm({
+      acceptText: 'Delete',
+      message: 'Are you sure you want to delete these resources?',
+    }, this.$el)) {
+      return;
+    }
 
-    rest.delete('/resource', {
-      data: formEncode({
-        resources: JSON.stringify(buildResourceObject(checked)),
-        progress: true,
-      }),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(() => {
-      this.fetch();
-      store.dispatch('toast/showToast', {
-        text: `Deleted ${checked.length} resource${checked.length === 1 ? '' : 's'}`,
-        icon: 'check',
+    this.loading = true;
+
+    try {
+      await rest.delete('/resource', {
+        data: formEncode({
+          resources: JSON.stringify(buildResourceObject(checked)),
+          progress: true,
+        }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
-    }).catch(() => {
+    } catch ({ response }) {
+      this.loading = false;
       store.dispatch('toast/showToast', {
         text: 'Resource deletion failed, see console for details.',
         icon: 'error',
         color: 'error',
       });
-      this.fetching = false;
+    }
+
+    this.fetch();
+    store.dispatch('toast/showToast', {
+      text: `Deleted ${checked.length} resource${checked.length === 1 ? '' : 's'}`,
+      icon: 'check',
     });
   },
 }];
