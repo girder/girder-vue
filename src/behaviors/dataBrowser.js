@@ -67,7 +67,9 @@ export const checkedActions = [{
   async execute(checked) {
     if (!await confirm({
       acceptText: 'Delete',
-      message: 'Are you sure you want to delete these resources?',
+      message: 'Are you sure you want to delete these resources? This action cannot be undone. ' +
+        'Type "DELETE" into the box below to confirm.',
+      requiredInput: 'DELETE',
     }, this.$el)) {
       return;
     }

@@ -1,11 +1,14 @@
 <template lang="pug">
 v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="cancel")
   v-card(tile)
-    v-card-text {{ message }}
+    v-card-text
+      div {{ message }}
+      v-text-field(v-if="requiredInput", v-model="input", :placeholder="requiredInput")
     v-card-actions
       v-spacer
-      v-btn(@click="cancel") {{ cancelText }}
-      v-btn(:color="acceptColor", @click="accept") {{ acceptText }}
+      v-btn(@click="$emit('cancel')") {{ cancelText }}
+      v-btn(:color="acceptColor", @click="$emit('accept')", :disabled="disableAccept")
+        | {{ acceptText }}
 </template>
 
 <script>
@@ -27,6 +30,10 @@ export default {
       default: 'Are you sure?',
       type: String,
     },
+    requiredInput: {
+      default: null,
+      type: String,
+    },
     width: {
       default: 550,
       type: Number,
@@ -34,14 +41,14 @@ export default {
   },
   data: () => ({
     dialog: false,
+    input: '',
   }),
+  computed: {
+    disableAccept() {
+      return this.requiredInput && this.input !== this.requiredInput;
+    },
+  },
   methods: {
-    accept() {
-      this.$emit('accept');
-    },
-    cancel() {
-      this.$emit('cancel');
-    },
     show(val = true) {
       this.dialog = val;
       return this;
