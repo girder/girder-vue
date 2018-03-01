@@ -5,12 +5,16 @@ v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="cancel"
     v-card-actions
       v-spacer
       v-btn(@click="cancel") {{ cancelText }}
-      v-btn(color="primary", @click="accept") {{ acceptText }}
+      v-btn(:color="acceptColor", @click="accept") {{ acceptText }}
 </template>
 
 <script>
 export default {
   props: {
+    acceptColor: {
+      default: 'primary',
+      type: String,
+    },
     acceptText: {
       default: 'Yes',
       type: String,
@@ -23,10 +27,6 @@ export default {
       default: 'Are you sure?',
       type: String,
     },
-    resolve: {
-      default: () => {},
-      type: Function,
-    },
     width: {
       default: 550,
       type: Number,
@@ -37,15 +37,13 @@ export default {
   }),
   methods: {
     accept() {
-      this.resolve(true);
-      this.dialog = false;
+      this.$emit('accept');
     },
     cancel() {
-      this.resolve(false);
-      this.dialog = false;
+      this.$emit('cancel');
     },
-    show() {
-      this.dialog = true;
+    show(val = true) {
+      this.dialog = val;
       return this;
     },
   },
