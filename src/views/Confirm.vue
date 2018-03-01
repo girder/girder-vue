@@ -2,7 +2,7 @@
 v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="cancel")
   v-card(tile)
     v-card-text
-      div {{ message }}
+      markdown(:text="markdown")
       v-text-field(v-if="requiredInput", v-model="input", :placeholder="requiredInput")
     v-card-actions
       v-spacer
@@ -12,7 +12,10 @@ v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="cancel"
 </template>
 
 <script>
+import Markdown from './Markdown';
+
 export default {
+  components: { Markdown },
   props: {
     acceptColor: {
       default: 'primary',
@@ -26,7 +29,7 @@ export default {
       default: 'Cancel',
       type: String,
     },
-    message: {
+    markdown: {
       default: 'Are you sure?',
       type: String,
     },
