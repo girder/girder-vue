@@ -137,7 +137,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 $stripeColor = #f0f0f3
 $img = linear-gradient(
   -45deg, $stripeColor 25%, transparent 25%, transparent 50%, $stripeColor 50%,
