@@ -2,13 +2,14 @@ import Vue from 'vue';
 import { sync } from 'vuex-router-sync';
 
 import App from './App';
+import { API_ROOT } from './constants';
 import router from './router';
 import store from './store';
 import { setApiUrl, getTokenFromCookie, onResponse } from './rest';
 import './utils/ui-setup';
 
 sync(store, router);
-setApiUrl(document.getElementById('girder-api-root').getAttribute('url'));
+setApiUrl(API_ROOT);
 onResponse((resp) => {
   if (resp.response && resp.response.status === 401 && !store.getters['auth/isLoggedIn'] &&
       !store.state.auth.authDialogVisible) {

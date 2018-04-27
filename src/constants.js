@@ -18,3 +18,5 @@ export const ResourceIcons = {
 };
 
 export const UPLOAD_CHUNK_SIZE = 1024 * 1024 * 64;
+export const API_ROOT =
+  process.env.NODE_ENV === 'production' ? '/api/v1' : '//localhost:8080/api/v1';
