@@ -11,8 +11,7 @@ import './utils/ui-setup';
 sync(store, router);
 setApiUrl(API_ROOT);
 onResponse((resp) => {
-  if (resp.response && resp.response.status === 401 && !store.getters['auth/isLoggedIn'] &&
-      !store.state.auth.authDialogVisible) {
+  if (resp.response && resp.response.status === 401 && !store.state.auth.authDialogVisible) {
     store.commit('auth/showAuthDialog', {});
     store.dispatch('toast/showToast', {
       text: 'You must log in first.',
@@ -20,6 +19,7 @@ onResponse((resp) => {
     });
   }
 
+  // TODO if auth.isLoggedIn, we know our session has expired. May want to take a different action
   // TODO Handle 500 errors (show a toast perhaps)
   return Promise.reject(resp);
 });
