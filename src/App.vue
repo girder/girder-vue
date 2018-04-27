@@ -1,8 +1,8 @@
 <template lang="pug">
 #app
   router-view
-  v-dialog(max-width="500px", v-model="showAuthDialog", @keydown.esc="showAuthDialog = false")
-    auth-container(@login="showAuthDialog = false", @register="showAuthDialog = false")
+  v-dialog(max-width="500px", v-model="showingAuthDialog", @keydown.esc="showingAuthDialog = false")
+    auth-container(@login="showingAuthDialog = false", @register="showingAuthDialog = false")
   v-snackbar(v-for="(toast, i) in toasts", :key="i", :value="true", :timeout="null"
       :color="toast.color", right, bottom)
     v-icon.mr-2(v-if="toast.icon") {{ toast.icon }}
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import AuthContainer from './containers/AuthContainer';
 
 export default {
@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      showAuthDialog: this.authDialogVisible,
+      showingAuthDialog: this.authDialogVisible,
     };
   },
   computed: {
@@ -28,17 +28,17 @@ export default {
   },
   watch: {
     authDialogVisible(val) {
-      this.showAuthDialog = val;
+      this.showingAuthDialog = val;
     },
-    showAuthDialog(val) {
-      this.setAuthDialogVisible(val);
+    showingAuthDialog(val) {
+      this.showAuthDialog({ visible: val });
     },
   },
-  methods: mapMutations('auth', ['setAuthDialogMode', 'setAuthDialogVisible']),
+  methods: mapActions('auth', ['showAuthDialog']),
 };
 </script>
 
 <style lang="stylus">
 #app
-  font-family 'Avenir', Helvetica, Arial, sans-serif
+  font-family Avenir, Helvetica, Arial, sans-serif
 </style>

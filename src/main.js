@@ -12,7 +12,7 @@ sync(store, router);
 setApiUrl(API_ROOT);
 onResponse((resp) => {
   if (resp.response && resp.response.status === 401 && !store.state.auth.authDialogVisible) {
-    store.commit('auth/showAuthDialog', {});
+    store.dispatch('auth/showAuthDialog', {});
     store.dispatch('toast/showToast', {
       text: 'You must log in first.',
       icon: 'info_circled',

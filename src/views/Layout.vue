@@ -40,7 +40,7 @@ v-app
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { navItems, theme } from '@/behaviors/layout';
 import { getApiUrl } from '@/rest';
 import { authDialogModes } from '@/store/auth';
@@ -73,13 +73,12 @@ export default {
       return true;
     },
     showLoginDialog() {
-      this.showAuthDialog({ mode: authDialogModes.LOGIN });
+      this.showAuthDialog({ mode: authDialogModes.LOGIN, visible: true });
     },
     showRegisterDialog() {
-      this.showAuthDialog({ mode: authDialogModes.REGISTER });
+      this.showAuthDialog({ mode: authDialogModes.REGISTER, visible: true });
     },
-    ...mapActions('auth', ['logout']),
-    ...mapMutations('auth', ['showAuthDialog']),
+    ...mapActions('auth', ['logout', 'showAuthDialog']),
   },
 };
 </script>
