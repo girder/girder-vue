@@ -1,5 +1,5 @@
 <template lang="pug">
-v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="cancel")
+v-dialog(v-model="dialog", persistent, :max-width="width", @keydown.esc="$emit('cancel')")
   v-card(tile)
     v-card-text
       markdown(:text="markdown")
